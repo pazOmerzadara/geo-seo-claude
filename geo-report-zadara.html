@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GEO Readiness Report — Zadara</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root {
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --font-display: 'Inter', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --sidebar-w: 260px;
   --score-red: #ff4757;
@@ -1122,6 +1122,66 @@ tbody tr:hover { background: var(--accent-dim); }
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+/* ──── Burndown Chart ──── */
+.burndown-wrap {
+  background: var(--bg-2);
+  border: 1px solid var(--border-0);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.burndown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.burndown-title {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-0);
+}
+.burndown-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+#burndown-chart svg {
+  width: 100%;
+  display: block;
+}
+#burndown-chart .bar-segment {
+  transition: opacity 0.15s ease;
+  cursor: default;
+}
+#burndown-chart .bar-group:hover .bar-segment {
+  opacity: 0.8;
+}
+.burndown-empty {
+  text-align: center;
+  color: var(--text-3);
+  padding: 40px 0;
+  font-size: 14px;
+}
+.burndown-empty.hidden { display: none; }
+
 .dash-filters {
   display: flex;
   gap: 8px;
@@ -2469,6 +2529,18 @@ tbody tr:hover { background: var(--accent-dim); }
       </div>
     </div>
 
+    <div class="burndown-wrap fade-in">
+      <div class="burndown-header">
+        <h3 class="burndown-title">Action Items Burndown by Month</h3>
+        <div class="burndown-legend">
+          <span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span> Recommendation</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--score-orange)"></span> Ad-hoc</span>
+        </div>
+      </div>
+      <div id="burndown-chart"></div>
+      <p class="burndown-empty hidden" id="burndown-empty">No open action items with ETAs to display.</p>
+    </div>
+
     <div class="dash-filters fade-in">
       <button class="dash-filter-btn active" onclick="filterDashboard('all')">All</button>
       <button class="dash-filter-btn" onclick="filterDashboard('open')">Open</button>
@@ -3064,6 +3136,140 @@ function updateDashboard() {
   document.getElementById('kpi-completed').textContent = completed;
 
   renderDashboardTable();
+  renderBurndownChart();
+}
+
+function renderBurndownChart() {
+  var container = document.getElementById('burndown-chart');
+  var emptyMsg = document.getElementById('burndown-empty');
+  if (!container) return;
+
+  // Filter to open + in_progress only
+  var active = allActionItems.filter(function(i) {
+    return i.status === 'open' || i.status === 'in_progress';
+  });
+
+  if (active.length === 0) {
+    container.innerHTML = '';
+    emptyMsg.classList.remove('hidden');
+    return;
+  }
+  emptyMsg.classList.add('hidden');
+
+  // Group by ETA month
+  var buckets = {};
+  var noEtaRec = 0, noEtaAdhoc = 0;
+
+  active.forEach(function(item) {
+    var isAdhoc = !item.recommendation_id;
+    if (!item.eta) {
+      if (isAdhoc) noEtaAdhoc++; else noEtaRec++;
+      return;
+    }
+    var d = new Date(item.eta);
+    if (isNaN(d.getTime())) {
+      if (isAdhoc) noEtaAdhoc++; else noEtaRec++;
+      return;
+    }
+    var key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    if (!buckets[key]) buckets[key] = { rec: 0, adhoc: 0 };
+    if (isAdhoc) buckets[key].adhoc++; else buckets[key].rec++;
+  });
+
+  // Sort months chronologically
+  var months = Object.keys(buckets).sort();
+
+  // Add No ETA bucket if any
+  var hasNoEta = noEtaRec > 0 || noEtaAdhoc > 0;
+
+  if (months.length === 0 && !hasNoEta) {
+    container.innerHTML = '';
+    emptyMsg.classList.remove('hidden');
+    return;
+  }
+
+  // Build data array
+  var data = months.map(function(key) {
+    var parts = key.split('-');
+    var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var label = monthNames[parseInt(parts[1], 10) - 1] + " '" + parts[0].slice(2);
+    return { label: label, rec: buckets[key].rec, adhoc: buckets[key].adhoc };
+  });
+  if (hasNoEta) {
+    data.push({ label: 'No ETA', rec: noEtaRec, adhoc: noEtaAdhoc });
+  }
+
+  // Chart dimensions
+  var barW = 40;
+  var gap = 24;
+  var leftPad = 40;
+  var bottomPad = 32;
+  var topPad = 12;
+  var chartH = 200;
+  var totalW = leftPad + data.length * (barW + gap) + gap;
+  var svgH = chartH + bottomPad + topPad;
+
+  // Find max
+  var maxVal = 0;
+  data.forEach(function(d) {
+    var t = d.rec + d.adhoc;
+    if (t > maxVal) maxVal = t;
+  });
+  if (maxVal === 0) maxVal = 1;
+
+  // Y-axis ticks (up to 5)
+  var tickCount = Math.min(maxVal, 5);
+  var tickStep = Math.ceil(maxVal / tickCount);
+  var yMax = tickStep * tickCount;
+
+  // Build SVG
+  var svg = '<svg viewBox="0 0 ' + totalW + ' ' + svgH + '" xmlns="http://www.w3.org/2000/svg" style="font-family:var(--font-body)">';
+
+  // Grid lines + Y labels
+  for (var t = 0; t <= tickCount; t++) {
+    var val = t * tickStep;
+    var y = topPad + chartH - (val / yMax) * chartH;
+    svg += '<line x1="' + leftPad + '" y1="' + y + '" x2="' + totalW + '" y2="' + y + '" stroke="var(--border-0)" stroke-width="1"/>';
+    svg += '<text x="' + (leftPad - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="var(--text-3)" font-size="11">' + val + '</text>';
+  }
+
+  // Bars
+  data.forEach(function(d, i) {
+    var x = leftPad + gap + i * (barW + gap);
+    var total = d.rec + d.adhoc;
+    var recH = (d.rec / yMax) * chartH;
+    var adhocH = (d.adhoc / yMax) * chartH;
+    var recY = topPad + chartH - recH - adhocH;
+    var adhocY = topPad + chartH - adhocH;
+
+    svg += '<g class="bar-group">';
+
+    // Recommendation bar (bottom)
+    if (d.rec > 0) {
+      var recRadius = d.adhoc === 0 ? 3 : 0;
+      svg += '<rect class="bar-segment" x="' + x + '" y="' + recY + '" width="' + barW + '" height="' + recH + '" fill="var(--accent)" rx="' + recRadius + '">';
+      svg += '<title>Recommendation: ' + d.rec + '</title></rect>';
+    }
+
+    // Ad-hoc bar (top)
+    if (d.adhoc > 0) {
+      svg += '<rect class="bar-segment" x="' + x + '" y="' + adhocY + '" width="' + barW + '" height="' + adhocH + '" fill="var(--score-orange)" rx="3">';
+      svg += '<title>Ad-hoc: ' + d.adhoc + '</title></rect>';
+    }
+
+    // Total label on top of bar
+    if (total > 0) {
+      svg += '<text x="' + (x + barW / 2) + '" y="' + (recY - 6) + '" text-anchor="middle" fill="var(--text-2)" font-size="11" font-weight="600">' + total + '</text>';
+    }
+
+    // X-axis label
+    svg += '<text x="' + (x + barW / 2) + '" y="' + (topPad + chartH + 18) + '" text-anchor="middle" fill="var(--text-2)" font-size="11">' + d.label + '</text>';
+
+    svg += '</g>';
+  });
+
+  svg += '</svg>';
+  container.innerHTML = svg;
 }
 
 function filterDashboard(filter) {
