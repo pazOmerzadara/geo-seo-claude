@@ -1165,6 +1165,7 @@ tbody tr:hover { background: var(--accent-dim); }
 }
 #burndown-chart svg {
   width: 100%;
+  max-height: 220px;
   display: block;
 }
 #burndown-chart .bar-segment {
@@ -1215,6 +1216,29 @@ tbody tr:hover { background: var(--accent-dim); }
   margin-left: auto;
 }
 .dash-new-btn:hover { opacity: 0.9; }
+.action-text-editable {
+  cursor: pointer;
+  border-bottom: 1px dashed transparent;
+  transition: border-color 0.15s;
+  padding: 2px 0;
+}
+.action-text-editable:hover {
+  border-bottom-color: var(--accent);
+}
+.action-text-editing {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-0);
+  background: var(--bg-0);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+}
 .status-select {
   background: var(--bg-3);
   border: 1px solid var(--border-0);
@@ -3223,7 +3247,7 @@ function renderBurndownChart() {
   var yMax = tickStep * tickCount;
 
   // Build SVG
-  var svg = '<svg viewBox="0 0 ' + totalW + ' ' + svgH + '" xmlns="http://www.w3.org/2000/svg" style="font-family:var(--font-body)">';
+  var svg = '<svg viewBox="0 0 ' + totalW + ' ' + svgH + '" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg" style="font-family:var(--font-body)">';
 
   // Grid lines + Y labels
   for (var t = 0; t <= tickCount; t++) {
@@ -3305,7 +3329,7 @@ function renderDashboardTable() {
     var updatedStr = item.updated_at ? new Date(item.updated_at).toLocaleDateString() : '--';
 
     return '<tr>' +
-      '<td style="max-width:260px">' + escapeHtml(item.recommendation_text) + '</td>' +
+      '<td style="max-width:450px;min-width:200px"><span class="action-text-editable" onclick="startEditAction(this, \'' + item.id + '\')" title="Click to edit">' + escapeHtml(item.recommendation_text) + '</span></td>' +
       '<td>' + openedByName + '</td>' +
       '<td>' + ownerName + '</td>' +
       '<td style="font-size:12px;color:var(--text-2)">' + openedStr + '</td>' +
@@ -3335,6 +3359,57 @@ async function updateItemStatus(itemId, newStatus) {
     updateActionIndicators();
     updateDashboard();
     showToast('Status updated', 'success');
+  } catch (err) {
+    showToast(err.message || 'Update failed', 'error');
+  }
+}
+
+// ──── Inline Action Text Editing ────
+function startEditAction(span, itemId) {
+  var currentText = span.textContent;
+  var td = span.parentElement;
+  var textarea = document.createElement('textarea');
+  textarea.className = 'action-text-editing';
+  textarea.value = currentText;
+  td.replaceChild(textarea, span);
+  textarea.focus();
+  textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+
+  function save() {
+    var newText = textarea.value.trim();
+    if (newText && newText !== currentText) {
+      updateActionText(itemId, newText);
+    } else {
+      cancelEdit();
+    }
+  }
+
+  function cancelEdit() {
+    span.textContent = currentText;
+    td.replaceChild(span, textarea);
+  }
+
+  textarea.addEventListener('blur', save);
+  textarea.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      textarea.removeEventListener('blur', save);
+      cancelEdit();
+    }
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      textarea.removeEventListener('blur', save);
+      save();
+    }
+  });
+}
+
+async function updateActionText(itemId, newText) {
+  try {
+    var { error } = await sb.from('action_items').update({ recommendation_text: newText }).eq('id', itemId);
+    if (error) throw error;
+    await loadActionItems();
+    updateActionIndicators();
+    updateDashboard();
+    showToast('Action updated', 'success');
   } catch (err) {
     showToast(err.message || 'Update failed', 'error');
   }

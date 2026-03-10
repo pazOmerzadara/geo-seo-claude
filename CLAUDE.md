@@ -82,3 +82,4 @@ All commands start with `/geo` followed by a subcommand and URL:
 - Python scripts should maintain compatibility with Python 3.8+
 - JSON-LD templates in `schema/` follow Schema.org specifications
 - Respect rate limiting: 1s delay between requests, max 5 concurrent
+- **No Supabase MCP**: Do NOT use Supabase MCP tools on this project. When database changes are needed, create a `.sql` file in a `sql/` directory and the user will run it manually.
