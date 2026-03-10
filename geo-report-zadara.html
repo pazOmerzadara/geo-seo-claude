@@ -809,9 +809,430 @@ tbody tr:hover { background: var(--accent-dim); }
   .gauge-fill { transition: none !important; }
   .progress-bar__fill { transition: none !important; }
 }
+
+/* ──── AUTH MODAL ──── */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-0);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.auth-overlay.hidden { display: none; }
+.auth-box {
+  background: var(--bg-2);
+  border: 1px solid var(--border-0);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--card-shadow-hover);
+}
+.auth-box__title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-0);
+  margin-bottom: 8px;
+}
+.auth-box__subtitle {
+  font-size: 14px;
+  color: var(--text-2);
+  margin-bottom: 24px;
+}
+.auth-form { display: flex; flex-direction: column; gap: 14px; }
+.auth-form.hidden { display: none; }
+.auth-input {
+  background: var(--bg-3);
+  border: 1px solid var(--border-0);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-0);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.auth-input:focus { border-color: var(--accent); }
+.auth-input::placeholder { color: var(--text-3); }
+.auth-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.auth-btn:hover { opacity: 0.9; }
+.auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.auth-link {
+  font-size: 13px;
+  color: var(--accent);
+  cursor: pointer;
+  text-align: center;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+}
+.auth-link:hover { text-decoration: underline; }
+.auth-error {
+  background: rgba(255,71,87,0.1);
+  border: 1px solid rgba(255,71,87,0.3);
+  color: var(--score-red);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  display: none;
+}
+.auth-error.show { display: block; }
+.auth-success {
+  background: rgba(38,222,129,0.1);
+  border: 1px solid rgba(38,222,129,0.3);
+  color: var(--score-green);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  display: none;
+}
+.auth-success.show { display: block; }
+.pw-requirements {
+  font-size: 12px;
+  color: var(--text-3);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pw-requirements li.met { color: var(--score-green); }
+.pw-requirements li::before { content: '○ '; }
+.pw-requirements li.met::before { content: '● '; }
+
+/* ──── USER MENU ──── */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background: var(--bg-3);
+  border: 1px solid var(--border-0);
+}
+.user-menu__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-0);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user-menu__signout {
+  background: none;
+  border: none;
+  color: var(--text-3);
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+.user-menu__signout:hover { color: var(--score-red); }
+
+/* ──── ACTION ITEM BUTTON ──── */
+.btn-action-item {
+  background: var(--accent-dim);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1;
+}
+.btn-action-item:hover { background: var(--accent); color: #fff; }
+.btn-action-item.has-item { background: var(--score-green-bg); color: var(--score-green); border-color: rgba(38,222,129,0.3); }
+.btn-action-item.has-item:hover { background: var(--score-green); color: #fff; }
+.btn-action-item.has-item-progress { background: var(--score-orange-bg); color: var(--score-orange); border-color: rgba(255,159,67,0.3); }
+
+/* ──── ACTION ITEM MODAL ──── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.hidden { display: none; }
+.modal-box {
+  background: var(--bg-2);
+  border: 1px solid var(--border-0);
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--card-shadow-hover);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-box__title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-0);
+  margin-bottom: 20px;
+}
+.modal-form { display: flex; flex-direction: column; gap: 14px; }
+.modal-form label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.modal-form textarea {
+  background: var(--bg-3);
+  border: 1px solid var(--border-0);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-0);
+  outline: none;
+  resize: vertical;
+  min-height: 60px;
+}
+.modal-form textarea:focus { border-color: var(--accent); }
+.modal-form select {
+  background: var(--bg-3);
+  border: 1px solid var(--border-0);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-0);
+  outline: none;
+}
+.modal-form select:focus { border-color: var(--accent); }
+.modal-form input[type="date"] {
+  background: var(--bg-3);
+  border: 1px solid var(--border-0);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-0);
+  outline: none;
+}
+.modal-form input[type="date"]:focus { border-color: var(--accent); }
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+.modal-btn-cancel {
+  background: var(--bg-3);
+  border: 1px solid var(--border-0);
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.modal-btn-cancel:hover { border-color: var(--border-1); }
+.modal-btn-save {
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.modal-btn-save:hover { opacity: 0.9; }
+.modal-btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+.modal-btn-delete {
+  background: rgba(255,71,87,0.15);
+  border: 1px solid rgba(255,71,87,0.3);
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: var(--score-red);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: auto;
+}
+.modal-btn-delete:hover { background: rgba(255,71,87,0.25); }
+
+/* ──── DASHBOARD ──── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.kpi-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border-0);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.kpi-card__value {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-0);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.kpi-card__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.dash-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.dash-filter-btn {
+  background: var(--bg-3);
+  border: 1px solid var(--border-0);
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.dash-filter-btn:hover { color: var(--text-0); border-color: var(--border-1); }
+.dash-filter-btn.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+.dash-new-btn {
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin-left: auto;
+}
+.dash-new-btn:hover { opacity: 0.9; }
+.status-select {
+  background: var(--bg-3);
+  border: 1px solid var(--border-0);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-0);
+  cursor: pointer;
+}
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.status-dot--open { background: var(--accent); }
+.status-dot--in_progress { background: var(--score-orange); }
+.status-dot--completed { background: var(--score-green); }
+.status-dot--cancelled { background: var(--text-3); }
+
+/* ──── TOAST ──── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 600;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.toast--success { background: var(--score-green); }
+.toast--error { background: var(--score-red); }
 </style>
 </head>
 <body>
+
+<!-- Auth Overlay -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-box__title" id="auth-title">Sign In</div>
+    <div class="auth-box__subtitle" id="auth-subtitle">Access the GEO Readiness Report</div>
+    <div class="auth-error" id="auth-error"></div>
+    <div class="auth-success" id="auth-success"></div>
+
+    <!-- Sign In Form -->
+    <form class="auth-form" id="signin-form" onsubmit="handleSignIn(event)">
+      <input class="auth-input" type="email" placeholder="Email" id="signin-email" required>
+      <input class="auth-input" type="password" placeholder="Password" id="signin-password" required>
+      <button class="auth-btn" type="submit" id="signin-btn">Sign In</button>
+      <div style="display:flex;justify-content:space-between">
+        <button type="button" class="auth-link" onclick="showAuthForm('reset')">Forgot password?</button>
+        <button type="button" class="auth-link" onclick="showAuthForm('signup')">Create account</button>
+      </div>
+    </form>
+
+    <!-- Sign Up Form -->
+    <form class="auth-form hidden" id="signup-form" onsubmit="handleSignUp(event)">
+      <input class="auth-input" type="email" placeholder="Email" id="signup-email" required>
+      <input class="auth-input" type="text" placeholder="Display name" id="signup-name" required>
+      <input class="auth-input" type="password" placeholder="Password" id="signup-password" required oninput="checkPasswordStrength()">
+      <ul class="pw-requirements" id="pw-requirements">
+        <li id="pw-len">At least 12 characters</li>
+        <li id="pw-letter">At least one letter</li>
+        <li id="pw-digit">At least one digit (0-9)</li>
+        <li id="pw-symbol">At least one symbol (!@#$...)</li>
+      </ul>
+      <input class="auth-input" type="password" placeholder="Confirm password" id="signup-confirm" required>
+      <button class="auth-btn" type="submit" id="signup-btn">Create Account</button>
+      <button type="button" class="auth-link" onclick="showAuthForm('signin')">Already have an account? Sign in</button>
+    </form>
+
+    <!-- Reset Password Form -->
+    <form class="auth-form hidden" id="reset-form" onsubmit="handleReset(event)">
+      <input class="auth-input" type="email" placeholder="Email" id="reset-email" required>
+      <button class="auth-btn" type="submit" id="reset-btn">Send Reset Link</button>
+      <button type="button" class="auth-link" onclick="showAuthForm('signin')">Back to sign in</button>
+    </form>
+  </div>
+</div>
 
 <!-- Hamburger -->
 <button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle navigation">&#9776;</button>
@@ -838,8 +1259,13 @@ tbody tr:hover { background: var(--accent-dim); }
     <a href="#action-plan" class="sidebar__link"><span class="sidebar__link-icon">&#9654;</span> Action Plan</a>
     <a href="#impact" class="sidebar__link"><span class="sidebar__link-icon">&#10138;</span> Impact</a>
     <a href="#appendix" class="sidebar__link"><span class="sidebar__link-icon">&#9776;</span> Appendix</a>
+    <a href="#dashboard" class="sidebar__link"><span class="sidebar__link-icon">&#9635;</span> Dashboard</a>
   </div>
   <div class="sidebar__footer">
+    <div class="user-menu" id="user-menu" style="display:none">
+      <span class="user-menu__name" id="user-display-name"></span>
+      <button class="user-menu__signout" onclick="handleSignOut()">Sign out</button>
+    </div>
     <button class="theme-toggle" onclick="toggleTheme()">
       <span class="theme-toggle__icon">&#9790;</span>
       <span id="theme-label">Switch to Light</span>
@@ -1043,7 +1469,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">Google AI Overviews</div>
             <div class="platform-card__gap"><strong>Gap:</strong> Content lacks quotable answer blocks</div>
-            <div class="platform-card__action">&#8594; Add "What is..." definitions to product pages</div>
+            <div class="platform-card__action" data-rec-id="platform_vis_google_aio">&#8594; Add "What is..." definitions to product pages <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1062,7 +1488,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">ChatGPT Web Search</div>
             <div class="platform-card__gap"><strong>Gap:</strong> Low brand authority, thin content</div>
-            <div class="platform-card__action">&#8594; Expand Wikipedia, add statistics</div>
+            <div class="platform-card__action" data-rec-id="platform_vis_chatgpt">&#8594; Expand Wikipedia, add statistics <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1081,7 +1507,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">Perplexity AI</div>
             <div class="platform-card__gap"><strong>Gap:</strong> Zero Reddit presence (46.7% of citations)</div>
-            <div class="platform-card__action">&#8594; Begin Reddit community engagement</div>
+            <div class="platform-card__action" data-rec-id="platform_vis_perplexity">&#8594; Begin Reddit community engagement <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1100,7 +1526,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">Google Gemini</div>
             <div class="platform-card__gap"><strong>Gap:</strong> Schema incomplete, no product markup</div>
-            <div class="platform-card__action">&#8594; Add SoftwareApplication schemas</div>
+            <div class="platform-card__action" data-rec-id="platform_vis_gemini">&#8594; Add SoftwareApplication schemas <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1119,7 +1545,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">Bing Copilot</div>
             <div class="platform-card__gap"><strong>Gap:</strong> No IndexNow, limited content depth</div>
-            <div class="platform-card__action">&#8594; Implement IndexNow, expand content</div>
+            <div class="platform-card__action" data-rec-id="platform_vis_bing_copilot">&#8594; Implement IndexNow, expand content <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1377,7 +1803,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">Google AIO</div>
             <div class="platform-card__gap"><strong>Gap:</strong> No question headings, no FAQ sections, no tables or structured comparisons</div>
-            <div class="platform-card__action">&#8594; Add Q&amp;A headings and comparison tables to product pages</div>
+            <div class="platform-card__action" data-rec-id="platform_opt_google_aio">&#8594; Add Q&amp;A headings and comparison tables to product pages <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1396,7 +1822,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">ChatGPT</div>
             <div class="platform-card__gap"><strong>Gap:</strong> Wikipedia stub (259 words), no Bing WMT, thin content</div>
-            <div class="platform-card__action">&#8594; Expand Wikipedia article, verify Bing Webmaster Tools</div>
+            <div class="platform-card__action" data-rec-id="platform_opt_chatgpt">&#8594; Expand Wikipedia article, verify Bing Webmaster Tools <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1415,7 +1841,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">Perplexity</div>
             <div class="platform-card__gap"><strong>Gap:</strong> Zero Reddit presence, no original research published</div>
-            <div class="platform-card__action">&#8594; Launch Reddit strategy, publish benchmark data</div>
+            <div class="platform-card__action" data-rec-id="platform_opt_perplexity">&#8594; Launch Reddit strategy, publish benchmark data <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1434,7 +1860,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">Gemini</div>
             <div class="platform-card__gap"><strong>Gap:</strong> No Knowledge Panel, YouTube underutilized for AI discoverability, basic Schema only</div>
-            <div class="platform-card__action">&#8594; Claim Knowledge Panel, optimize YouTube for AI, add Product schema</div>
+            <div class="platform-card__action" data-rec-id="platform_opt_gemini">&#8594; Claim Knowledge Panel, optimize YouTube for AI, add Product schema <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1453,7 +1879,7 @@ tbody tr:hover { background: var(--accent-dim); }
           <div class="platform-card__info">
             <div class="card__title">Bing Copilot</div>
             <div class="platform-card__gap"><strong>Gap:</strong> No IndexNow protocol, no Bing WMT verified</div>
-            <div class="platform-card__action">&#8594; Implement IndexNow, register Bing Webmaster Tools</div>
+            <div class="platform-card__action" data-rec-id="platform_opt_bing_copilot">&#8594; Implement IndexNow, register Bing Webmaster Tools <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
           </div>
         </div>
       </div>
@@ -1778,13 +2204,13 @@ tbody tr:hover { background: var(--accent-dim); }
           <p style="font-size:13px;color:var(--text-2);margin-bottom:14px"><em>High impact, low effort &mdash; can be implemented immediately</em></p>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>#</th><th>Action</th><th>Impact</th><th>Effort</th><th>Platforms</th></tr></thead>
+              <thead><tr><th>#</th><th>Action</th><th>Impact</th><th>Effort</th><th>Platforms</th><th style="width:40px"></th></tr></thead>
               <tbody>
-                <tr><td>1</td><td>Replace malformed llms.txt with proper Markdown file</td><td><span class="badge badge--orange">High</span></td><td>1 hour</td><td>All AI platforms</td></tr>
-                <tr><td>2</td><td>Add 4 missing sameAs links (Wikipedia, Wikidata, GitHub, Crunchbase)</td><td><span class="badge badge--orange">High</span></td><td>30 min</td><td>All AI platforms</td></tr>
-                <tr><td>3</td><td>Add "What is..." definition paragraph to all product pages</td><td><span class="badge badge--orange">High</span></td><td>2 hours</td><td>Google AIO, Perplexity, ChatGPT</td></tr>
-                <tr><td>4</td><td>Add 3-5 statistics to each product page</td><td><span class="badge badge--orange">High</span></td><td>3 hours</td><td>All AI platforms</td></tr>
-                <tr><td>5</td><td>Complete Organization schema (foundingDate, founder, address, knowsAbout)</td><td><span class="badge badge--yellow">Medium</span></td><td>1 hour</td><td>Gemini, Google AIO</td></tr>
+                <tr data-rec-id="quick_wins_1"><td>1</td><td>Replace malformed llms.txt with proper Markdown file</td><td><span class="badge badge--orange">High</span></td><td>1 hour</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="quick_wins_2"><td>2</td><td>Add 4 missing sameAs links (Wikipedia, Wikidata, GitHub, Crunchbase)</td><td><span class="badge badge--orange">High</span></td><td>30 min</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="quick_wins_3"><td>3</td><td>Add "What is..." definition paragraph to all product pages</td><td><span class="badge badge--orange">High</span></td><td>2 hours</td><td>Google AIO, Perplexity, ChatGPT</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="quick_wins_4"><td>4</td><td>Add 3-5 statistics to each product page</td><td><span class="badge badge--orange">High</span></td><td>3 hours</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="quick_wins_5"><td>5</td><td>Complete Organization schema (foundingDate, founder, address, knowsAbout)</td><td><span class="badge badge--yellow">Medium</span></td><td>1 hour</td><td>Gemini, Google AIO</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
               </tbody>
             </table>
           </div>
@@ -1803,15 +2229,15 @@ tbody tr:hover { background: var(--accent-dim); }
           <p style="font-size:13px;color:var(--text-2);margin-bottom:14px"><em>Significant impact, moderate effort &mdash; requires content or technical changes</em></p>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>#</th><th>Action</th><th>Impact</th><th>Effort</th><th>Platforms</th></tr></thead>
+              <thead><tr><th>#</th><th>Action</th><th>Impact</th><th>Effort</th><th>Platforms</th><th style="width:40px"></th></tr></thead>
               <tbody>
-                <tr><td>1</td><td>Expand Sovereign AI page from 450 to 2,500+ words</td><td><span class="badge badge--orange">High</span></td><td>2-3 days</td><td>All AI platforms</td></tr>
-                <tr><td>2</td><td>Convert marketing headings to question-based headings across top 10 pages</td><td><span class="badge badge--orange">High</span></td><td>1-2 days</td><td>Google AIO, Perplexity</td></tr>
-                <tr><td>3</td><td>Add SoftwareApplication schema to zStorage and zCompute</td><td><span class="badge badge--yellow">Medium</span></td><td>1 day</td><td>Gemini, Google AIO</td></tr>
-                <tr><td>4</td><td>Create dedicated author pages with credentials and enhanced Person schema</td><td><span class="badge badge--yellow">Medium</span></td><td>2 days</td><td>All AI platforms</td></tr>
-                <tr><td>5</td><td>Add security headers (HSTS, CSP, X-Frame-Options, etc.)</td><td><span class="badge badge--yellow">Medium</span></td><td>1 day</td><td>Trust signals</td></tr>
-                <tr><td>6</td><td>Implement IndexNow protocol</td><td><span class="badge badge--yellow">Medium</span></td><td>0.5 days</td><td>Bing Copilot, ChatGPT</td></tr>
-                <tr><td>7</td><td>Move key case study data from PDFs into HTML pages</td><td><span class="badge badge--orange">High</span></td><td>3-5 days</td><td>All AI platforms</td></tr>
+                <tr data-rec-id="medium_term_1"><td>1</td><td>Expand Sovereign AI page from 450 to 2,500+ words</td><td><span class="badge badge--orange">High</span></td><td>2-3 days</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="medium_term_2"><td>2</td><td>Convert marketing headings to question-based headings across top 10 pages</td><td><span class="badge badge--orange">High</span></td><td>1-2 days</td><td>Google AIO, Perplexity</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="medium_term_3"><td>3</td><td>Add SoftwareApplication schema to zStorage and zCompute</td><td><span class="badge badge--yellow">Medium</span></td><td>1 day</td><td>Gemini, Google AIO</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="medium_term_4"><td>4</td><td>Create dedicated author pages with credentials and enhanced Person schema</td><td><span class="badge badge--yellow">Medium</span></td><td>2 days</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="medium_term_5"><td>5</td><td>Add security headers (HSTS, CSP, X-Frame-Options, etc.)</td><td><span class="badge badge--yellow">Medium</span></td><td>1 day</td><td>Trust signals</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="medium_term_6"><td>6</td><td>Implement IndexNow protocol</td><td><span class="badge badge--yellow">Medium</span></td><td>0.5 days</td><td>Bing Copilot, ChatGPT</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="medium_term_7"><td>7</td><td>Move key case study data from PDFs into HTML pages</td><td><span class="badge badge--orange">High</span></td><td>3-5 days</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
               </tbody>
             </table>
           </div>
@@ -1830,14 +2256,14 @@ tbody tr:hover { background: var(--accent-dim); }
           <p style="font-size:13px;color:var(--text-2);margin-bottom:14px"><em>Long-term competitive advantage, requires ongoing investment</em></p>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>#</th><th>Action</th><th>Impact</th><th>Effort</th><th>Platforms</th></tr></thead>
+              <thead><tr><th>#</th><th>Action</th><th>Impact</th><th>Effort</th><th>Platforms</th><th style="width:40px"></th></tr></thead>
               <tbody>
-                <tr><td>1</td><td>Expand Wikipedia article from stub to comprehensive (1,500+ words)</td><td><span class="badge badge--red">Very High</span></td><td>4-8 weeks</td><td>All AI platforms</td></tr>
-                <tr><td>2</td><td>Build Reddit community presence (r/sysadmin, r/cloud, r/vmware)</td><td><span class="badge badge--red">Very High</span></td><td>Ongoing</td><td>Perplexity, ChatGPT</td></tr>
-                <tr><td>3</td><td>Optimize YouTube channel for AI discoverability: add detailed descriptions, transcripts, and topic-focused content</td><td><span class="badge badge--orange">High</span></td><td>2-3 weeks</td><td>Gemini, Perplexity</td></tr>
-                <tr><td>4</td><td>Create comprehensive pillar content (VMware alternatives, Cloud migration, Sovereign AI guides)</td><td><span class="badge badge--orange">High</span></td><td>3-4 weeks</td><td>All AI platforms</td></tr>
-                <tr><td>5</td><td>Complete Wikidata entry with all properties</td><td><span class="badge badge--yellow">Medium</span></td><td>1-2 weeks</td><td>All AI platforms</td></tr>
-                <tr><td>6</td><td>Develop original research/benchmarking program</td><td><span class="badge badge--orange">High</span></td><td>Ongoing</td><td>All AI platforms</td></tr>
+                <tr data-rec-id="strategic_1"><td>1</td><td>Expand Wikipedia article from stub to comprehensive (1,500+ words)</td><td><span class="badge badge--red">Very High</span></td><td>4-8 weeks</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="strategic_2"><td>2</td><td>Build Reddit community presence (r/sysadmin, r/cloud, r/vmware)</td><td><span class="badge badge--red">Very High</span></td><td>Ongoing</td><td>Perplexity, ChatGPT</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="strategic_3"><td>3</td><td>Optimize YouTube channel for AI discoverability: add detailed descriptions, transcripts, and topic-focused content</td><td><span class="badge badge--orange">High</span></td><td>2-3 weeks</td><td>Gemini, Perplexity</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="strategic_4"><td>4</td><td>Create comprehensive pillar content (VMware alternatives, Cloud migration, Sovereign AI guides)</td><td><span class="badge badge--orange">High</span></td><td>3-4 weeks</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="strategic_5"><td>5</td><td>Complete Wikidata entry with all properties</td><td><span class="badge badge--yellow">Medium</span></td><td>1-2 weeks</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+                <tr data-rec-id="strategic_6"><td>6</td><td>Develop original research/benchmarking program</td><td><span class="badge badge--orange">High</span></td><td>Ongoing</td><td>All AI platforms</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
               </tbody>
             </table>
           </div>
@@ -1965,13 +2391,153 @@ tbody tr:hover { background: var(--accent-dim); }
     </div>
   </section>
 
+  <!-- ═══════════ DASHBOARD ═══════════ -->
+  <section class="section" id="dashboard">
+    <div class="section__header fade-in">
+      <div class="section__label">Management</div>
+      <h2 class="section__title">Action Items Dashboard</h2>
+      <p class="section__desc">Track progress on GEO recommendations. Create action items from any recommendation or add custom tasks.</p>
+    </div>
+
+    <div class="kpi-grid fade-in">
+      <div class="kpi-card">
+        <div class="kpi-card__value" id="kpi-total-recs">--</div>
+        <div class="kpi-card__label">Total Recs</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value" id="kpi-assigned">--</div>
+        <div class="kpi-card__label">Assigned</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value" id="kpi-adhoc">--</div>
+        <div class="kpi-card__label">Ad-hoc</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value" id="kpi-open">--</div>
+        <div class="kpi-card__label">Open</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value" id="kpi-progress">--</div>
+        <div class="kpi-card__label">In Progress</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value" id="kpi-completed">--</div>
+        <div class="kpi-card__label">Completed</div>
+      </div>
+    </div>
+
+    <div class="dash-filters fade-in">
+      <button class="dash-filter-btn active" onclick="filterDashboard('all')">All</button>
+      <button class="dash-filter-btn" onclick="filterDashboard('open')">Open</button>
+      <button class="dash-filter-btn" onclick="filterDashboard('in_progress')">In Progress</button>
+      <button class="dash-filter-btn" onclick="filterDashboard('completed')">Completed</button>
+      <button class="dash-filter-btn" onclick="filterDashboard('cancelled')">Cancelled</button>
+      <button class="dash-new-btn" onclick="openActionModal(null)">+ New Action Item</button>
+    </div>
+
+    <div class="table-wrap fade-in">
+      <table id="dashboard-table">
+        <thead>
+          <tr><th>Action</th><th>Tier</th><th>Impact</th><th>Owner</th><th>ETA</th><th>Status</th><th>Updated</th></tr>
+        </thead>
+        <tbody id="dashboard-tbody">
+          <tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:40px">No action items yet. Click + on any recommendation to get started.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <footer class="report-footer">
     GEO Readiness Report &middot; www.zadara.com &middot; Prepared March 9, 2026 &middot; Confidential
   </footer>
 
+<!-- Action Item Modal -->
+<div class="modal-overlay hidden" id="action-modal">
+  <div class="modal-box">
+    <div class="modal-box__title" id="modal-title">Create Action Item</div>
+    <form class="modal-form" id="action-form" onsubmit="saveActionItem(event)">
+      <input type="hidden" id="action-id">
+      <input type="hidden" id="action-rec-id">
+      <div>
+        <label>Recommendation</label>
+        <textarea id="action-text" placeholder="Describe the action item..." required></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <label>ETA</label>
+          <input type="date" class="auth-input" id="action-eta" style="width:100%">
+        </div>
+        <div>
+          <label>Status</label>
+          <select id="action-status">
+            <option value="open">Open</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <label>Owner</label>
+          <select id="action-owner">
+            <option value="">Unassigned</option>
+          </select>
+        </div>
+        <div>
+          <label>Impact</label>
+          <select id="action-impact">
+            <option value="">--</option>
+            <option value="very_high">Very High</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <label>Effort</label>
+          <input class="auth-input" type="text" id="action-effort" placeholder="e.g. 2 hours" style="width:100%">
+        </div>
+        <div>
+          <label>Tier</label>
+          <select id="action-tier">
+            <option value="">--</option>
+            <option value="quick_wins">Quick Win</option>
+            <option value="medium_term">Medium-Term</option>
+            <option value="strategic">Strategic</option>
+            <option value="ad_hoc">Ad-hoc</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn-cancel" onclick="closeActionModal()">Cancel</button>
+        <button type="submit" class="modal-btn-save" id="modal-save-btn">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+// ──── Supabase Init ────
+const SUPABASE_URL = 'https://qmsmobdxmpqgyzzahwho.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtc21vYmR4bXBxZ3l6emFod2hvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNTI0MDUsImV4cCI6MjA4MTYyODQwNX0.X3R9TGYNuflyCzieRkr04vWdeva5ERpl95mr7yMSH98';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  db: { schema: 'marketing' }
+});
+
+let currentUser = null;
+let allProfiles = [];
+let allActionItems = [];
+let dashFilter = 'all';
+
 // ──── Theme Toggle ────
 function toggleTheme() {
   const html = document.documentElement;
@@ -1994,7 +2560,6 @@ function toggleSidebar() {
   document.querySelector('.sidebar').classList.toggle('open');
   document.querySelector('.sidebar-overlay').classList.toggle('open');
 }
-// Close sidebar on nav click (mobile)
 document.querySelectorAll('.sidebar__link').forEach(function(link) {
   link.addEventListener('click', function() {
     if (window.innerWidth <= 1024) {
@@ -2074,6 +2639,459 @@ function toggleCollapsible(header) {
   }, { threshold: 0.3 });
   bars.forEach(function(b) { observer.observe(b); });
 })();
+
+// ──── Auth Functions ────
+function showAuthForm(type) {
+  document.getElementById('auth-error').classList.remove('show');
+  document.getElementById('auth-success').classList.remove('show');
+  document.getElementById('signin-form').classList.add('hidden');
+  document.getElementById('signup-form').classList.add('hidden');
+  document.getElementById('reset-form').classList.add('hidden');
+  if (type === 'signin') {
+    document.getElementById('auth-title').textContent = 'Sign In';
+    document.getElementById('auth-subtitle').textContent = 'Access the GEO Readiness Report';
+    document.getElementById('signin-form').classList.remove('hidden');
+  } else if (type === 'signup') {
+    document.getElementById('auth-title').textContent = 'Create Account';
+    document.getElementById('auth-subtitle').textContent = 'Set up your account to get started';
+    document.getElementById('signup-form').classList.remove('hidden');
+  } else if (type === 'reset') {
+    document.getElementById('auth-title').textContent = 'Reset Password';
+    document.getElementById('auth-subtitle').textContent = 'Enter your email to receive a reset link';
+    document.getElementById('reset-form').classList.remove('hidden');
+  }
+}
+
+function showAuthError(msg) {
+  var el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.classList.add('show');
+  document.getElementById('auth-success').classList.remove('show');
+}
+
+function showAuthSuccess(msg) {
+  var el = document.getElementById('auth-success');
+  el.textContent = msg;
+  el.classList.add('show');
+  document.getElementById('auth-error').classList.remove('show');
+}
+
+function checkPasswordStrength() {
+  var pw = document.getElementById('signup-password').value;
+  var checks = {
+    'pw-len': pw.length >= 12,
+    'pw-letter': /[a-zA-Z]/.test(pw),
+    'pw-digit': /[0-9]/.test(pw),
+    'pw-symbol': /[^a-zA-Z0-9]/.test(pw)
+  };
+  Object.keys(checks).forEach(function(id) {
+    var li = document.getElementById(id);
+    if (checks[id]) li.classList.add('met');
+    else li.classList.remove('met');
+  });
+  return checks['pw-len'] && checks['pw-letter'] && checks['pw-digit'] && checks['pw-symbol'];
+}
+
+async function handleSignIn(e) {
+  e.preventDefault();
+  var btn = document.getElementById('signin-btn');
+  btn.disabled = true;
+  btn.textContent = 'Signing in...';
+  try {
+    var email = document.getElementById('signin-email').value;
+    var password = document.getElementById('signin-password').value;
+    var { data, error } = await sb.auth.signInWithPassword({ email: email, password: password });
+    if (error) throw error;
+    onAuthSuccess(data.user);
+  } catch (err) {
+    showAuthError(err.message || 'Sign in failed');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Sign In';
+}
+
+async function handleSignUp(e) {
+  e.preventDefault();
+  if (!checkPasswordStrength()) {
+    showAuthError('Password does not meet complexity requirements');
+    return;
+  }
+  var pw = document.getElementById('signup-password').value;
+  var confirm = document.getElementById('signup-confirm').value;
+  if (pw !== confirm) {
+    showAuthError('Passwords do not match');
+    return;
+  }
+  var btn = document.getElementById('signup-btn');
+  btn.disabled = true;
+  btn.textContent = 'Creating account...';
+  try {
+    var email = document.getElementById('signup-email').value;
+    var name = document.getElementById('signup-name').value;
+    var { data, error } = await sb.auth.signUp({
+      email: email,
+      password: pw,
+      options: { data: { display_name: name } }
+    });
+    if (error) throw error;
+    if (data.user && !data.user.identities?.length) {
+      showAuthError('An account with this email already exists');
+    } else if (data.session) {
+      onAuthSuccess(data.user);
+    } else {
+      showAuthSuccess('Account created! Check your email to confirm, then sign in.');
+      setTimeout(function() { showAuthForm('signin'); }, 2000);
+    }
+  } catch (err) {
+    showAuthError(err.message || 'Sign up failed');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Create Account';
+}
+
+async function handleReset(e) {
+  e.preventDefault();
+  var btn = document.getElementById('reset-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  try {
+    var email = document.getElementById('reset-email').value;
+    var { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+    if (error) throw error;
+    showAuthSuccess('Reset link sent! Check your email.');
+  } catch (err) {
+    showAuthError(err.message || 'Reset failed');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Send Reset Link';
+}
+
+async function handleSignOut() {
+  await sb.auth.signOut();
+  currentUser = null;
+  document.getElementById('auth-overlay').classList.remove('hidden');
+  document.getElementById('user-menu').style.display = 'none';
+}
+
+function onAuthSuccess(user) {
+  currentUser = user;
+  document.getElementById('auth-overlay').classList.add('hidden');
+  document.getElementById('user-menu').style.display = 'flex';
+  var displayName = user.user_metadata?.display_name || user.email.split('@')[0];
+  document.getElementById('user-display-name').textContent = displayName;
+  loadAppData();
+}
+
+// ──── Init Auth ────
+(async function initAuth() {
+  var { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    onAuthSuccess(session.user);
+  }
+  sb.auth.onAuthStateChange(function(event, session) {
+    if (event === 'SIGNED_IN' && session) {
+      onAuthSuccess(session.user);
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      document.getElementById('auth-overlay').classList.remove('hidden');
+      document.getElementById('user-menu').style.display = 'none';
+    }
+  });
+})();
+
+// ──── App Data ────
+async function loadAppData() {
+  await Promise.all([loadProfiles(), loadActionItems()]);
+  updateActionIndicators();
+  updateDashboard();
+}
+
+async function loadProfiles() {
+  var { data } = await sb.from('profiles').select('*');
+  allProfiles = data || [];
+  populateOwnerDropdowns();
+}
+
+async function loadActionItems() {
+  var { data } = await sb.from('action_items').select('*').order('created_at', { ascending: false });
+  allActionItems = data || [];
+}
+
+function populateOwnerDropdowns() {
+  var selects = document.querySelectorAll('#action-owner');
+  selects.forEach(function(select) {
+    var val = select.value;
+    select.innerHTML = '<option value="">Unassigned</option>';
+    allProfiles.forEach(function(p) {
+      var opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.display_name || p.email;
+      select.appendChild(opt);
+    });
+    if (val) select.value = val;
+  });
+}
+
+// ──── Action Item Indicators ────
+function updateActionIndicators() {
+  var itemsByRec = {};
+  allActionItems.forEach(function(item) {
+    if (item.recommendation_id) {
+      itemsByRec[item.recommendation_id] = item;
+    }
+  });
+
+  document.querySelectorAll('[data-rec-id]').forEach(function(el) {
+    var recId = el.dataset.recId;
+    var btn = el.querySelector('.btn-action-item') || el.closest('[data-rec-id]')?.querySelector('.btn-action-item');
+    if (!btn) return;
+    btn.className = 'btn-action-item';
+    if (itemsByRec[recId]) {
+      var status = itemsByRec[recId].status;
+      if (status === 'completed') {
+        btn.classList.add('has-item');
+        btn.textContent = '\u2713';
+      } else if (status === 'in_progress') {
+        btn.classList.add('has-item-progress');
+        btn.textContent = '\u25CB';
+      } else {
+        btn.classList.add('has-item');
+        btn.textContent = '\u25CF';
+      }
+    } else {
+      btn.textContent = '+';
+    }
+  });
+}
+
+// ──── Action Item Modal ────
+function openActionModal(btnOrNull) {
+  var modal = document.getElementById('action-modal');
+  modal.classList.remove('hidden');
+  document.getElementById('action-id').value = '';
+  document.getElementById('action-rec-id').value = '';
+  document.getElementById('action-text').value = '';
+  document.getElementById('action-eta').value = '';
+  document.getElementById('action-status').value = 'open';
+  document.getElementById('action-owner').value = '';
+  document.getElementById('action-impact').value = '';
+  document.getElementById('action-effort').value = '';
+  document.getElementById('action-tier').value = '';
+  document.getElementById('action-text').readOnly = false;
+
+  if (btnOrNull) {
+    var recEl = btnOrNull.closest('[data-rec-id]');
+    if (recEl) {
+      var recId = recEl.dataset.recId;
+      document.getElementById('action-rec-id').value = recId;
+
+      // Check if there's already an action item for this rec
+      var existing = allActionItems.find(function(item) { return item.recommendation_id === recId; });
+      if (existing) {
+        document.getElementById('modal-title').textContent = 'Edit Action Item';
+        document.getElementById('action-id').value = existing.id;
+        document.getElementById('action-text').value = existing.recommendation_text;
+        document.getElementById('action-eta').value = existing.eta || '';
+        document.getElementById('action-status').value = existing.status;
+        document.getElementById('action-owner').value = existing.owner_id || '';
+        document.getElementById('action-impact').value = existing.impact || '';
+        document.getElementById('action-effort').value = existing.effort || '';
+        document.getElementById('action-tier').value = existing.tier || '';
+        populateOwnerDropdowns();
+        if (existing.owner_id) document.getElementById('action-owner').value = existing.owner_id;
+        return;
+      }
+
+      // Pre-fill from the HTML
+      var text = '';
+      var impact = '';
+      var effort = '';
+      var platforms = '';
+      var tier = '';
+
+      if (recEl.tagName === 'TR') {
+        var cells = recEl.querySelectorAll('td');
+        text = cells[1] ? cells[1].textContent.trim() : '';
+        var badgeEl = cells[2] ? cells[2].querySelector('.badge') : null;
+        if (badgeEl) {
+          var badgeText = badgeEl.textContent.trim().toLowerCase().replace(' ', '_');
+          impact = badgeText;
+        }
+        effort = cells[3] ? cells[3].textContent.trim() : '';
+        platforms = cells[4] ? cells[4].textContent.trim() : '';
+      } else {
+        var actionDiv = recEl.closest('.platform-card__action') || recEl;
+        text = actionDiv.textContent.replace('+', '').replace('\u2192', '').trim();
+      }
+
+      if (recId.startsWith('quick_wins')) tier = 'quick_wins';
+      else if (recId.startsWith('medium_term')) tier = 'medium_term';
+      else if (recId.startsWith('strategic')) tier = 'strategic';
+      else if (recId.startsWith('platform')) tier = 'ad_hoc';
+
+      document.getElementById('action-text').value = text;
+      document.getElementById('action-impact').value = impact;
+      document.getElementById('action-effort').value = effort;
+      document.getElementById('action-tier').value = tier;
+    }
+  }
+  document.getElementById('modal-title').textContent = btnOrNull ? 'Create Action Item' : 'New Action Item';
+  if (!btnOrNull) {
+    document.getElementById('action-tier').value = 'ad_hoc';
+  }
+  populateOwnerDropdowns();
+}
+
+function closeActionModal() {
+  document.getElementById('action-modal').classList.add('hidden');
+}
+
+async function saveActionItem(e) {
+  e.preventDefault();
+  var saveBtn = document.getElementById('modal-save-btn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving...';
+
+  var id = document.getElementById('action-id').value;
+  var recId = document.getElementById('action-rec-id').value || null;
+  var data = {
+    recommendation_text: document.getElementById('action-text').value,
+    recommendation_id: recId,
+    eta: document.getElementById('action-eta').value || null,
+    status: document.getElementById('action-status').value,
+    owner_id: document.getElementById('action-owner').value || null,
+    impact: document.getElementById('action-impact').value || null,
+    effort: document.getElementById('action-effort').value || null,
+    tier: document.getElementById('action-tier').value || null
+  };
+
+  try {
+    if (id) {
+      var { error } = await sb.from('action_items').update(data).eq('id', id);
+      if (error) throw error;
+      showToast('Action item updated', 'success');
+    } else {
+      data.created_by = currentUser.id;
+      var { error } = await sb.from('action_items').insert(data);
+      if (error) throw error;
+      showToast('Action item created', 'success');
+    }
+    closeActionModal();
+    await loadActionItems();
+    updateActionIndicators();
+    updateDashboard();
+  } catch (err) {
+    showToast(err.message || 'Save failed', 'error');
+  }
+  saveBtn.disabled = false;
+  saveBtn.textContent = 'Save';
+}
+
+// ──── Dashboard ────
+function updateDashboard() {
+  var totalRecs = document.querySelectorAll('[data-rec-id]').length;
+  var assigned = new Set(allActionItems.filter(function(i) { return i.recommendation_id; }).map(function(i) { return i.recommendation_id; })).size;
+  var adhoc = allActionItems.filter(function(i) { return !i.recommendation_id; }).length;
+  var open = allActionItems.filter(function(i) { return i.status === 'open'; }).length;
+  var inProgress = allActionItems.filter(function(i) { return i.status === 'in_progress'; }).length;
+  var completed = allActionItems.filter(function(i) { return i.status === 'completed'; }).length;
+
+  document.getElementById('kpi-total-recs').textContent = totalRecs;
+  document.getElementById('kpi-assigned').textContent = assigned;
+  document.getElementById('kpi-adhoc').textContent = adhoc;
+  document.getElementById('kpi-open').textContent = open;
+  document.getElementById('kpi-progress').textContent = inProgress;
+  document.getElementById('kpi-completed').textContent = completed;
+
+  renderDashboardTable();
+}
+
+function filterDashboard(filter) {
+  dashFilter = filter;
+  document.querySelectorAll('.dash-filter-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().replace(' ', '_') === filter || (filter === 'all' && btn.textContent === 'All'));
+  });
+  renderDashboardTable();
+}
+
+function renderDashboardTable() {
+  var tbody = document.getElementById('dashboard-tbody');
+  var items = allActionItems;
+  if (dashFilter !== 'all') {
+    items = items.filter(function(i) { return i.status === dashFilter; });
+  }
+
+  if (items.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:40px">No action items found.</td></tr>';
+    return;
+  }
+
+  var profileMap = {};
+  allProfiles.forEach(function(p) { profileMap[p.id] = p.display_name || p.email; });
+
+  var statusLabels = { open: 'Open', in_progress: 'In Progress', completed: 'Completed', cancelled: 'Cancelled' };
+
+  tbody.innerHTML = items.map(function(item) {
+    var ownerName = item.owner_id ? (profileMap[item.owner_id] || 'Unknown') : '<span style="color:var(--text-3)">Unassigned</span>';
+    var etaStr = item.eta ? item.eta : '<span style="color:var(--text-3)">--</span>';
+    var impactBadge = '';
+    if (item.impact) {
+      var colors = { very_high: 'red', high: 'orange', medium: 'yellow', low: 'green' };
+      var labels = { very_high: 'Very High', high: 'High', medium: 'Medium', low: 'Low' };
+      impactBadge = '<span class="badge badge--' + (colors[item.impact] || 'gray') + '">' + (labels[item.impact] || item.impact) + '</span>';
+    }
+    var tierLabel = '';
+    if (item.tier) {
+      var tierLabels = { quick_wins: 'Quick Win', medium_term: 'Medium', strategic: 'Strategic', ad_hoc: 'Ad-hoc' };
+      tierLabel = tierLabels[item.tier] || item.tier;
+    }
+    var updatedStr = item.updated_at ? new Date(item.updated_at).toLocaleDateString() : '--';
+
+    return '<tr>' +
+      '<td style="max-width:260px">' + escapeHtml(item.recommendation_text) + '</td>' +
+      '<td>' + tierLabel + '</td>' +
+      '<td>' + impactBadge + '</td>' +
+      '<td>' + ownerName + '</td>' +
+      '<td>' + etaStr + '</td>' +
+      '<td><select class="status-select" onchange="updateItemStatus(\'' + item.id + '\', this.value)">' +
+        '<option value="open"' + (item.status === 'open' ? ' selected' : '') + '>' + statusLabels.open + '</option>' +
+        '<option value="in_progress"' + (item.status === 'in_progress' ? ' selected' : '') + '>' + statusLabels.in_progress + '</option>' +
+        '<option value="completed"' + (item.status === 'completed' ? ' selected' : '') + '>' + statusLabels.completed + '</option>' +
+        '<option value="cancelled"' + (item.status === 'cancelled' ? ' selected' : '') + '>' + statusLabels.cancelled + '</option>' +
+      '</select></td>' +
+      '<td style="font-size:12px;color:var(--text-2)">' + updatedStr + '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+async function updateItemStatus(itemId, newStatus) {
+  try {
+    var { error } = await sb.from('action_items').update({ status: newStatus }).eq('id', itemId);
+    if (error) throw error;
+    await loadActionItems();
+    updateActionIndicators();
+    updateDashboard();
+    showToast('Status updated', 'success');
+  } catch (err) {
+    showToast(err.message || 'Update failed', 'error');
+  }
+}
+
+// ──── Toast ────
+function showToast(message, type) {
+  var toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = 'toast toast--' + type + ' show';
+  setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
 </script>
 </body>
 </html>
