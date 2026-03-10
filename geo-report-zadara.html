@@ -3050,8 +3050,8 @@ async function saveActionItem(e) {
 // ──── Dashboard ────
 function updateDashboard() {
   var totalRecs = document.querySelectorAll('[data-rec-id]').length;
-  var assigned = new Set(allActionItems.filter(function(i) { return i.recommendation_id; }).map(function(i) { return i.recommendation_id; })).size;
-  var adhoc = allActionItems.filter(function(i) { return !i.recommendation_id; }).length;
+  var assigned = new Set(allActionItems.filter(function(i) { return i.recommendation_id && i.status !== 'cancelled'; }).map(function(i) { return i.recommendation_id; })).size;
+  var adhoc = allActionItems.filter(function(i) { return !i.recommendation_id && i.status !== 'cancelled'; }).length;
   var open = allActionItems.filter(function(i) { return i.status === 'open'; }).length;
   var inProgress = allActionItems.filter(function(i) { return i.status === 'in_progress'; }).length;
   var completed = allActionItems.filter(function(i) { return i.status === 'completed'; }).length;
