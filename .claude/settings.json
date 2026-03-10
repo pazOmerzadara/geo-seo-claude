@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolCall": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat agent-os/standards/index.yml && echo '\n---\nREMINDER: Before editing code, read and follow the relevant standards above. Use /inject-standards or read the specific standard file if you have not already done so in this conversation.'"
+          }
+        ]
+      }
+    ]
+  }
+}
