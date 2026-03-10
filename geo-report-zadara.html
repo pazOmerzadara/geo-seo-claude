@@ -2527,8 +2527,8 @@ tbody tr:hover { background: var(--accent-dim); }
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 // ──── Supabase Init ────
-const SUPABASE_URL = 'https://fpjguqcgtjnhjewjimuu.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwamd1cWNndGpuaGpld2ppbXV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMjQ4ODYsImV4cCI6MjA4NzYwMDg4Nn0.seA1J0O_dOuw_anJElRRF4Bk1H_aKkPed_ae66yv2pg';
+const SUPABASE_URL = '__SUPABASE_URL__';
+const SUPABASE_ANON_KEY = '__SUPABASE_ANON_KEY__';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   db: { schema: 'marketing' }
 });

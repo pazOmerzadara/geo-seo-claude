@@ -1,5 +1,13 @@
 {
+  "redirects": [
+    { "source": "/geo-report-zadara.html", "destination": "/", "permanent": false }
+  ],
   "rewrites": [
-    { "source": "/", "destination": "/geo-report-zadara.html" }
-  ]
+    { "source": "/", "destination": "/api/serve-report" }
+  ],
+  "functions": {
+    "api/serve-report.js": {
+      "includeFiles": "geo-report-zadara.html"
+    }
+  }
 }
