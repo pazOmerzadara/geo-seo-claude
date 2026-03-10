@@ -1,0 +1,41 @@
+# Agent OS Standards Index — GEO-SEO Project
+
+content:
+  geo-audit:
+    description: GEO-first audit methodology, AI citability scoring, brand authority signals
+  scoring-weights:
+    description: Category weights — AI Citability 25%, Brand Authority 20%, Content Quality 20%, Technical 15%, Structured Data 10%, Platform 10%
+  citability:
+    description: Optimizing content for AI-powered search engines (ChatGPT, Claude, Perplexity, Gemini, Google AI Overviews)
+  eeat:
+    description: E-E-A-T signals — Experience, Expertise, Authoritativeness, Trustworthiness
+
+frontend:
+  html-reports:
+    description: Self-contained single HTML files, inline CSS/JS, no external dependencies
+  responsive:
+    description: Mobile-first, modern CSS (flexbox/grid), print-friendly color schemes
+  charts:
+    description: Inline SVG or canvas visualizations, no external charting libraries
+
+global:
+  coding-style:
+    description: Naming conventions, formatting, DRY principle, dead code removal
+  commenting:
+    description: Self-documenting code, minimal comments, no change-tracking comments
+  conventions:
+    description: Project structure, version control, environment config, code review
+
+scripts:
+  python:
+    description: Python 3.8+ compatibility, requirements.txt dependencies
+  rate-limiting:
+    description: 1s delay between requests, max 5 concurrent, respect robots.txt
+  fetching:
+    description: 30s timeout per fetch, max 50 pages per audit
+
+deployment:
+  vercel:
+    description: Vercel deployment, vercel.json rewrites, serverless functions
+  structured-data:
+    description: JSON-LD templates following Schema.org specifications
