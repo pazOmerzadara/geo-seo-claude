@@ -2527,8 +2527,8 @@ tbody tr:hover { background: var(--accent-dim); }
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 // ──── Supabase Init ────
-const SUPABASE_URL = 'https://qmsmobdxmpqgyzzahwho.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtc21vYmR4bXBxZ3l6emFod2hvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNTI0MDUsImV4cCI6MjA4MTYyODQwNX0.X3R9TGYNuflyCzieRkr04vWdeva5ERpl95mr7yMSH98';
+const SUPABASE_URL = 'https://fpjguqcgtjnhjewjimuu.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwamd1cWNndGpuaGpld2ppbXV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMjQ4ODYsImV4cCI6MjA4NzYwMDg4Nn0.seA1J0O_dOuw_anJElRRF4Bk1H_aKkPed_ae66yv2pg';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   db: { schema: 'marketing' }
 });
@@ -2734,7 +2734,9 @@ async function handleSignUp(e) {
       options: { data: { display_name: name } }
     });
     if (error) throw error;
-    if (data.user && !data.user.identities?.length) {
+    if (!data.user && !data.session) {
+      showAuthError('Sign up failed. Please try again or contact admin.');
+    } else if (data.user && !data.user.identities?.length) {
       showAuthError('An account with this email already exists');
     } else if (data.session) {
       onAuthSuccess(data.user);
