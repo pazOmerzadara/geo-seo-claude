@@ -1244,6 +1244,19 @@ tbody tr:hover { background: var(--accent-dim); }
   </div>
 </div>
 
+<!-- Pending Approval Overlay -->
+<div class="auth-overlay hidden" id="pending-overlay">
+  <div class="auth-box" style="text-align:center">
+    <div class="auth-box__title">Account Pending Approval</div>
+    <div class="auth-box__subtitle" style="margin-top:12px;line-height:1.6">
+      Your account has been created but is not yet activated.<br>
+      Please contact your administrator to get access.
+    </div>
+    <div style="margin-top:16px;color:var(--text-2);font-size:0.85rem" id="pending-email"></div>
+    <button class="auth-btn" style="margin-top:24px;background:var(--text-2)" onclick="handleSignOut()">Sign Out</button>
+  </div>
+</div>
+
 <!-- Hamburger -->
 <button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle navigation">&#9776;</button>
 <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -2789,23 +2802,35 @@ async function handleSignOut() {
   await sb.auth.signOut();
   currentUser = null;
   document.getElementById('auth-overlay').classList.remove('hidden');
+  document.getElementById('pending-overlay').classList.add('hidden');
   document.getElementById('user-menu').style.display = 'none';
 }
 
-function onAuthSuccess(user) {
+async function onAuthSuccess(user) {
   currentUser = user;
-  document.getElementById('auth-overlay').classList.add('hidden');
-  document.getElementById('user-menu').style.display = 'flex';
   var displayName = user.user_metadata?.display_name || user.email.split('@')[0];
-  document.getElementById('user-display-name').textContent = displayName;
+
   // Ensure profile exists (handles users created before trigger was added)
-  sb.from('profiles').upsert({
+  await sb.from('profiles').upsert({
     id: user.id,
     email: user.email,
     display_name: displayName
-  }, { onConflict: 'id', ignoreDuplicates: true }).then(function() {
-    loadAppData();
-  });
+  }, { onConflict: 'id', ignoreDuplicates: true });
+
+  // Check if user is active
+  var { data: profile } = await sb.from('profiles').select('is_active').eq('id', user.id).single();
+  if (!profile || !profile.is_active) {
+    document.getElementById('auth-overlay').classList.add('hidden');
+    document.getElementById('pending-overlay').classList.remove('hidden');
+    document.getElementById('pending-email').textContent = user.email;
+    return;
+  }
+
+  document.getElementById('auth-overlay').classList.add('hidden');
+  document.getElementById('pending-overlay').classList.add('hidden');
+  document.getElementById('user-menu').style.display = 'flex';
+  document.getElementById('user-display-name').textContent = displayName;
+  loadAppData();
 }
 
 // ──── Init Auth ────
@@ -2820,6 +2845,7 @@ function onAuthSuccess(user) {
     } else if (event === 'SIGNED_OUT') {
       currentUser = null;
       document.getElementById('auth-overlay').classList.remove('hidden');
+      document.getElementById('pending-overlay').classList.add('hidden');
       document.getElementById('user-menu').style.display = 'none';
     }
   });
