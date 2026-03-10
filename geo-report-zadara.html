@@ -983,7 +983,7 @@ tbody tr:hover { background: var(--accent-dim); }
   border-radius: 16px;
   padding: 32px;
   width: 100%;
-  max-width: 520px;
+  max-width: 640px;
   box-shadow: var(--card-shadow-hover);
   max-height: 90vh;
   overflow-y: auto;
@@ -1013,7 +1013,7 @@ tbody tr:hover { background: var(--accent-dim); }
   color: var(--text-0);
   outline: none;
   resize: vertical;
-  min-height: 60px;
+  min-height: 100px;
 }
 .modal-form textarea:focus { border-color: var(--accent); }
 .modal-form select {
@@ -1082,6 +1082,16 @@ tbody tr:hover { background: var(--accent-dim); }
   margin-right: auto;
 }
 .modal-btn-delete:hover { background: rgba(255,71,87,0.25); }
+.modal-readonly {
+  background: var(--bg-3);
+  border: 1px solid var(--border-0);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-2);
+  opacity: 0.8;
+}
 
 /* ──── DASHBOARD ──── */
 .kpi-grid {
@@ -1564,16 +1574,16 @@ tbody tr:hover { background: var(--accent-dim); }
     <div class="table-wrap fade-in">
       <table>
         <thead>
-          <tr><th>AI Crawler</th><th>Platform</th><th>Status</th><th>Impact</th><th>Action</th></tr>
+          <tr><th>AI Crawler</th><th>Platform</th><th>Status</th><th>Impact</th><th>Action</th><th></th></tr>
         </thead>
         <tbody>
-          <tr><td>Googlebot</td><td>Google Search + AIO</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--red">Critical</span></td><td style="color:var(--text-3)">No action needed</td></tr>
-          <tr><td>GPTBot</td><td>ChatGPT / OpenAI</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--orange">High</span></td><td style="color:var(--text-3)">No action needed</td></tr>
-          <tr><td>Bingbot</td><td>Bing + Copilot + ChatGPT</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--orange">High</span></td><td style="color:var(--text-3)">No action needed</td></tr>
-          <tr><td>PerplexityBot</td><td>Perplexity AI</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td></tr>
-          <tr><td>Google-Extended</td><td>Gemini Training</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td></tr>
-          <tr><td>ClaudeBot</td><td>Anthropic Claude</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td></tr>
-          <tr><td>Applebot-Extended</td><td>Apple Intelligence</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td></tr>
+          <tr data-rec-id="ai_crawler_1"><td>Googlebot</td><td>Google Search + AIO</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--red">Critical</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="ai_crawler_2"><td>GPTBot</td><td>ChatGPT / OpenAI</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--orange">High</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="ai_crawler_3"><td>Bingbot</td><td>Bing + Copilot + ChatGPT</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--orange">High</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="ai_crawler_4"><td>PerplexityBot</td><td>Perplexity AI</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="ai_crawler_5"><td>Google-Extended</td><td>Gemini Training</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="ai_crawler_6"><td>ClaudeBot</td><td>Anthropic Claude</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="ai_crawler_7"><td>Applebot-Extended</td><td>Apple Intelligence</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
         </tbody>
       </table>
     </div>
@@ -1589,16 +1599,16 @@ tbody tr:hover { background: var(--accent-dim); }
     <div class="table-wrap fade-in">
       <table>
         <thead>
-          <tr><th>Platform</th><th>Presence</th><th>Status</th><th>AI Impact</th></tr>
+          <tr><th>Platform</th><th>Presence</th><th>Status</th><th>AI Impact</th><th></th></tr>
         </thead>
         <tbody>
-          <tr><td>Wikipedia</td><td><span class="badge badge--green">Yes</span></td><td>259-word stub article</td><td><span class="badge badge--red">Very High</span></td></tr>
-          <tr><td>Wikidata</td><td><span class="badge badge--green">Yes</span></td><td>Q8064144 &mdash; basic entry</td><td><span class="badge badge--orange">High</span></td></tr>
-          <tr><td>LinkedIn</td><td><span class="badge badge--green">Yes</span></td><td>11,449 followers, active</td><td><span class="badge badge--orange">High</span></td></tr>
-          <tr><td>YouTube</td><td><span class="badge badge--green">Yes</span></td><td>2.28K subscribers, 242 videos, active uploads (@ZadaraEdgeCloudServices)</td><td><span class="badge badge--orange">High</span></td></tr>
-          <tr><td>Reddit</td><td><span class="badge badge--red">No</span></td><td>Zero meaningful presence</td><td><span class="badge badge--red">Very High</span></td></tr>
-          <tr><td>GitHub</td><td><span class="badge badge--green">Yes</span></td><td>15 repos, 32 followers, 0 stars</td><td><span class="badge badge--yellow">Medium</span></td></tr>
-          <tr><td>Crunchbase</td><td><span class="badge badge--green">Yes</span></td><td>Profile with $60M funding data</td><td><span class="badge badge--yellow">Medium</span></td></tr>
+          <tr data-rec-id="brand_auth_1"><td>Wikipedia</td><td><span class="badge badge--green">Yes</span></td><td>259-word stub article</td><td><span class="badge badge--red">Very High</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="brand_auth_2"><td>Wikidata</td><td><span class="badge badge--green">Yes</span></td><td>Q8064144 &mdash; basic entry</td><td><span class="badge badge--orange">High</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="brand_auth_3"><td>LinkedIn</td><td><span class="badge badge--green">Yes</span></td><td>11,449 followers, active</td><td><span class="badge badge--orange">High</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="brand_auth_4"><td>YouTube</td><td><span class="badge badge--green">Yes</span></td><td>2.28K subscribers, 242 videos, active uploads (@ZadaraEdgeCloudServices)</td><td><span class="badge badge--orange">High</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="brand_auth_5"><td>Reddit</td><td><span class="badge badge--red">No</span></td><td>Zero meaningful presence</td><td><span class="badge badge--red">Very High</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="brand_auth_6"><td>GitHub</td><td><span class="badge badge--green">Yes</span></td><td>15 repos, 32 followers, 0 stars</td><td><span class="badge badge--yellow">Medium</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="brand_auth_7"><td>Crunchbase</td><td><span class="badge badge--green">Yes</span></td><td>Profile with $60M funding data</td><td><span class="badge badge--yellow">Medium</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
         </tbody>
       </table>
     </div>
@@ -1624,25 +1634,30 @@ tbody tr:hover { background: var(--accent-dim); }
       <div class="collapsible__body open">
         <div class="collapsible__inner">
           <div class="cite-list">
-            <div class="cite-item cite-item--good">
+            <div class="cite-item cite-item--good" data-rec-id="cite_good_1">
               <div class="cite-item__num">1</div>
               <div><div class="cite-item__title">Glossary Definitions (64 terms)</div><div class="cite-item__desc">Clear "X is..." format that AI systems can directly quote. <em>Improvement: Expand to 150-200 words each.</em></div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
-            <div class="cite-item cite-item--good">
+            <div class="cite-item cite-item--good" data-rec-id="cite_good_2">
               <div class="cite-item__num">2</div>
               <div><div class="cite-item__title">Blog: Immutable Backups Guide</div><div class="cite-item__desc">Technical depth with version numbers, compliance frameworks, step-by-step process. <em>Improvement: Add performance benchmarks.</em></div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
-            <div class="cite-item cite-item--good">
+            <div class="cite-item cite-item--good" data-rec-id="cite_good_3">
               <div class="cite-item__num">3</div>
               <div><div class="cite-item__title">zStorage Product Page</div><div class="cite-item__desc">Protocol-specific definitions (iSCSI, NFS, CIFS). <em>Improvement: Add comparison table vs. competitors.</em></div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
-            <div class="cite-item cite-item--good">
+            <div class="cite-item cite-item--good" data-rec-id="cite_good_4">
               <div class="cite-item__num">4</div>
               <div><div class="cite-item__title">About Page</div><div class="cite-item__desc">Company facts (founded 2011, 500+ locations, Irvine CA). <em>Improvement: Add revenue/customer metrics.</em></div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
-            <div class="cite-item cite-item--good">
+            <div class="cite-item cite-item--good" data-rec-id="cite_good_5">
               <div class="cite-item__num">5</div>
               <div><div class="cite-item__title">Customer Testimonials</div><div class="cite-item__desc">Third-party quotes from G2, AWS Marketplace, Peerspot. <em>Improvement: Move into product pages.</em></div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
           </div>
         </div>
@@ -1658,25 +1673,30 @@ tbody tr:hover { background: var(--accent-dim); }
       <div class="collapsible__body open">
         <div class="collapsible__inner">
           <div class="cite-list">
-            <div class="cite-item cite-item--bad">
+            <div class="cite-item cite-item--bad" data-rec-id="cite_bad_1">
               <div class="cite-item__num">1</div>
               <div><div class="cite-item__title">Sovereign AI Page (450 words)</div><div class="cite-item__desc">No definition of "Sovereign AI," no statistics, no customer examples. AI systems cannot cite this for relevant queries.</div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
-            <div class="cite-item cite-item--bad">
+            <div class="cite-item cite-item--bad" data-rec-id="cite_bad_2">
               <div class="cite-item__num">2</div>
               <div><div class="cite-item__title">Homepage</div><div class="cite-item__desc">Pure marketing with no quotable facts. No statistics, no definitions, no data points.</div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
-            <div class="cite-item cite-item--bad">
+            <div class="cite-item cite-item--bad" data-rec-id="cite_bad_3">
               <div class="cite-item__num">3</div>
               <div><div class="cite-item__title">Edge Cloud Page</div><div class="cite-item__desc">Marketing headings ("Do More. Faster.") with no benchmarks or specifications.</div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
-            <div class="cite-item cite-item--bad">
+            <div class="cite-item cite-item--bad" data-rec-id="cite_bad_4">
               <div class="cite-item__num">4</div>
               <div><div class="cite-item__title">zCompute Page</div><div class="cite-item__desc">Thin content (~800 words) lacking technical specifications and comparisons.</div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
-            <div class="cite-item cite-item--bad">
+            <div class="cite-item cite-item--bad" data-rec-id="cite_bad_5">
               <div class="cite-item__num">5</div>
               <div><div class="cite-item__title">Pricing Page</div><div class="cite-item__desc">Dynamic configurator means no static content for AI to index. No price points visible.</div></div>
+              <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
             </div>
           </div>
         </div>
@@ -1691,38 +1711,38 @@ tbody tr:hover { background: var(--accent-dim); }
       <h2 class="section__title">Technical Health</h2>
     </div>
     <div class="cards-grid--3 cards-grid fade-in">
-      <div class="card">
-        <div class="card__title">Core Web Vitals</div>
+      <div class="card" data-rec-id="tech_health_1">
+        <div class="card__title">Core Web Vitals <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
         <span class="badge badge--green" style="margin:8px 0">Good (estimated)</span>
         <div class="card__desc">Strong user experience; no ranking penalty.</div>
       </div>
-      <div class="card">
-        <div class="card__title">Server-Side Rendering</div>
+      <div class="card" data-rec-id="tech_health_2">
+        <div class="card__title">Server-Side Rendering <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
         <span class="badge badge--green" style="margin:8px 0">Full SSR</span>
         <div class="card__desc">AI crawlers see all content. This is your strongest technical asset.</div>
       </div>
-      <div class="card">
-        <div class="card__title">Mobile Optimization</div>
+      <div class="card" data-rec-id="tech_health_3">
+        <div class="card__title">Mobile Optimization <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
         <span class="badge badge--green" style="margin:8px 0">Good</span>
         <div class="card__desc">Google's mobile-first indexing works correctly.</div>
       </div>
-      <div class="card" style="border-color:var(--score-orange)">
-        <div class="card__title">Security (HTTPS + Headers)</div>
+      <div class="card" style="border-color:var(--score-orange)" data-rec-id="tech_health_4">
+        <div class="card__title">Security (HTTPS + Headers) <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
         <span class="badge badge--orange" style="margin:8px 0">Needs Work</span>
         <div class="card__desc">HTTPS enforced, but 0/6 security headers present.</div>
       </div>
-      <div class="card">
-        <div class="card__title">Page Speed</div>
+      <div class="card" data-rec-id="tech_health_5">
+        <div class="card__title">Page Speed <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
         <span class="badge badge--green" style="margin:8px 0">Excellent &middot; TTFB: 0.287s</span>
         <div class="card__desc">Fast loading; good crawl budget efficiency.</div>
       </div>
-      <div class="card" style="border-color:var(--score-orange)">
-        <div class="card__title">IndexNow Protocol</div>
+      <div class="card" style="border-color:var(--score-orange)" data-rec-id="tech_health_6">
+        <div class="card__title">IndexNow Protocol <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
         <span class="badge badge--orange" style="margin:8px 0">Not Implemented</span>
         <div class="card__desc">New content takes longer to appear in Bing/ChatGPT.</div>
       </div>
-      <div class="card" style="border-color:var(--score-red)">
-        <div class="card__title">llms.txt</div>
+      <div class="card" style="border-color:var(--score-red)" data-rec-id="tech_health_7">
+        <div class="card__title">llms.txt <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
         <span class="badge badge--red" style="margin:8px 0">Broken (RTF format)</span>
         <div class="card__desc">AI systems that consult this file get garbage data. Actively harmful.</div>
       </div>
@@ -1742,17 +1762,17 @@ tbody tr:hover { background: var(--accent-dim); }
     <div class="table-wrap fade-in">
       <table>
         <thead>
-          <tr><th>Schema Type</th><th>Present</th><th>Status</th><th>AI Impact</th></tr>
+          <tr><th>Schema Type</th><th>Present</th><th>Status</th><th>AI Impact</th><th></th></tr>
         </thead>
         <tbody>
-          <tr><td>Organization</td><td><span class="badge badge--green">Yes</span></td><td>Incomplete &mdash; missing 8+ properties</td><td><span class="badge badge--red">Critical</span></td></tr>
-          <tr><td>Article + Author</td><td><span class="badge badge--green">Yes</span></td><td>Author has name only, no credentials</td><td><span class="badge badge--orange">High</span></td></tr>
-          <tr><td>sameAs (entity links)</td><td><span class="badge badge--green">Yes</span></td><td>Only 4 links (need 8+)</td><td><span class="badge badge--red">Critical</span></td></tr>
-          <tr><td>SoftwareApplication</td><td><span class="badge badge--red">No</span></td><td>Missing on all product pages</td><td><span class="badge badge--orange">High</span></td></tr>
-          <tr><td>WebSite + SearchAction</td><td><span class="badge badge--green">Yes</span></td><td>Correctly implemented</td><td><span class="badge badge--yellow">Medium</span></td></tr>
-          <tr><td>BreadcrumbList</td><td><span class="badge badge--green">Yes</span></td><td>On all pages</td><td><span class="badge badge--gray">Low-Medium</span></td></tr>
-          <tr><td>FAQPage</td><td><span class="badge badge--red">No</span></td><td>Missing despite FAQ content</td><td><span class="badge badge--yellow">Medium</span></td></tr>
-          <tr><td>speakable</td><td><span class="badge badge--red">No</span></td><td>Missing on all articles</td><td><span class="badge badge--yellow">Medium</span></td></tr>
+          <tr data-rec-id="schema_1"><td>Organization</td><td><span class="badge badge--green">Yes</span></td><td>Incomplete &mdash; missing 8+ properties</td><td><span class="badge badge--red">Critical</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="schema_2"><td>Article + Author</td><td><span class="badge badge--green">Yes</span></td><td>Author has name only, no credentials</td><td><span class="badge badge--orange">High</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="schema_3"><td>sameAs (entity links)</td><td><span class="badge badge--green">Yes</span></td><td>Only 4 links (need 8+)</td><td><span class="badge badge--red">Critical</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="schema_4"><td>SoftwareApplication</td><td><span class="badge badge--red">No</span></td><td>Missing on all product pages</td><td><span class="badge badge--orange">High</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="schema_5"><td>WebSite + SearchAction</td><td><span class="badge badge--green">Yes</span></td><td>Correctly implemented</td><td><span class="badge badge--yellow">Medium</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="schema_6"><td>BreadcrumbList</td><td><span class="badge badge--green">Yes</span></td><td>On all pages</td><td><span class="badge badge--gray">Low-Medium</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="schema_7"><td>FAQPage</td><td><span class="badge badge--red">No</span></td><td>Missing despite FAQ content</td><td><span class="badge badge--yellow">Medium</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="schema_8"><td>speakable</td><td><span class="badge badge--red">No</span></td><td>Missing on all articles</td><td><span class="badge badge--yellow">Medium</span></td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
         </tbody>
       </table>
     </div>
@@ -1767,10 +1787,10 @@ tbody tr:hover { background: var(--accent-dim); }
     </div>
     <div class="table-wrap fade-in" style="margin-bottom:20px">
       <table>
-        <thead><tr><th>File</th><th>Status</th><th>Recommendation</th></tr></thead>
+        <thead><tr><th>File</th><th>Status</th><th>Recommendation</th><th></th></tr></thead>
         <tbody>
-          <tr><td style="font-family:var(--font-mono);font-size:12px">/llms.txt</td><td><span class="badge badge--red">Broken &mdash; RTF data</span></td><td>Replace immediately with generated Markdown file</td></tr>
-          <tr><td style="font-family:var(--font-mono);font-size:12px">/llms-full.txt</td><td><span class="badge badge--orange">Missing (404)</span></td><td>Create after fixing llms.txt</td></tr>
+          <tr data-rec-id="llms_txt_1"><td style="font-family:var(--font-mono);font-size:12px">/llms.txt</td><td><span class="badge badge--red">Broken &mdash; RTF data</span></td><td>Replace immediately with generated Markdown file</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="llms_txt_2"><td style="font-family:var(--font-mono);font-size:12px">/llms-full.txt</td><td><span class="badge badge--orange">Missing (404)</span></td><td>Create after fixing llms.txt</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
         </tbody>
       </table>
     </div>
@@ -2062,17 +2082,17 @@ tbody tr:hover { background: var(--accent-dim); }
     <div class="table-wrap fade-in" style="margin-bottom:28px">
       <table>
         <thead>
-          <tr><th>Category</th><th>Score</th><th>Max</th><th>Status</th><th>Key Finding</th></tr>
+          <tr><th>Category</th><th>Score</th><th>Max</th><th>Status</th><th>Key Finding</th><th></th></tr>
         </thead>
         <tbody>
-          <tr><td>Crawlability</td><td>13</td><td>15</td><td><span class="badge badge--green">Pass</span></td><td>All AI crawlers allowed, valid robots.txt &amp; sitemap</td></tr>
-          <tr><td>Indexability</td><td>9</td><td>12</td><td><span class="badge badge--green">Pass</span></td><td>Canonicals present; UTM parameters in sitemap risk duplicates</td></tr>
-          <tr><td>Security</td><td>4</td><td>10</td><td><span class="badge badge--red">Fail</span></td><td>HTTPS valid but missing HSTS, CSP, X-Frame-Options headers</td></tr>
-          <tr><td>URL Structure</td><td>6</td><td>8</td><td><span class="badge badge--green">Pass</span></td><td>Clean URLs with logical hierarchy</td></tr>
-          <tr><td>Mobile Optimization</td><td>8</td><td>10</td><td><span class="badge badge--green">Pass</span></td><td>Responsive design with correct viewport meta</td></tr>
-          <tr><td>Core Web Vitals</td><td>10</td><td>15</td><td><span class="badge badge--yellow">Warn</span></td><td>TTFB excellent (0.26s); LCP potentially impacted by Elementor</td></tr>
-          <tr><td>Server-Side Rendering</td><td>10</td><td>15</td><td><span class="badge badge--yellow">Warn</span></td><td>Main content SSR via WordPress; some Elementor widgets JS-dependent</td></tr>
-          <tr><td>Page Speed &amp; Server</td><td>10</td><td>15</td><td><span class="badge badge--yellow">Warn</span></td><td>Cloudflare CDN active; page 411KB; short cache (10 min)</td></tr>
+          <tr data-rec-id="tech_seo_1"><td>Crawlability</td><td>13</td><td>15</td><td><span class="badge badge--green">Pass</span></td><td>All AI crawlers allowed, valid robots.txt &amp; sitemap</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="tech_seo_2"><td>Indexability</td><td>9</td><td>12</td><td><span class="badge badge--green">Pass</span></td><td>Canonicals present; UTM parameters in sitemap risk duplicates</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="tech_seo_3"><td>Security</td><td>4</td><td>10</td><td><span class="badge badge--red">Fail</span></td><td>HTTPS valid but missing HSTS, CSP, X-Frame-Options headers</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="tech_seo_4"><td>URL Structure</td><td>6</td><td>8</td><td><span class="badge badge--green">Pass</span></td><td>Clean URLs with logical hierarchy</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="tech_seo_5"><td>Mobile Optimization</td><td>8</td><td>10</td><td><span class="badge badge--green">Pass</span></td><td>Responsive design with correct viewport meta</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="tech_seo_6"><td>Core Web Vitals</td><td>10</td><td>15</td><td><span class="badge badge--yellow">Warn</span></td><td>TTFB excellent (0.26s); LCP potentially impacted by Elementor</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="tech_seo_7"><td>Server-Side Rendering</td><td>10</td><td>15</td><td><span class="badge badge--yellow">Warn</span></td><td>Main content SSR via WordPress; some Elementor widgets JS-dependent</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          <tr data-rec-id="tech_seo_8"><td>Page Speed &amp; Server</td><td>10</td><td>15</td><td><span class="badge badge--yellow">Warn</span></td><td>Cloudflare CDN active; page 411KB; short cache (10 min)</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
         </tbody>
       </table>
     </div>
@@ -2085,26 +2105,29 @@ tbody tr:hover { background: var(--accent-dim); }
       </div>
       <div class="collapsible__body">
         <div class="collapsible__inner">
-          <div class="cite-item cite-item--bad">
+          <div class="cite-item cite-item--bad" data-rec-id="tech_critical_1">
             <div class="cite-item__num">1</div>
             <div>
               <div class="cite-item__title">Missing Security Headers (Score: 4/10)</div>
               <div class="cite-item__desc">No HSTS, Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, or Referrer-Policy headers detected. This is a trust signal deficit &mdash; search engines and AI platforms factor security posture into authority assessment. <strong>Fix:</strong> Configure security headers in Cloudflare or WP Engine settings.</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
-          <div class="cite-item cite-item--bad">
+          <div class="cite-item cite-item--bad" data-rec-id="tech_critical_2">
             <div class="cite-item__num">2</div>
             <div>
               <div class="cite-item__title">No IndexNow Protocol</div>
               <div class="cite-item__desc">IndexNow enables near-instant Bing indexing, directly impacting ChatGPT and Copilot visibility. <strong>Fix:</strong> Install the IndexNow WordPress plugin &mdash; takes under 5 minutes and benefits two AI platforms.</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
-          <div class="cite-item cite-item--bad">
+          <div class="cite-item cite-item--bad" data-rec-id="tech_critical_3">
             <div class="cite-item__num">3</div>
             <div>
               <div class="cite-item__title">UTM Parameters in Sitemap</div>
               <div class="cite-item__desc">Sitemap contains URLs with UTM tracking parameters, risking duplicate content indexing. <strong>Fix:</strong> Remove all UTM-tagged URLs from the sitemap and ensure canonical tags handle parameter variations.</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
         </div>
       </div>
@@ -2117,26 +2140,29 @@ tbody tr:hover { background: var(--accent-dim); }
       </div>
       <div class="collapsible__body">
         <div class="collapsible__inner">
-          <div class="cite-item cite-item--bad">
+          <div class="cite-item cite-item--bad" data-rec-id="tech_warn_1">
             <div class="cite-item__num">1</div>
             <div>
               <div class="cite-item__title">Short Cache TTL (max-age=600)</div>
               <div class="cite-item__desc">Static assets cached for only 10 minutes. Should be 1 year (31536000s) with content-hashed filenames for CSS/JS/images. HTML can remain short-cached.</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
-          <div class="cite-item cite-item--bad">
+          <div class="cite-item cite-item--bad" data-rec-id="tech_warn_2">
             <div class="cite-item__num">2</div>
             <div>
               <div class="cite-item__title">Elementor JS-Dependent Widgets</div>
               <div class="cite-item__desc">Some content rendered via Elementor may not be visible to AI crawlers that don't execute JavaScript. WP Engine's server-side rendering covers most content, but interactive widgets may be invisible to GPTBot, PerplexityBot, and ClaudeBot.</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
-          <div class="cite-item cite-item--bad">
+          <div class="cite-item cite-item--bad" data-rec-id="tech_warn_3">
             <div class="cite-item__num">3</div>
             <div>
               <div class="cite-item__title">Blog Pagination Gaps</div>
               <div class="cite-item__desc">Sitemap shows pagination jumps (page/2/, page/3/, then page/43/), suggesting incomplete blog archive indexing. Verify all 45 pages of blog content are accessible and indexed.</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
         </div>
       </div>
@@ -2149,33 +2175,37 @@ tbody tr:hover { background: var(--accent-dim); }
       </div>
       <div class="collapsible__body">
         <div class="collapsible__inner">
-          <div class="cite-item cite-item--good">
+          <div class="cite-item cite-item--good" data-rec-id="tech_strength_1">
             <div class="cite-item__num">1</div>
             <div>
               <div class="cite-item__title">Excellent Server Performance</div>
               <div class="cite-item__desc">TTFB of 0.26 seconds is well under the 0.8s target. Total page load 0.57s. WP Engine hosting with Cloudflare CDN provides strong global performance.</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
-          <div class="cite-item cite-item--good">
+          <div class="cite-item cite-item--good" data-rec-id="tech_strength_2">
             <div class="cite-item__num">2</div>
             <div>
               <div class="cite-item__title">AI Crawler Access Fully Open</div>
               <div class="cite-item__desc">All major AI crawlers (GPTBot, PerplexityBot, ClaudeBot, Google-Extended, Applebot-Extended) are allowed via permissive robots.txt. No technical barriers to AI indexing.</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
-          <div class="cite-item cite-item--good">
+          <div class="cite-item cite-item--good" data-rec-id="tech_strength_3">
             <div class="cite-item__num">3</div>
             <div>
               <div class="cite-item__title">Lean Page Weight</div>
               <div class="cite-item__desc">Homepage at 411 KB is well under the 2 MB target. Compression enabled via Cloudflare (Brotli/gzip).</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
-          <div class="cite-item cite-item--good">
+          <div class="cite-item cite-item--good" data-rec-id="tech_strength_4">
             <div class="cite-item__num">4</div>
             <div>
               <div class="cite-item__title">Valid Sitemap with Timestamps</div>
               <div class="cite-item__desc">625 URLs in sitemap with lastmod dates. Sitemap referenced in robots.txt. Most URLs return 200 status.</div>
             </div>
+            <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:auto;flex-shrink:0">+</button>
           </div>
         </div>
       </div>
@@ -2438,7 +2468,7 @@ tbody tr:hover { background: var(--accent-dim); }
     <div class="table-wrap fade-in">
       <table id="dashboard-table">
         <thead>
-          <tr><th>Action</th><th>Tier</th><th>Impact</th><th>Owner</th><th>ETA</th><th>Status</th><th>Updated</th></tr>
+          <tr><th>Action</th><th>Opened By</th><th>Assigned To</th><th>Opened</th><th>ETA</th><th>Status</th><th>Updated</th></tr>
         </thead>
         <tbody id="dashboard-tbody">
           <tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:40px">No action items yet. Click + on any recommendation to get started.</td></tr>
@@ -2459,8 +2489,20 @@ tbody tr:hover { background: var(--accent-dim); }
       <input type="hidden" id="action-id">
       <input type="hidden" id="action-rec-id">
       <div>
-        <label>Recommendation</label>
-        <textarea id="action-text" placeholder="Describe the action item..." required></textarea>
+        <label>Description</label>
+        <textarea id="action-text" placeholder="Describe the action item..." required style="width:100%"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <label>Assigned To</label>
+          <select id="action-owner" style="width:100%">
+            <option value="">Unassigned</option>
+          </select>
+        </div>
+        <div>
+          <label>Opened By</label>
+          <div class="modal-readonly" id="action-opened-by">--</div>
+        </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
         <div>
@@ -2469,7 +2511,7 @@ tbody tr:hover { background: var(--accent-dim); }
         </div>
         <div>
           <label>Status</label>
-          <select id="action-status">
+          <select id="action-status" style="width:100%">
             <option value="open">Open</option>
             <option value="in_progress">In Progress</option>
             <option value="completed">Completed</option>
@@ -2479,37 +2521,10 @@ tbody tr:hover { background: var(--accent-dim); }
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
         <div>
-          <label>Owner</label>
-          <select id="action-owner">
-            <option value="">Unassigned</option>
-          </select>
+          <label>Date Opened</label>
+          <div class="modal-readonly" id="action-date-opened">--</div>
         </div>
-        <div>
-          <label>Impact</label>
-          <select id="action-impact">
-            <option value="">--</option>
-            <option value="very_high">Very High</option>
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <div>
-          <label>Effort</label>
-          <input class="auth-input" type="text" id="action-effort" placeholder="e.g. 2 hours" style="width:100%">
-        </div>
-        <div>
-          <label>Tier</label>
-          <select id="action-tier">
-            <option value="">--</option>
-            <option value="quick_wins">Quick Win</option>
-            <option value="medium_term">Medium-Term</option>
-            <option value="strategic">Strategic</option>
-            <option value="ad_hoc">Ad-hoc</option>
-          </select>
-        </div>
+        <div></div>
       </div>
       <div class="modal-actions">
         <button type="button" class="modal-btn-cancel" onclick="closeActionModal()">Cancel</button>
@@ -2783,7 +2798,14 @@ function onAuthSuccess(user) {
   document.getElementById('user-menu').style.display = 'flex';
   var displayName = user.user_metadata?.display_name || user.email.split('@')[0];
   document.getElementById('user-display-name').textContent = displayName;
-  loadAppData();
+  // Ensure profile exists (handles users created before trigger was added)
+  sb.from('profiles').upsert({
+    id: user.id,
+    email: user.email,
+    display_name: displayName
+  }, { onConflict: 'id', ignoreDuplicates: true }).then(function() {
+    loadAppData();
+  });
 }
 
 // ──── Init Auth ────
@@ -2863,7 +2885,8 @@ function updateActionIndicators() {
         btn.textContent = '\u25CF';
       }
     } else {
-      btn.textContent = '+';
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="1.5" width="10" height="13" rx="1.5"/><line x1="6" y1="7.5" x2="10" y2="7.5"/><line x1="8" y1="5.5" x2="8" y2="9.5"/></svg>';
+      btn.title = 'Create action item';
     }
   });
 }
@@ -2878,10 +2901,12 @@ function openActionModal(btnOrNull) {
   document.getElementById('action-eta').value = '';
   document.getElementById('action-status').value = 'open';
   document.getElementById('action-owner').value = '';
-  document.getElementById('action-impact').value = '';
-  document.getElementById('action-effort').value = '';
-  document.getElementById('action-tier').value = '';
   document.getElementById('action-text').readOnly = false;
+
+  // Set Opened By and Date Opened
+  var openedByName = currentUser ? (currentUser.user_metadata && currentUser.user_metadata.display_name ? currentUser.user_metadata.display_name : currentUser.email) : '--';
+  document.getElementById('action-opened-by').textContent = openedByName;
+  document.getElementById('action-date-opened').textContent = new Date().toLocaleDateString();
 
   if (btnOrNull) {
     var recEl = btnOrNull.closest('[data-rec-id]');
@@ -2898,9 +2923,11 @@ function openActionModal(btnOrNull) {
         document.getElementById('action-eta').value = existing.eta || '';
         document.getElementById('action-status').value = existing.status;
         document.getElementById('action-owner').value = existing.owner_id || '';
-        document.getElementById('action-impact').value = existing.impact || '';
-        document.getElementById('action-effort').value = existing.effort || '';
-        document.getElementById('action-tier').value = existing.tier || '';
+        // Show who opened it
+        var profileMap = {};
+        allProfiles.forEach(function(p) { profileMap[p.id] = p.display_name || p.email; });
+        document.getElementById('action-opened-by').textContent = existing.created_by ? (profileMap[existing.created_by] || 'Unknown') : '--';
+        document.getElementById('action-date-opened').textContent = existing.created_at ? new Date(existing.created_at).toLocaleDateString() : '--';
         populateOwnerDropdowns();
         if (existing.owner_id) document.getElementById('action-owner').value = existing.owner_id;
         return;
@@ -2908,41 +2935,47 @@ function openActionModal(btnOrNull) {
 
       // Pre-fill from the HTML
       var text = '';
-      var impact = '';
-      var effort = '';
-      var platforms = '';
-      var tier = '';
 
       if (recEl.tagName === 'TR') {
+        // For table rows, grab meaningful text from first cells
         var cells = recEl.querySelectorAll('td');
-        text = cells[1] ? cells[1].textContent.trim() : '';
-        var badgeEl = cells[2] ? cells[2].querySelector('.badge') : null;
-        if (badgeEl) {
-          var badgeText = badgeEl.textContent.trim().toLowerCase().replace(' ', '_');
-          impact = badgeText;
+        var cellTexts = [];
+        for (var i = 0; i < Math.min(cells.length, 3); i++) {
+          var ct = cells[i].textContent.trim();
+          if (ct && ct !== '+') cellTexts.push(ct);
         }
-        effort = cells[3] ? cells[3].textContent.trim() : '';
-        platforms = cells[4] ? cells[4].textContent.trim() : '';
+        text = cellTexts.join(' — ');
+      } else if (recEl.classList.contains('cite-item')) {
+        // For cite-items, grab title and description
+        var titleEl = recEl.querySelector('.cite-item__title');
+        var descEl = recEl.querySelector('.cite-item__desc');
+        text = titleEl ? titleEl.textContent.trim() : '';
+        if (descEl) text += ': ' + descEl.textContent.trim();
+      } else if (recEl.classList.contains('card') || recEl.closest('.card')) {
+        // For cards, grab title and description
+        var cardEl = recEl.classList.contains('card') ? recEl : recEl.closest('.card');
+        var cardTitle = cardEl.querySelector('.card__title');
+        var cardDesc = cardEl.querySelector('.card__desc');
+        // Get title text without button content
+        if (cardTitle) {
+          var titleClone = cardTitle.cloneNode(true);
+          var btnInTitle = titleClone.querySelector('.btn-action-item');
+          if (btnInTitle) btnInTitle.remove();
+          text = titleClone.textContent.trim();
+        }
+        if (cardDesc) text += ': ' + cardDesc.textContent.trim();
       } else {
         var actionDiv = recEl.closest('.platform-card__action') || recEl;
-        text = actionDiv.textContent.replace('+', '').replace('\u2192', '').trim();
+        var divClone = actionDiv.cloneNode(true);
+        var btnClone = divClone.querySelector('.btn-action-item');
+        if (btnClone) btnClone.remove();
+        text = divClone.textContent.replace('\u2192', '').trim();
       }
 
-      if (recId.startsWith('quick_wins')) tier = 'quick_wins';
-      else if (recId.startsWith('medium_term')) tier = 'medium_term';
-      else if (recId.startsWith('strategic')) tier = 'strategic';
-      else if (recId.startsWith('platform')) tier = 'ad_hoc';
-
       document.getElementById('action-text').value = text;
-      document.getElementById('action-impact').value = impact;
-      document.getElementById('action-effort').value = effort;
-      document.getElementById('action-tier').value = tier;
     }
   }
   document.getElementById('modal-title').textContent = btnOrNull ? 'Create Action Item' : 'New Action Item';
-  if (!btnOrNull) {
-    document.getElementById('action-tier').value = 'ad_hoc';
-  }
   populateOwnerDropdowns();
 }
 
@@ -2963,10 +2996,7 @@ async function saveActionItem(e) {
     recommendation_id: recId,
     eta: document.getElementById('action-eta').value || null,
     status: document.getElementById('action-status').value,
-    owner_id: document.getElementById('action-owner').value || null,
-    impact: document.getElementById('action-impact').value || null,
-    effort: document.getElementById('action-effort').value || null,
-    tier: document.getElementById('action-tier').value || null
+    owner_id: document.getElementById('action-owner').value || null
   };
 
   try {
@@ -3037,25 +3067,16 @@ function renderDashboardTable() {
 
   tbody.innerHTML = items.map(function(item) {
     var ownerName = item.owner_id ? (profileMap[item.owner_id] || 'Unknown') : '<span style="color:var(--text-3)">Unassigned</span>';
+    var openedByName = item.created_by ? (profileMap[item.created_by] || 'Unknown') : '<span style="color:var(--text-3)">--</span>';
     var etaStr = item.eta ? item.eta : '<span style="color:var(--text-3)">--</span>';
-    var impactBadge = '';
-    if (item.impact) {
-      var colors = { very_high: 'red', high: 'orange', medium: 'yellow', low: 'green' };
-      var labels = { very_high: 'Very High', high: 'High', medium: 'Medium', low: 'Low' };
-      impactBadge = '<span class="badge badge--' + (colors[item.impact] || 'gray') + '">' + (labels[item.impact] || item.impact) + '</span>';
-    }
-    var tierLabel = '';
-    if (item.tier) {
-      var tierLabels = { quick_wins: 'Quick Win', medium_term: 'Medium', strategic: 'Strategic', ad_hoc: 'Ad-hoc' };
-      tierLabel = tierLabels[item.tier] || item.tier;
-    }
+    var openedStr = item.created_at ? new Date(item.created_at).toLocaleDateString() : '--';
     var updatedStr = item.updated_at ? new Date(item.updated_at).toLocaleDateString() : '--';
 
     return '<tr>' +
       '<td style="max-width:260px">' + escapeHtml(item.recommendation_text) + '</td>' +
-      '<td>' + tierLabel + '</td>' +
-      '<td>' + impactBadge + '</td>' +
+      '<td>' + openedByName + '</td>' +
       '<td>' + ownerName + '</td>' +
+      '<td style="font-size:12px;color:var(--text-2)">' + openedStr + '</td>' +
       '<td>' + etaStr + '</td>' +
       '<td><select class="status-select" onchange="updateItemStatus(\'' + item.id + '\', this.value)">' +
         '<option value="open"' + (item.status === 'open' ? ' selected' : '') + '>' + statusLabels.open + '</option>' +
