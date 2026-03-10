@@ -833,6 +833,8 @@ tbody tr:hover { background: var(--accent-dim); }
     <a href="#technical" class="sidebar__link"><span class="sidebar__link-icon">&#9881;</span> Technical Health</a>
     <a href="#schema" class="sidebar__link"><span class="sidebar__link-icon">&#123;&#125;</span> Schema</a>
     <a href="#llms-txt" class="sidebar__link"><span class="sidebar__link-icon">&#9888;</span> llms.txt</a>
+    <a href="#platform-optimization" class="sidebar__link"><span class="sidebar__link-icon">&#9671;</span> Platform Optimization</a>
+    <a href="#technical-seo" class="sidebar__link"><span class="sidebar__link-icon">&#9874;</span> Technical SEO</a>
     <a href="#action-plan" class="sidebar__link"><span class="sidebar__link-icon">&#9654;</span> Action Plan</a>
     <a href="#impact" class="sidebar__link"><span class="sidebar__link-icon">&#10138;</span> Impact</a>
     <a href="#appendix" class="sidebar__link"><span class="sidebar__link-icon">&#9776;</span> Appendix</a>
@@ -1348,6 +1350,413 @@ tbody tr:hover { background: var(--accent-dim); }
     </div>
     <div class="callout callout--warning fade-in">
       Your current llms.txt is broken and <strong>actively harmful</strong>. A properly formatted replacement has been generated in the full audit report and should be deployed immediately.
+    </div>
+  </section>
+
+  <!-- ═══════════ PLATFORM OPTIMIZATION ═══════════ -->
+  <section class="section" id="platform-optimization">
+    <div class="section__header fade-in">
+      <div class="section__label">Platform-Specific</div>
+      <h2 class="section__title">AI Platform Optimization</h2>
+      <p class="section__desc">Each AI search platform uses different indexes, ranking logic, and source preferences. Only 11% of domains are cited by both ChatGPT and Google AI Overviews for the same query.</p>
+    </div>
+
+    <div class="cards-grid--5 cards-grid fade-in">
+      <!-- Google AIO -->
+      <div class="card">
+        <div class="card__top-bar" style="background:var(--score-red)"></div>
+        <div class="platform-card">
+          <div class="mini-gauge">
+            <svg width="64" height="64" viewBox="0 0 64 64" class="gauge-svg">
+              <circle cx="32" cy="32" r="26" class="gauge-bg" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" class="gauge-fill" stroke-width="6" stroke="var(--score-red)"
+                stroke-dasharray="163.36" stroke-dashoffset="163.36" data-target="38" data-max="100"/>
+            </svg>
+            <div class="mini-gauge__center">38</div>
+          </div>
+          <div class="platform-card__info">
+            <div class="card__title">Google AIO</div>
+            <div class="platform-card__gap"><strong>Gap:</strong> No question headings, no FAQ sections, no tables or structured comparisons</div>
+            <div class="platform-card__action">&#8594; Add Q&amp;A headings and comparison tables to product pages</div>
+          </div>
+        </div>
+      </div>
+      <!-- ChatGPT -->
+      <div class="card">
+        <div class="card__top-bar" style="background:var(--score-red)"></div>
+        <div class="platform-card">
+          <div class="mini-gauge">
+            <svg width="64" height="64" viewBox="0 0 64 64" class="gauge-svg">
+              <circle cx="32" cy="32" r="26" class="gauge-bg" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" class="gauge-fill" stroke-width="6" stroke="var(--score-red)"
+                stroke-dasharray="163.36" stroke-dashoffset="163.36" data-target="35" data-max="100"/>
+            </svg>
+            <div class="mini-gauge__center">35</div>
+          </div>
+          <div class="platform-card__info">
+            <div class="card__title">ChatGPT</div>
+            <div class="platform-card__gap"><strong>Gap:</strong> Wikipedia stub (259 words), no Bing WMT, thin content</div>
+            <div class="platform-card__action">&#8594; Expand Wikipedia article, verify Bing Webmaster Tools</div>
+          </div>
+        </div>
+      </div>
+      <!-- Perplexity -->
+      <div class="card">
+        <div class="card__top-bar" style="background:var(--score-red)"></div>
+        <div class="platform-card">
+          <div class="mini-gauge">
+            <svg width="64" height="64" viewBox="0 0 64 64" class="gauge-svg">
+              <circle cx="32" cy="32" r="26" class="gauge-bg" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" class="gauge-fill" stroke-width="6" stroke="var(--score-red)"
+                stroke-dasharray="163.36" stroke-dashoffset="163.36" data-target="22" data-max="100"/>
+            </svg>
+            <div class="mini-gauge__center">22</div>
+          </div>
+          <div class="platform-card__info">
+            <div class="card__title">Perplexity</div>
+            <div class="platform-card__gap"><strong>Gap:</strong> Zero Reddit presence, no original research published</div>
+            <div class="platform-card__action">&#8594; Launch Reddit strategy, publish benchmark data</div>
+          </div>
+        </div>
+      </div>
+      <!-- Gemini -->
+      <div class="card">
+        <div class="card__top-bar" style="background:var(--score-orange)"></div>
+        <div class="platform-card">
+          <div class="mini-gauge">
+            <svg width="64" height="64" viewBox="0 0 64 64" class="gauge-svg">
+              <circle cx="32" cy="32" r="26" class="gauge-bg" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" class="gauge-fill" stroke-width="6" stroke="var(--score-orange)"
+                stroke-dasharray="163.36" stroke-dashoffset="163.36" data-target="40" data-max="100"/>
+            </svg>
+            <div class="mini-gauge__center">40</div>
+          </div>
+          <div class="platform-card__info">
+            <div class="card__title">Gemini</div>
+            <div class="platform-card__gap"><strong>Gap:</strong> No Knowledge Panel, YouTube channel broken, basic Schema only</div>
+            <div class="platform-card__action">&#8594; Claim Knowledge Panel, fix YouTube, add Product schema</div>
+          </div>
+        </div>
+      </div>
+      <!-- Bing Copilot -->
+      <div class="card">
+        <div class="card__top-bar" style="background:var(--score-red)"></div>
+        <div class="platform-card">
+          <div class="mini-gauge">
+            <svg width="64" height="64" viewBox="0 0 64 64" class="gauge-svg">
+              <circle cx="32" cy="32" r="26" class="gauge-bg" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" class="gauge-fill" stroke-width="6" stroke="var(--score-red)"
+                stroke-dasharray="163.36" stroke-dashoffset="163.36" data-target="35" data-max="100"/>
+            </svg>
+            <div class="mini-gauge__center">35</div>
+          </div>
+          <div class="platform-card__info">
+            <div class="card__title">Bing Copilot</div>
+            <div class="platform-card__gap"><strong>Gap:</strong> No IndexNow protocol, no Bing WMT verified</div>
+            <div class="platform-card__action">&#8594; Implement IndexNow, register Bing Webmaster Tools</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--info fade-in" style="margin:24px 0 0">
+      <strong>Combined Platform Readiness: 33/100 (Weak).</strong> No platform scores above 40 except Gemini. The root causes are shared: thin content, broken YouTube, no Reddit, and missing structured data.
+    </div>
+
+    <!-- Platform Detail Tiers -->
+    <div style="margin-top:28px">
+      <div class="tier fade-in" style="margin-bottom:28px">
+        <div class="collapsible__header" onclick="toggleCollapsible(this)">
+          <div class="collapsible__title"><span style="color:var(--score-red)">&#9650;</span> Google AIO &mdash; Optimization Details</div>
+          <span class="collapsible__chevron">&#9660;</span>
+        </div>
+        <div class="collapsible__body">
+          <div class="collapsible__inner">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Criterion</th><th>Max</th><th>Score</th><th>Finding</th></tr></thead>
+                <tbody>
+                  <tr><td>Ranks in top 10 for target queries</td><td>20</td><td>10</td><td>Ranks for brand terms, weak for generic cloud queries</td></tr>
+                  <tr><td>Question-based headings</td><td>10</td><td>0</td><td><span class="badge badge--red">None found</span> &mdash; all headings are statement-based</td></tr>
+                  <tr><td>Direct answers after headings</td><td>15</td><td>3</td><td>Sparse &mdash; marketing copy instead of direct definitions</td></tr>
+                  <tr><td>Tables for comparison data</td><td>10</td><td>0</td><td><span class="badge badge--red">No tables</span> on product or pricing pages</td></tr>
+                  <tr><td>Lists for processes/features</td><td>10</td><td>5</td><td>Some feature lists exist but not structured as HTML lists</td></tr>
+                  <tr><td>FAQ section (5+ questions)</td><td>10</td><td>0</td><td><span class="badge badge--red">No FAQ section</span> on any key page</td></tr>
+                  <tr><td>Statistics with citations</td><td>10</td><td>0</td><td><span class="badge badge--red">No cited statistics</span> &mdash; claims lack sources</td></tr>
+                  <tr><td>Publication/updated date visible</td><td>5</td><td>3</td><td>In Schema only, not visible on page</td></tr>
+                  <tr><td>Author byline with credentials</td><td>5</td><td>0</td><td><span class="badge badge--red">No author attribution</span> on product pages</td></tr>
+                  <tr><td>Clean URL + heading hierarchy</td><td>5</td><td>5</td><td><span class="badge badge--green">Clean</span> &mdash; logical H1&gt;H2 structure</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier fade-in" style="margin-bottom:28px">
+        <div class="collapsible__header" onclick="toggleCollapsible(this)">
+          <div class="collapsible__title"><span style="color:var(--score-red)">&#9650;</span> ChatGPT &mdash; Optimization Details</div>
+          <span class="collapsible__chevron">&#9660;</span>
+        </div>
+        <div class="collapsible__body">
+          <div class="collapsible__inner">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Criterion</th><th>Max</th><th>Score</th><th>Finding</th></tr></thead>
+                <tbody>
+                  <tr><td>Wikipedia article</td><td>20</td><td>10</td><td><span class="badge badge--yellow">Stub</span> &mdash; only 259 words, needs expansion to 1000+</td></tr>
+                  <tr><td>Wikidata entity (5+ properties)</td><td>10</td><td>5</td><td>Q8064144 exists but basic &mdash; missing key properties</td></tr>
+                  <tr><td>Bing index coverage</td><td>10</td><td>5</td><td>Partial coverage &mdash; key pages indexed but gaps exist</td></tr>
+                  <tr><td>Reddit brand mentions</td><td>10</td><td>0</td><td><span class="badge badge--red">Zero presence</span></td></tr>
+                  <tr><td>YouTube channel</td><td>10</td><td>0</td><td><span class="badge badge--red">Channel returns 404</span></td></tr>
+                  <tr><td>Authoritative backlinks</td><td>15</td><td>5</td><td>Some tech press mentions but limited .edu/.gov links</td></tr>
+                  <tr><td>Entity consistency</td><td>10</td><td>5</td><td>Minor discrepancies across platforms</td></tr>
+                  <tr><td>Content comprehensiveness</td><td>10</td><td>0</td><td><span class="badge badge--red">Under 500 words</span> on key product pages</td></tr>
+                  <tr><td>Bing Webmaster Tools</td><td>5</td><td>0</td><td><span class="badge badge--red">Not verified</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier fade-in" style="margin-bottom:28px">
+        <div class="collapsible__header" onclick="toggleCollapsible(this)">
+          <div class="collapsible__title"><span style="color:var(--score-red)">&#9650;</span> Perplexity &mdash; Optimization Details</div>
+          <span class="collapsible__chevron">&#9660;</span>
+        </div>
+        <div class="collapsible__body">
+          <div class="collapsible__inner">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Criterion</th><th>Max</th><th>Score</th><th>Finding</th></tr></thead>
+                <tbody>
+                  <tr><td>Active Reddit presence</td><td>20</td><td>0</td><td><span class="badge badge--red">Zero Reddit activity</span></td></tr>
+                  <tr><td>Forum/community mentions</td><td>10</td><td>5</td><td>Some Hacker News mentions</td></tr>
+                  <tr><td>Content freshness</td><td>10</td><td>10</td><td><span class="badge badge--green">Active blog</span> &mdash; posts within last month</td></tr>
+                  <tr><td>Original research/data</td><td>15</td><td>0</td><td><span class="badge badge--red">No benchmarks, surveys, or datasets published</span></td></tr>
+                  <tr><td>YouTube with transcripts</td><td>10</td><td>0</td><td><span class="badge badge--red">Channel broken (404)</span></td></tr>
+                  <tr><td>Quotable paragraphs</td><td>10</td><td>2</td><td>Marketing copy not structured for quotation</td></tr>
+                  <tr><td>Multi-source claim validation</td><td>10</td><td>0</td><td>Claims not backed by cited sources</td></tr>
+                  <tr><td>Discussion-generating content</td><td>10</td><td>0</td><td>No evidence of content being shared/discussed in communities</td></tr>
+                  <tr><td>Wikipedia/Wikidata</td><td>5</td><td>5</td><td><span class="badge badge--green">Present</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier fade-in" style="margin-bottom:28px">
+        <div class="collapsible__header" onclick="toggleCollapsible(this)">
+          <div class="collapsible__title"><span style="color:var(--score-orange)">&#9650;</span> Gemini &mdash; Optimization Details</div>
+          <span class="collapsible__chevron">&#9660;</span>
+        </div>
+        <div class="collapsible__body">
+          <div class="collapsible__inner">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Criterion</th><th>Max</th><th>Score</th><th>Finding</th></tr></thead>
+                <tbody>
+                  <tr><td>Google Knowledge Panel</td><td>15</td><td>5</td><td><span class="badge badge--yellow">Partial</span> &mdash; Wikidata entity exists but no confirmed KP</td></tr>
+                  <tr><td>Google Business Profile</td><td>10</td><td>0</td><td><span class="badge badge--red">Not found</span></td></tr>
+                  <tr><td>YouTube with topic content</td><td>20</td><td>0</td><td><span class="badge badge--red">Channel returns 404</span></td></tr>
+                  <tr><td>Schema.org structured data</td><td>15</td><td>10</td><td><span class="badge badge--yellow">Basic</span> &mdash; Organization + WebPage only, no Product/Service</td></tr>
+                  <tr><td>Google ecosystem (Scholar, News, Maps)</td><td>10</td><td>5</td><td>Partial &mdash; some Google News presence</td></tr>
+                  <tr><td>Image optimization</td><td>10</td><td>5</td><td>Missing alt text on many images</td></tr>
+                  <tr><td>E-E-A-T signals</td><td>10</td><td>5</td><td>About page exists but no author pages or editorial policy</td></tr>
+                  <tr><td>Google Merchant Center</td><td>5</td><td>0</td><td>N/A &mdash; not e-commerce</td></tr>
+                  <tr><td>Multi-modal content</td><td>5</td><td>3</td><td>Some images + text but no integrated video</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier fade-in" style="margin-bottom:28px">
+        <div class="collapsible__header" onclick="toggleCollapsible(this)">
+          <div class="collapsible__title"><span style="color:var(--score-red)">&#9650;</span> Bing Copilot &mdash; Optimization Details</div>
+          <span class="collapsible__chevron">&#9660;</span>
+        </div>
+        <div class="collapsible__body">
+          <div class="collapsible__inner">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Criterion</th><th>Max</th><th>Score</th><th>Finding</th></tr></thead>
+                <tbody>
+                  <tr><td>Bing Webmaster Tools</td><td>15</td><td>0</td><td><span class="badge badge--red">Not verified</span></td></tr>
+                  <tr><td>IndexNow protocol</td><td>15</td><td>0</td><td><span class="badge badge--red">Not implemented</span></td></tr>
+                  <tr><td>Bing index coverage</td><td>10</td><td>5</td><td>Partial &mdash; main pages indexed</td></tr>
+                  <tr><td>LinkedIn company page</td><td>10</td><td>10</td><td><span class="badge badge--green">Complete</span> &mdash; 11,449 followers, active</td></tr>
+                  <tr><td>GitHub presence</td><td>5</td><td>5</td><td><span class="badge badge--green">Active</span> &mdash; 15 repos</td></tr>
+                  <tr><td>Meta descriptions optimized</td><td>10</td><td>5</td><td>Homepage good, inner pages generic</td></tr>
+                  <tr><td>Social media engagement</td><td>10</td><td>5</td><td>LinkedIn active, other platforms weak</td></tr>
+                  <tr><td>Exact-match keywords</td><td>10</td><td>5</td><td>Brand terms present, generic terms weak</td></tr>
+                  <tr><td>Page load speed &lt; 2s</td><td>10</td><td>10</td><td><span class="badge badge--green">Excellent</span> &mdash; TTFB 0.26s, total 0.57s</td></tr>
+                  <tr><td>Bing Places</td><td>5</td><td>0</td><td>Not configured (has physical offices)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TECHNICAL SEO ═══════════ -->
+  <section class="section" id="technical-seo">
+    <div class="section__header fade-in">
+      <div class="section__label">Infrastructure</div>
+      <h2 class="section__title">Technical SEO Audit</h2>
+      <p class="section__desc">Technical SEO is the foundation of both search visibility and AI citation. AI crawlers do not execute JavaScript &mdash; a technically broken site cannot be cited.</p>
+    </div>
+
+    <div class="cards-grid fade-in" style="margin-bottom:28px">
+      <div class="card">
+        <div class="card__top-bar" style="background:var(--score-yellow)"></div>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
+          <div class="mini-gauge">
+            <svg width="64" height="64" viewBox="0 0 64 64" class="gauge-svg">
+              <circle cx="32" cy="32" r="26" class="gauge-bg" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" class="gauge-fill" stroke-width="6" stroke="var(--score-yellow)"
+                stroke-dasharray="163.36" stroke-dashoffset="163.36" data-target="70" data-max="100"/>
+            </svg>
+            <div class="mini-gauge__center">70</div>
+          </div>
+          <div>
+            <div class="card__title">Overall Technical Score</div>
+            <div class="card__subtitle">70/100 &middot; Good &mdash; minor issues to address</div>
+          </div>
+        </div>
+        <div class="card__desc">Strong server performance and crawlability, but significant gaps in security headers and content rendering optimization.</div>
+      </div>
+    </div>
+
+    <div class="table-wrap fade-in" style="margin-bottom:28px">
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Score</th><th>Max</th><th>Status</th><th>Key Finding</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Crawlability</td><td>13</td><td>15</td><td><span class="badge badge--green">Pass</span></td><td>All AI crawlers allowed, valid robots.txt &amp; sitemap</td></tr>
+          <tr><td>Indexability</td><td>9</td><td>12</td><td><span class="badge badge--green">Pass</span></td><td>Canonicals present; UTM parameters in sitemap risk duplicates</td></tr>
+          <tr><td>Security</td><td>4</td><td>10</td><td><span class="badge badge--red">Fail</span></td><td>HTTPS valid but missing HSTS, CSP, X-Frame-Options headers</td></tr>
+          <tr><td>URL Structure</td><td>6</td><td>8</td><td><span class="badge badge--green">Pass</span></td><td>Clean URLs with logical hierarchy</td></tr>
+          <tr><td>Mobile Optimization</td><td>8</td><td>10</td><td><span class="badge badge--green">Pass</span></td><td>Responsive design with correct viewport meta</td></tr>
+          <tr><td>Core Web Vitals</td><td>10</td><td>15</td><td><span class="badge badge--yellow">Warn</span></td><td>TTFB excellent (0.26s); LCP potentially impacted by Elementor</td></tr>
+          <tr><td>Server-Side Rendering</td><td>10</td><td>15</td><td><span class="badge badge--yellow">Warn</span></td><td>Main content SSR via WordPress; some Elementor widgets JS-dependent</td></tr>
+          <tr><td>Page Speed &amp; Server</td><td>10</td><td>15</td><td><span class="badge badge--yellow">Warn</span></td><td>Cloudflare CDN active; page 411KB; short cache (10 min)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Technical Detail Tiers -->
+    <div class="tier fade-in" style="margin-bottom:28px">
+      <div class="collapsible__header" onclick="toggleCollapsible(this)">
+        <div class="collapsible__title"><span style="color:var(--score-red)">&#9888;</span> Critical Issues</div>
+        <span class="collapsible__chevron">&#9660;</span>
+      </div>
+      <div class="collapsible__body">
+        <div class="collapsible__inner">
+          <div class="cite-item cite-item--bad">
+            <div class="cite-item__num">1</div>
+            <div>
+              <div class="cite-item__title">Missing Security Headers (Score: 4/10)</div>
+              <div class="cite-item__desc">No HSTS, Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, or Referrer-Policy headers detected. This is a trust signal deficit &mdash; search engines and AI platforms factor security posture into authority assessment. <strong>Fix:</strong> Configure security headers in Cloudflare or WP Engine settings.</div>
+            </div>
+          </div>
+          <div class="cite-item cite-item--bad">
+            <div class="cite-item__num">2</div>
+            <div>
+              <div class="cite-item__title">No IndexNow Protocol</div>
+              <div class="cite-item__desc">IndexNow enables near-instant Bing indexing, directly impacting ChatGPT and Copilot visibility. <strong>Fix:</strong> Install the IndexNow WordPress plugin &mdash; takes under 5 minutes and benefits two AI platforms.</div>
+            </div>
+          </div>
+          <div class="cite-item cite-item--bad">
+            <div class="cite-item__num">3</div>
+            <div>
+              <div class="cite-item__title">UTM Parameters in Sitemap</div>
+              <div class="cite-item__desc">Sitemap contains URLs with UTM tracking parameters, risking duplicate content indexing. <strong>Fix:</strong> Remove all UTM-tagged URLs from the sitemap and ensure canonical tags handle parameter variations.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier fade-in" style="margin-bottom:28px">
+      <div class="collapsible__header" onclick="toggleCollapsible(this)">
+        <div class="collapsible__title"><span style="color:var(--score-yellow)">&#9888;</span> Warnings</div>
+        <span class="collapsible__chevron">&#9660;</span>
+      </div>
+      <div class="collapsible__body">
+        <div class="collapsible__inner">
+          <div class="cite-item cite-item--bad">
+            <div class="cite-item__num">1</div>
+            <div>
+              <div class="cite-item__title">Short Cache TTL (max-age=600)</div>
+              <div class="cite-item__desc">Static assets cached for only 10 minutes. Should be 1 year (31536000s) with content-hashed filenames for CSS/JS/images. HTML can remain short-cached.</div>
+            </div>
+          </div>
+          <div class="cite-item cite-item--bad">
+            <div class="cite-item__num">2</div>
+            <div>
+              <div class="cite-item__title">Elementor JS-Dependent Widgets</div>
+              <div class="cite-item__desc">Some content rendered via Elementor may not be visible to AI crawlers that don't execute JavaScript. WP Engine's server-side rendering covers most content, but interactive widgets may be invisible to GPTBot, PerplexityBot, and ClaudeBot.</div>
+            </div>
+          </div>
+          <div class="cite-item cite-item--bad">
+            <div class="cite-item__num">3</div>
+            <div>
+              <div class="cite-item__title">Blog Pagination Gaps</div>
+              <div class="cite-item__desc">Sitemap shows pagination jumps (page/2/, page/3/, then page/43/), suggesting incomplete blog archive indexing. Verify all 45 pages of blog content are accessible and indexed.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier fade-in" style="margin-bottom:28px">
+      <div class="collapsible__header" onclick="toggleCollapsible(this)">
+        <div class="collapsible__title"><span style="color:var(--score-green)">&#10003;</span> Strengths</div>
+        <span class="collapsible__chevron">&#9660;</span>
+      </div>
+      <div class="collapsible__body">
+        <div class="collapsible__inner">
+          <div class="cite-item cite-item--good">
+            <div class="cite-item__num">1</div>
+            <div>
+              <div class="cite-item__title">Excellent Server Performance</div>
+              <div class="cite-item__desc">TTFB of 0.26 seconds is well under the 0.8s target. Total page load 0.57s. WP Engine hosting with Cloudflare CDN provides strong global performance.</div>
+            </div>
+          </div>
+          <div class="cite-item cite-item--good">
+            <div class="cite-item__num">2</div>
+            <div>
+              <div class="cite-item__title">AI Crawler Access Fully Open</div>
+              <div class="cite-item__desc">All major AI crawlers (GPTBot, PerplexityBot, ClaudeBot, Google-Extended, Applebot-Extended) are allowed via permissive robots.txt. No technical barriers to AI indexing.</div>
+            </div>
+          </div>
+          <div class="cite-item cite-item--good">
+            <div class="cite-item__num">3</div>
+            <div>
+              <div class="cite-item__title">Lean Page Weight</div>
+              <div class="cite-item__desc">Homepage at 411 KB is well under the 2 MB target. Compression enabled via Cloudflare (Brotli/gzip).</div>
+            </div>
+          </div>
+          <div class="cite-item cite-item--good">
+            <div class="cite-item__num">4</div>
+            <div>
+              <div class="cite-item__title">Valid Sitemap with Timestamps</div>
+              <div class="cite-item__desc">625 URLs in sitemap with lastmod dates. Sitemap referenced in robots.txt. Most URLs return 200 status.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--info fade-in">
+      <strong>Server Infrastructure:</strong> Hosted on WP Engine (WordPress) with Cloudflare CDN. Server: cloudflare. X-Cache: HIT indicates effective caching. GA4 (G-FL8EF7KHQ1) and GTM tracking active via MonsterInsights v10.0.2.
     </div>
   </section>
 
