@@ -1058,15 +1058,56 @@ tbody tr:hover { background: var(--accent-dim); }
 }
 .analysis-overlay.hidden { display: none; }
 .analysis-box {
+  position: relative;
   background: var(--bg-2);
   border: 1px solid var(--border-1);
   border-radius: 16px;
-  padding: 40px;
+  padding: 28px 24px;
   text-align: center;
   max-width: 600px;
   width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
   box-shadow: var(--card-shadow-hover);
 }
+.analysis-box::-webkit-scrollbar { width: 6px; }
+.analysis-box::-webkit-scrollbar-track { background: transparent; }
+.analysis-box::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
+.analysis-box::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+.analysis-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-3);
+  font-size: 22px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  z-index: 2;
+}
+.analysis-close:hover { background: var(--bg-4); color: var(--text-1); }
+.analysis-close.hidden { display: none; }
+.analysis-close-btn {
+  margin-top: 16px;
+  padding: 10px 32px;
+  border-radius: 10px;
+  border: 1px solid var(--border-1);
+  background: var(--bg-3);
+  color: var(--text-1);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.15s, border-color 0.15s;
+}
+.analysis-close-btn:hover { background: var(--bg-4); border-color: var(--accent); }
+.analysis-close-btn.hidden { display: none; }
 .analysis-spinner {
   width: 48px; height: 48px;
   border: 3px solid var(--border-1);
@@ -1107,12 +1148,15 @@ tbody tr:hover { background: var(--accent-dim); }
   border: 1px solid var(--border-1);
   border-radius: 8px;
   padding: 12px;
-  max-height: 200px;
+  max-height: 150px;
   overflow-y: auto;
   font-family: 'SF Mono', 'Fira Code', monospace;
   font-size: 11px;
   line-height: 1.6;
 }
+.analysis-log::-webkit-scrollbar { width: 5px; }
+.analysis-log::-webkit-scrollbar-track { background: transparent; }
+.analysis-log::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
 .analysis-log-entry {
   display: flex;
   gap: 8px;
@@ -3035,7 +3079,8 @@ tbody tr:hover { background: var(--accent-dim); }
 <!-- Analysis Overlay -->
 <div class="analysis-overlay hidden" id="analysis-overlay">
   <div class="analysis-box">
-    <div class="analysis-spinner"></div>
+    <button class="analysis-close hidden" id="analysis-close">&times;</button>
+    <div class="analysis-spinner" id="analysis-spinner"></div>
     <div class="analysis-phase" id="analysis-phase">Preparing analysis...</div>
     <div class="analysis-detail" id="analysis-detail">This may take 30-60 seconds</div>
     <div class="analysis-progress">
@@ -3043,6 +3088,7 @@ tbody tr:hover { background: var(--accent-dim); }
     </div>
     <div class="analysis-log" id="analysis-log"></div>
     <div class="diagnostics-panel hidden" id="diagnostics-panel"></div>
+    <button class="analysis-close-btn hidden" id="analysis-close-btn">Close</button>
   </div>
 </div>
 
@@ -4212,23 +4258,33 @@ async function startReAnalysis() {
   } finally {
     btn.classList.remove('loading');
     btn.disabled = false;
-    // Don't auto-hide overlay — let user read diagnostics. Add a close button.
-    var closeBtn = document.createElement('button');
-    closeBtn.textContent = 'Close';
-    closeBtn.style.cssText = 'margin-top:16px;padding:8px 24px;border-radius:8px;border:1px solid var(--border-1);background:var(--bg-2);color:var(--text-1);cursor:pointer;font-size:13px;';
-    closeBtn.onclick = function() {
-      overlay.classList.add('hidden');
-      logEl.innerHTML = '';
-      diagPanel.innerHTML = '';
-      diagPanel.classList.add('hidden');
-      document.getElementById('analysis-progress').style.width = '0%';
-      document.getElementById('analysis-phase').textContent = 'Preparing analysis...';
-      document.getElementById('analysis-detail').textContent = 'This may take 30-60 seconds';
-      closeBtn.remove();
-    };
-    document.querySelector('.analysis-box').appendChild(closeBtn);
+    // Hide spinner, show close buttons
+    document.getElementById('analysis-spinner').style.display = 'none';
+    document.getElementById('analysis-close').classList.remove('hidden');
+    document.getElementById('analysis-close-btn').classList.remove('hidden');
   }
 }
+
+function closeAnalysisOverlay() {
+  var overlay = document.getElementById('analysis-overlay');
+  overlay.classList.add('hidden');
+  document.getElementById('analysis-log').innerHTML = '';
+  var diagPanel = document.getElementById('diagnostics-panel');
+  diagPanel.innerHTML = '';
+  diagPanel.classList.add('hidden');
+  document.getElementById('analysis-progress').style.width = '0%';
+  document.getElementById('analysis-phase').textContent = 'Preparing analysis...';
+  document.getElementById('analysis-detail').textContent = 'This may take 30-60 seconds';
+  document.getElementById('analysis-spinner').style.display = '';
+  document.getElementById('analysis-close').classList.add('hidden');
+  document.getElementById('analysis-close-btn').classList.add('hidden');
+}
+
+// Wire up close buttons
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('analysis-close').onclick = closeAnalysisOverlay;
+  document.getElementById('analysis-close-btn').onclick = closeAnalysisOverlay;
+});
 
 // ──── Compare ────
 function renderCompareDropdowns() {
