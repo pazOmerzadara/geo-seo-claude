@@ -278,12 +278,19 @@ class handler(BaseHTTPRequestHandler):
                 'created_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
                 'diagnostics': {
                     'total_elapsed_s': round(time.time() - audit_start, 2),
+                    'google_api_key_detected': any(
+                        res.get('api_key_detected') is True
+                        for res in results.values()
+                    ),
                     'scorers': {
                         key: {
                             'score': res.get('score', 0),
                             'ai_powered': res.get('ai_powered', 'n/a'),
+                            'method': res.get('method', 'deterministic'),
+                            'api_key_detected': res.get('api_key_detected', 'n/a'),
                             'elapsed_s': res.get('_elapsed_s', 0),
                             'error': res.get('error'),
+                            'key_findings': (res.get('key_findings') or [])[:3],
                         }
                         for key, res in results.items()
                     },

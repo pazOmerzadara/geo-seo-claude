@@ -165,9 +165,14 @@ class handler(BaseHTTPRequestHandler):
             print(f"[CONTENT-AI] page_data word_count={page_data.get('word_count', 0)}, "
                   f"content_blocks={len(content_blocks)}")
 
+            api_key_detected = bool(api_key)
+
             if not api_key:
                 print(f"[CONTENT-AI] NO API KEY — using deterministic fallback")
                 result = deterministic_content_score(page_data, content_blocks)
+                result["api_key_detected"] = False
+                result["method"] = "deterministic"
+                result["key_findings"] = ["GOOGLE_API_KEY not configured in Vercel — using rule-based scoring"]
             else:
                 try:
                     print(f"[CONTENT-AI] Calling Gemini API...")
@@ -210,6 +215,14 @@ class handler(BaseHTTPRequestHandler):
                         (ta_score / 100 * 10) + (fresh_score / 100 * 5)
                     )
 
+                    # Build evidence strings from Gemini
+                    evidence_findings = ai_result.get("key_findings", [])
+                    # Add E-E-A-T evidence as findings for UI display
+                    for dim in ["experience", "expertise", "authoritativeness", "trustworthiness"]:
+                        ev = ai_result.get(dim, {}).get("evidence", "")
+                        if ev:
+                            evidence_findings.append(f"{dim.title()}: {ev}")
+
                     result = {
                         "score": score,
                         "breakdown": {
@@ -223,16 +236,21 @@ class handler(BaseHTTPRequestHandler):
                             "topical_authority": {"assessment": ta, "score": ta_score},
                             "freshness": {"assessment": fresh, "score": fresh_score},
                         },
-                        "key_findings": ai_result.get("key_findings", []),
+                        "key_findings": evidence_findings,
                         "ai_powered": True,
+                        "api_key_detected": True,
+                        "method": "gemini-2.0-flash",
+                        "gemini_elapsed_s": gemini_elapsed,
                     }
-                    print(f"[CONTENT-AI] AI scoring complete: score={score}, ai_powered=True")
+                    print(f"[CONTENT-AI] AI scoring complete: score={score}, method=gemini-2.0-flash, elapsed={gemini_elapsed}s")
 
                 except Exception as ai_err:
                     print(f"[CONTENT-AI] Gemini API FAILED: {ai_err}")
                     print(f"[CONTENT-AI] Falling back to deterministic scoring")
                     result = deterministic_content_score(page_data, content_blocks)
-                    result["key_findings"].append(f"AI scoring failed: {str(ai_err)}")
+                    result["api_key_detected"] = True
+                    result["method"] = "deterministic"
+                    result["key_findings"] = [f"Gemini API call FAILED: {str(ai_err)} — fell back to rule-based scoring"]
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')

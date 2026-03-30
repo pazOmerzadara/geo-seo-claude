@@ -4013,6 +4013,16 @@ function renderDiagnostics(result) {
 
   var html = '<h4>Analysis Diagnostics</h4>';
 
+  // Google API Key status — prominent first row
+  var apiDetected = diag.google_api_key_detected;
+  html += '<div class="diag-row" style="padding:8px 0;border-bottom:2px solid var(--border-1)">' +
+    '<span class="diag-label" style="font-weight:700;font-size:13px">Google API Key</span>' +
+    '<span class="diag-value">' +
+    (apiDetected
+      ? '<span class="diag-badge ai" style="font-size:12px;padding:3px 10px">Detected</span>'
+      : '<span class="diag-badge fail" style="font-size:12px;padding:3px 10px">Not Found</span>') +
+    '</span></div>';
+
   // Total time
   html += '<div class="diag-row">' +
     '<span class="diag-label">Total analysis time</span>' +
@@ -4030,20 +4040,42 @@ function renderDiagnostics(result) {
   Object.keys(scorerNames).forEach(function(key) {
     var s = scorers[key] || {};
     var name = scorerNames[key];
-    var aiFlag = s.ai_powered === true ? '<span class="diag-badge ai">Gemini AI</span>' :
-                 s.ai_powered === false ? '<span class="diag-badge fallback">Fallback</span>' :
-                 '<span class="diag-badge ok">Deterministic</span>';
+
+    // Method badge — show actual method name
+    var method = s.method || 'deterministic';
+    var methodBadge;
+    if (method === 'gemini-2.0-flash') {
+      methodBadge = '<span class="diag-badge ai">gemini-2.0-flash</span>';
+    } else if (s.api_key_detected === true && method === 'deterministic') {
+      methodBadge = '<span class="diag-badge fallback">fallback (API failed)</span>';
+    } else if (s.api_key_detected === false) {
+      methodBadge = '<span class="diag-badge fail">no API key</span>';
+    } else {
+      methodBadge = '<span class="diag-badge ok">rule-based</span>';
+    }
+
     var statusBadge = s.error ? '<span class="diag-badge fail">Error</span>' :
                       '<span class="diag-badge ok">OK</span>';
 
     html += '<div class="diag-row">' +
-      '<span class="diag-label">' + name + ' ' + aiFlag + ' ' + statusBadge +
+      '<span class="diag-label">' + name + ' ' + methodBadge + ' ' + statusBadge +
       '<span class="diag-time">' + (s.elapsed_s || '?') + 's</span></span>' +
       '<span class="diag-value" style="font-size:16px;font-weight:700">' + Math.round(s.score || 0) + '</span></div>';
 
+    // Show error details
     if (s.error) {
-      html += '<div class="diag-row" style="padding-left:20px">' +
+      html += '<div class="diag-row" style="padding-left:20px;border-bottom:none">' +
         '<span class="diag-label" style="color:#ef4444;font-size:11px">' + s.error + '</span></div>';
+    }
+
+    // Show key findings as evidence (for AI-powered scorers)
+    var findings = s.key_findings || [];
+    if (findings.length > 0) {
+      findings.forEach(function(finding) {
+        html += '<div class="diag-row" style="padding:2px 0 2px 20px;border-bottom:none">' +
+          '<span class="diag-label" style="font-size:11px;font-style:italic;color:var(--text-3)">' +
+          finding + '</span></div>';
+      });
     }
   });
 
@@ -4120,7 +4152,11 @@ async function startReAnalysis() {
     console.log('[Re-Analyze] Full result:', result);
 
     // Log per-scorer results to the live log
-    if (result.diagnostics && result.diagnostics.scorers) {
+    if (result.diagnostics) {
+      // Log Google API Key status first
+      var apiDetected = result.diagnostics.google_api_key_detected;
+      analysisLog('Google API Key: ' + (apiDetected ? 'DETECTED' : 'NOT FOUND'), apiDetected ? 'ai' : 'error');
+
       var scorerNames = {
         ai_visibility: 'AI Visibility',
         content_eeat: 'Content E-E-A-T',
@@ -4128,13 +4164,18 @@ async function startReAnalysis() {
         schema: 'Schema',
         brand: 'Brand Authority'
       };
+      var scorers = result.diagnostics.scorers || {};
       Object.keys(scorerNames).forEach(function(key) {
-        var s = result.diagnostics.scorers[key];
+        var s = scorers[key];
         if (!s) return;
-        var method = s.ai_powered === true ? 'Gemini AI' : s.ai_powered === false ? 'Fallback' : 'Deterministic';
+        var method = s.method || 'deterministic';
         var status = s.error ? 'FAILED' : 'OK';
-        var logType = s.error ? 'error' : (s.ai_powered === true ? 'ai' : 'success');
-        analysisLog(scorerNames[key] + ': ' + Math.round(s.score) + '/100 (' + method + ', ' + (s.elapsed_s || '?') + 's) ' + status, logType);
+        var logType = s.error ? 'error' : (method === 'gemini-2.0-flash' ? 'ai' : 'success');
+        analysisLog(scorerNames[key] + ': ' + Math.round(s.score) + '/100 [' + method + '] ' + (s.elapsed_s || '?') + 's ' + status, logType);
+        // Log first key finding as evidence
+        if (s.key_findings && s.key_findings.length > 0) {
+          analysisLog('  \u2192 ' + s.key_findings[0], 'info');
+        }
       });
 
       var dc = result.diagnostics.data_collection || {};
