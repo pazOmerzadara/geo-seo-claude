@@ -4305,7 +4305,7 @@ function renderCompareDropdowns() {
 
   // Auto-select if 2+ reports exist
   if (auditHistory.length >= 2) {
-    selA.value = auditHistory[1].id;  // older
+    selA.value = auditHistory[auditHistory.length - 1].id;  // oldest (first version)
     selB.value = auditHistory[0].id;  // latest
     renderComparison();
   }
@@ -4366,6 +4366,10 @@ var _origLoadAppData = loadAppData;
 loadAppData = async function() {
   await _origLoadAppData();
   await loadAuditHistory();
+  // Auto-display latest analysis on page load
+  if (auditHistory.length > 0) {
+    updateReportDisplay(auditHistory[0]);
+  }
 };
 
 // ──── Toast ────
