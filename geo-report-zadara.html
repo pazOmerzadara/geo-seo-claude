@@ -1838,6 +1838,10 @@ tbody tr:hover { background: var(--accent-dim); }
             <span class="hero__pill-score" style="color:var(--score-orange)">42</span>
             <span class="hero__pill-label">Brand</span>
           </div>
+          <div class="hero__pill">
+            <span class="hero__pill-score" style="color:var(--score-orange)">44</span>
+            <span class="hero__pill-label">Platform</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1850,7 +1854,7 @@ tbody tr:hover { background: var(--accent-dim); }
       <h2 class="section__title">Score Breakdown</h2>
       <p class="section__desc">Your site has gaps in AI readiness that competitors may be exploiting. Without action, your brand risks being invisible in AI-generated answers.</p>
     </div>
-    <div class="cards-grid fade-in" style="animation-delay:0.1s">
+    <div class="cards-grid fade-in" id="score-cards-grid" style="animation-delay:0.1s">
       <!-- Card 1 -->
       <div class="card">
         <div class="card__top-bar" style="background:var(--score-green)"></div>
@@ -1966,7 +1970,7 @@ tbody tr:hover { background: var(--accent-dim); }
       <h2 class="section__title">AI Visibility Dashboard</h2>
       <p class="section__desc">How likely your content is to be cited by each AI search platform. A score below 50 indicates significant barriers to citation.</p>
     </div>
-    <div class="cards-grid--5 cards-grid fade-in">
+    <div class="cards-grid--5 cards-grid fade-in" id="ai-visibility-cards">
       <!-- Google AIO -->
       <div class="card">
         <div class="card__top-bar" style="background:var(--score-orange)"></div>
@@ -2071,24 +2075,26 @@ tbody tr:hover { background: var(--accent-dim); }
       <div class="section__label">Access</div>
       <h2 class="section__title">AI Crawler Access</h2>
     </div>
-    <div class="callout callout--success fade-in" style="margin-bottom:20px">
-      <strong>&#10003; All major AI crawlers can access your site.</strong> Your robots.txt configuration is optimal for AI visibility. The barriers to AI citation are content and authority-related, not technical.
-    </div>
-    <div class="table-wrap fade-in">
-      <table>
-        <thead>
-          <tr><th>AI Crawler</th><th>Platform</th><th>Status</th><th>Impact</th><th>Action</th><th></th></tr>
-        </thead>
-        <tbody>
-          <tr data-rec-id="ai_crawler_1"><td>Googlebot</td><td>Google Search + AIO</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--red">Critical</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
-          <tr data-rec-id="ai_crawler_2"><td>GPTBot</td><td>ChatGPT / OpenAI</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--orange">High</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
-          <tr data-rec-id="ai_crawler_3"><td>Bingbot</td><td>Bing + Copilot + ChatGPT</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--orange">High</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
-          <tr data-rec-id="ai_crawler_4"><td>PerplexityBot</td><td>Perplexity AI</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
-          <tr data-rec-id="ai_crawler_5"><td>Google-Extended</td><td>Gemini Training</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
-          <tr data-rec-id="ai_crawler_6"><td>ClaudeBot</td><td>Anthropic Claude</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
-          <tr data-rec-id="ai_crawler_7"><td>Applebot-Extended</td><td>Apple Intelligence</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
-        </tbody>
-      </table>
+    <div id="crawler-access-content">
+      <div class="callout callout--success fade-in" style="margin-bottom:20px">
+        <strong>&#10003; All major AI crawlers can access your site.</strong> Your robots.txt configuration is optimal for AI visibility. The barriers to AI citation are content and authority-related, not technical.
+      </div>
+      <div class="table-wrap fade-in">
+        <table>
+          <thead>
+            <tr><th>AI Crawler</th><th>Platform</th><th>Status</th><th>Impact</th><th>Action</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr data-rec-id="ai_crawler_1"><td>Googlebot</td><td>Google Search + AIO</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--red">Critical</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+            <tr data-rec-id="ai_crawler_2"><td>GPTBot</td><td>ChatGPT / OpenAI</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--orange">High</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+            <tr data-rec-id="ai_crawler_3"><td>Bingbot</td><td>Bing + Copilot + ChatGPT</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--orange">High</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+            <tr data-rec-id="ai_crawler_4"><td>PerplexityBot</td><td>Perplexity AI</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+            <tr data-rec-id="ai_crawler_5"><td>Google-Extended</td><td>Gemini Training</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+            <tr data-rec-id="ai_crawler_6"><td>ClaudeBot</td><td>Anthropic Claude</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+            <tr data-rec-id="ai_crawler_7"><td>Applebot-Extended</td><td>Apple Intelligence</td><td><span class="badge badge--green">&#10003; Allowed</span></td><td><span class="badge badge--yellow">Medium</span></td><td style="color:var(--text-3)">No action needed</td><td><button class="btn-action-item" onclick="openActionModal(this)">+</button></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -2099,6 +2105,7 @@ tbody tr:hover { background: var(--accent-dim); }
       <h2 class="section__title">Brand Authority</h2>
       <p class="section__desc">AI platforms build trust by cross-referencing your brand across multiple authoritative sources.</p>
     </div>
+    <div id="brand-authority-content">
     <div class="table-wrap fade-in">
       <table>
         <thead>
@@ -2118,6 +2125,7 @@ tbody tr:hover { background: var(--accent-dim); }
     <div class="callout callout--warning fade-in">
       <strong>Every competitor with active Reddit presence has a structural advantage over Zadara in AI citations.</strong> YouTube channel exists with 2.28K subscribers and 242 videos but could be better optimized for AI discoverability. 46.7% of Perplexity citations come from Reddit, where Zadara has zero presence.
     </div>
+    </div>
   </section>
 
   <!-- ═══════════ CITABILITY ═══════════ -->
@@ -2127,7 +2135,7 @@ tbody tr:hover { background: var(--accent-dim); }
       <h2 class="section__title">Citability Analysis</h2>
       <p class="section__desc">Your most citable pages are your best candidates for appearing in AI-generated answers. Improving the least citable pages is the highest-ROI investment.</p>
     </div>
-
+    <div id="citability-content">
     <!-- Most Citable -->
     <div class="tier fade-in" style="margin-bottom:28px">
       <div class="collapsible__header open" onclick="toggleCollapsible(this)">
@@ -2205,6 +2213,7 @@ tbody tr:hover { background: var(--accent-dim); }
         </div>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- ═══════════ TECHNICAL HEALTH ═══════════ -->
@@ -2213,6 +2222,7 @@ tbody tr:hover { background: var(--accent-dim); }
       <div class="section__label">Infrastructure</div>
       <h2 class="section__title">Technical Health</h2>
     </div>
+    <div id="technical-health-content">
     <div class="cards-grid--3 cards-grid fade-in">
       <div class="card" data-rec-id="tech_health_1">
         <div class="card__title">Core Web Vitals <button class="btn-action-item" onclick="openActionModal(this)" style="margin-left:8px;vertical-align:middle">+</button></div>
@@ -2253,6 +2263,7 @@ tbody tr:hover { background: var(--accent-dim); }
     <div class="callout callout--warning fade-in">
       <strong>Critical finding:</strong> Your llms.txt file exists but contains RTF (Rich Text Format) data instead of the required Markdown format. This is actively harmful &mdash; AI systems that check this file encounter unusable binary content. This must be replaced immediately.
     </div>
+    </div>
   </section>
 
   <!-- ═══════════ SCHEMA ═══════════ -->
@@ -2262,6 +2273,7 @@ tbody tr:hover { background: var(--accent-dim); }
       <h2 class="section__title">Schema & Structured Data</h2>
       <p class="section__desc">Ready-to-use structured data code has been prepared in the full audit report. Your dev team can implement these changes in Yoast SEO with minimal effort.</p>
     </div>
+    <div id="schema-content">
     <div class="table-wrap fade-in">
       <table>
         <thead>
@@ -2279,6 +2291,7 @@ tbody tr:hover { background: var(--accent-dim); }
         </tbody>
       </table>
     </div>
+    </div>
   </section>
 
   <!-- ═══════════ LLMS.TXT ═══════════ -->
@@ -2288,6 +2301,7 @@ tbody tr:hover { background: var(--accent-dim); }
       <h2 class="section__title">llms.txt Status</h2>
       <p class="section__desc">llms.txt is an emerging standard (similar to robots.txt) that tells AI systems what your site is about and which pages are most important.</p>
     </div>
+    <div id="llms-txt-content">
     <div class="table-wrap fade-in" style="margin-bottom:20px">
       <table>
         <thead><tr><th>File</th><th>Status</th><th>Recommendation</th><th></th></tr></thead>
@@ -2300,6 +2314,7 @@ tbody tr:hover { background: var(--accent-dim); }
     <div class="callout callout--warning fade-in">
       Your current llms.txt is broken and <strong>actively harmful</strong>. A properly formatted replacement has been generated in the full audit report and should be deployed immediately.
     </div>
+    </div>
   </section>
 
   <!-- ═══════════ PLATFORM OPTIMIZATION ═══════════ -->
@@ -2309,7 +2324,7 @@ tbody tr:hover { background: var(--accent-dim); }
       <h2 class="section__title">AI Platform Optimization</h2>
       <p class="section__desc">Each AI search platform uses different indexes, ranking logic, and source preferences. Only 11% of domains are cited by both ChatGPT and Google AI Overviews for the same query.</p>
     </div>
-
+    <div id="platform-optimization-content">
     <div class="cards-grid--5 cards-grid fade-in">
       <!-- Google AIO -->
       <div class="card">
@@ -2550,6 +2565,7 @@ tbody tr:hover { background: var(--accent-dim); }
           </div>
         </div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -4005,8 +4021,8 @@ function updateReportDisplay(report) {
 
   // Update pill scores
   var pills = document.querySelectorAll('.hero__pill');
-  var scoreKeys = ['ai_visibility', 'content_eeat', 'technical', 'schema', 'brand'];
-  var pillLabels = ['AI Platform', 'Content E-E-A-T', 'Technical', 'Schema', 'Brand'];
+  var scoreKeys = ['ai_visibility', 'content_eeat', 'technical', 'schema', 'brand', 'platform'];
+  var pillLabels = ['AI Platform', 'Content E-E-A-T', 'Technical', 'Schema', 'Brand', 'Platform'];
   pills.forEach(function(pill, i) {
     var key = scoreKeys[i];
     if (key && scores[key] != null) {
@@ -4024,6 +4040,419 @@ function updateReportDisplay(report) {
   if (dateEl && report.created_at) {
     dateEl.textContent = new Date(report.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   }
+
+  // Update detailed sections from analysis_data
+  var ad = report.analysis_data;
+  if (!ad) return;
+
+  // --- Score Breakdown Cards ---
+  updateScoreCards(scores, ad);
+
+  // --- AI Visibility Dashboard (platform cards) ---
+  updateAIVisibilityDashboard(ad);
+
+  // --- Crawler Access ---
+  updateCrawlerAccess(ad);
+
+  // --- Brand Authority ---
+  updateBrandAuthority(ad);
+
+  // --- Citability ---
+  updateCitability(ad);
+
+  // --- Technical Health ---
+  updateTechnicalHealth(ad);
+
+  // --- Schema ---
+  updateSchema(ad);
+
+  // --- llms.txt ---
+  updateLlmsTxt(ad);
+
+  // --- Platform Optimization ---
+  updatePlatformOptimization(ad);
+}
+
+function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+function makeScoreCard(title, score, weight, desc) {
+  var color = getScoreColor(score);
+  var weighted = (score * weight / 100).toFixed(1);
+  var circumference = 163.36;
+  var offset = circumference - (score / 100) * circumference;
+  return '<div class="card">' +
+    '<div class="card__top-bar" style="background:var(--score-' + color + ')"></div>' +
+    '<div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">' +
+    '<div class="mini-gauge"><svg width="64" height="64" viewBox="0 0 64 64" class="gauge-svg">' +
+    '<circle cx="32" cy="32" r="26" class="gauge-bg" stroke-width="6"/>' +
+    '<circle cx="32" cy="32" r="26" class="gauge-fill" stroke-width="6" stroke="var(--score-' + color + ')" ' +
+    'stroke-dasharray="' + circumference + '" stroke-dashoffset="' + offset + '" data-target="' + score + '" data-max="100"/>' +
+    '</svg><div class="mini-gauge__center">' + score + '</div></div>' +
+    '<div><div class="card__title">' + title + '</div>' +
+    '<div class="card__subtitle">Weight: ' + weight + '% &middot; Weighted: ' + weighted + '</div></div>' +
+    '</div><div class="card__desc">' + esc(desc) + '</div></div>';
+}
+
+function updateScoreCards(scores, ad) {
+  var grid = document.getElementById('score-cards-grid');
+  if (!grid) return;
+
+  var cardDefs = [
+    { key: 'ai_visibility', title: 'AI Visibility & Citability', weight: 25, getDesc: function() {
+      var b = (ad.ai_visibility || {}).breakdown || {};
+      var cit = (b.citability || {}).score; var craw = (b.crawler_access || {}).score;
+      var parts = [];
+      if (craw != null) parts.push('Crawler access: ' + Math.round(craw) + '/100');
+      if (cit != null) parts.push('Citability: ' + Math.round(cit) + '/100');
+      return parts.length ? parts.join('. ') + '.' : 'AI visibility and citability analysis.';
+    }},
+    { key: 'content_eeat', title: 'Content Quality & E-E-A-T', weight: 20, getDesc: function() {
+      var b = (ad.content_eeat || {}).breakdown || {};
+      var findings = (ad.content_eeat || {}).key_findings || [];
+      if (findings.length) return findings[0];
+      var wc = ((b.content_metrics || {}).word_count);
+      return wc ? 'Word count: ' + wc + '. E-E-A-T total: ' + (b.eeat_total || '--') + '/100.' : 'Content quality and E-E-A-T analysis.';
+    }},
+    { key: 'technical', title: 'Technical Foundation', weight: 15, getDesc: function() {
+      var b = (ad.technical || {}).breakdown || {};
+      var ssr = b.ssr || {}; var sec = b.security || {};
+      var parts = [];
+      if (ssr.framework && ssr.framework !== 'Unknown') parts.push(ssr.framework + ' detected');
+      if (ssr.status === 'LOW_RISK') parts.push('Full SSR');
+      if (sec.missing && sec.missing.length) parts.push(sec.missing.length + ' security headers missing');
+      return parts.length ? parts.join('. ') + '.' : 'Technical SEO analysis.';
+    }},
+    { key: 'schema', title: 'Schema & Structured Data', weight: 10, getDesc: function() {
+      var types = (ad.schema || {}).types_found || [];
+      var total = (ad.schema || {}).total_blocks || 0;
+      return types.length ? types.length + ' schema types found: ' + types.slice(0, 4).join(', ') + (types.length > 4 ? '...' : '') + '.' : 'Schema analysis.';
+    }},
+    { key: 'brand', title: 'Brand Authority', weight: 20, getDesc: function() {
+      var findings = (ad.brand || {}).key_findings || [];
+      if (findings.length) return findings[0];
+      var ba = ((ad.brand || {}).breakdown || {}).brand_authority || {};
+      var parts = [];
+      if (ba.wikipedia) parts.push('Wikipedia: Yes');
+      if (ba.wikidata) parts.push('Wikidata: Yes');
+      return parts.length ? parts.join(', ') + '.' : 'Brand authority analysis.';
+    }},
+    { key: 'platform', title: 'Platform Optimization', weight: 10, getDesc: function() {
+      var platforms = ((ad.brand || {}).breakdown || {}).platforms || {};
+      var names = Object.keys(platforms);
+      if (!names.length) return 'Platform readiness analysis.';
+      var lowest = names.reduce(function(min, n) { return (platforms[n].score < platforms[min].score) ? n : min; }, names[0]);
+      return 'Lowest: ' + lowest.replace(/_/g, ' ') + ' (' + platforms[lowest].score + '/100). ' +
+        'Average: ' + (((ad.brand || {}).breakdown || {}).platform_average || '--') + '/100.';
+    }},
+  ];
+
+  var html = '';
+  cardDefs.forEach(function(def) {
+    var score = scores[def.key] != null ? Math.round(scores[def.key]) : 0;
+    html += makeScoreCard(def.title, score, def.weight, def.getDesc());
+  });
+  grid.innerHTML = html;
+}
+
+function makePlatformCard(name, score, gap, action) {
+  var color = getScoreColor(score);
+  var circumference = 163.36;
+  var offset = circumference - (score / 100) * circumference;
+  return '<div class="card"><div class="card__top-bar" style="background:var(--score-' + color + ')"></div>' +
+    '<div class="platform-card"><div class="mini-gauge">' +
+    '<svg width="64" height="64" viewBox="0 0 64 64" class="gauge-svg">' +
+    '<circle cx="32" cy="32" r="26" class="gauge-bg" stroke-width="6"/>' +
+    '<circle cx="32" cy="32" r="26" class="gauge-fill" stroke-width="6" stroke="var(--score-' + color + ')" ' +
+    'stroke-dasharray="' + circumference + '" stroke-dashoffset="' + offset + '" data-target="' + score + '" data-max="100"/>' +
+    '</svg><div class="mini-gauge__center">' + score + '</div></div>' +
+    '<div class="platform-card__info"><div class="card__title">' + name + '</div>' +
+    '<div class="platform-card__gap"><strong>Gap:</strong> ' + esc(gap) + '</div>' +
+    '<div class="platform-card__action">&#8594; ' + esc(action) + '</div>' +
+    '</div></div></div>';
+}
+
+function updateAIVisibilityDashboard(ad) {
+  var container = document.getElementById('ai-visibility-cards');
+  if (!container) return;
+  var platforms = ((ad.brand || {}).breakdown || {}).platforms;
+  if (!platforms) return;
+
+  var platformNames = {
+    google_aio: 'Google AI Overviews', chatgpt: 'ChatGPT Web Search',
+    perplexity: 'Perplexity AI', gemini: 'Google Gemini', bing_copilot: 'Bing Copilot'
+  };
+  var html = '';
+  Object.keys(platformNames).forEach(function(key) {
+    var p = platforms[key] || {};
+    var score = p.score != null ? Math.round(p.score) : 0;
+    var rationale = p.rationale || 'No details available';
+    html += makePlatformCard(platformNames[key], score, rationale, 'See detailed recommendations below');
+  });
+  container.innerHTML = html;
+}
+
+function updateCrawlerAccess(ad) {
+  var container = document.getElementById('crawler-access-content');
+  if (!container) return;
+  var crawlerData = ((ad.ai_visibility || {}).breakdown || {}).crawler_access;
+  if (!crawlerData) return;
+
+  var allowed = crawlerData.allowed || [];
+  var blocked = crawlerData.blocked || [];
+  var allClear = blocked.length === 0;
+
+  var crawlerInfo = {
+    'GPTBot': 'ChatGPT / OpenAI', 'ClaudeBot': 'Anthropic Claude', 'PerplexityBot': 'Perplexity AI',
+    'OAI-SearchBot': 'OpenAI Search', 'Google-Extended': 'Gemini Training', 'CCBot': 'Common Crawl',
+    'Bytespider': 'ByteDance', 'cohere-ai': 'Cohere', 'Googlebot': 'Google Search + AIO',
+    'Bingbot': 'Bing + Copilot', 'Applebot-Extended': 'Apple Intelligence'
+  };
+
+  var calloutClass = allClear ? 'callout--success' : 'callout--warning';
+  var calloutText = allClear
+    ? '<strong>&#10003; All major AI crawlers can access your site.</strong> Your robots.txt is optimal for AI visibility.'
+    : '<strong>&#9888; ' + blocked.length + ' crawler(s) blocked.</strong> This may reduce your AI search visibility.';
+
+  var rows = '';
+  allowed.forEach(function(name) {
+    var clean = name.replace(' (wildcard)', '');
+    rows += '<tr><td>' + clean + '</td><td>' + (crawlerInfo[clean] || 'AI Platform') + '</td>' +
+      '<td><span class="badge badge--green">&#10003; Allowed</span></td>' +
+      '<td><span class="badge badge--yellow">Medium</span></td>' +
+      '<td style="color:var(--text-3)">No action needed</td></tr>';
+  });
+  blocked.forEach(function(name) {
+    var clean = name.replace(' (wildcard)', '');
+    var isWild = name.indexOf('wildcard') > -1;
+    rows += '<tr><td>' + clean + '</td><td>' + (crawlerInfo[clean] || 'AI Platform') + '</td>' +
+      '<td><span class="badge badge--red">&#10007; Blocked' + (isWild ? ' (wildcard)' : '') + '</span></td>' +
+      '<td><span class="badge badge--red">Critical</span></td>' +
+      '<td>Unblock in robots.txt</td></tr>';
+  });
+
+  container.innerHTML = '<div class="callout ' + calloutClass + ' fade-in" style="margin-bottom:20px">' + calloutText + '</div>' +
+    '<div class="table-wrap fade-in"><table><thead><tr><th>AI Crawler</th><th>Platform</th><th>Status</th><th>Impact</th><th>Action</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table></div>';
+}
+
+function updateBrandAuthority(ad) {
+  var container = document.getElementById('brand-authority-content');
+  if (!container) return;
+  var brandMentions = ((ad.ai_visibility || {}).breakdown || {}).brand_mentions;
+  var brandData = ad.brand || {};
+  if (!brandMentions && !brandData.breakdown) return;
+
+  var wiki = brandMentions || {};
+  var findings = brandData.key_findings || ((brandData.breakdown || {}).key_findings) || [];
+
+  var rows = '';
+  rows += '<tr><td>Wikipedia</td><td><span class="badge badge--' + (wiki.wikipedia ? 'green">Yes' : 'red">No') + '</span></td>' +
+    '<td>' + (wiki.wikipedia ? 'Article found' : 'No article') + '</td><td><span class="badge badge--red">Very High</span></td></tr>';
+  rows += '<tr><td>Wikidata</td><td><span class="badge badge--' + (wiki.wikidata ? 'green">Yes' : 'red">No') + '</span></td>' +
+    '<td>' + (wiki.wikidata ? 'Entity found' : 'No entity') + '</td><td><span class="badge badge--orange">High</span></td></tr>';
+
+  var callout = findings.length > 0
+    ? '<div class="callout callout--info fade-in">' + findings.slice(0, 3).map(function(f) { return '<div>' + esc(f) + '</div>'; }).join('') + '</div>'
+    : '';
+
+  container.innerHTML = '<div class="table-wrap fade-in"><table><thead><tr><th>Platform</th><th>Presence</th><th>Status</th><th>AI Impact</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table></div>' + callout;
+}
+
+function updateCitability(ad) {
+  var container = document.getElementById('citability-content');
+  if (!container) return;
+  var citData = ((ad.ai_visibility || {}).breakdown || {}).citability;
+  if (!citData) return;
+
+  var topBlocks = citData.top_blocks || [];
+  var blocksAnalyzed = citData.blocks_analyzed || 0;
+  var avgScore = citData.avg_score != null ? Math.round(citData.avg_score) : '--';
+
+  var html = '<div class="callout callout--info fade-in" style="margin-bottom:20px">' +
+    '<strong>' + blocksAnalyzed + ' content blocks analyzed.</strong> Average citability score: ' + avgScore + '/100.' +
+    '</div>';
+
+  if (topBlocks.length > 0) {
+    html += '<div class="tier fade-in" style="margin-bottom:28px"><div class="collapsible__header open" onclick="toggleCollapsible(this)">' +
+      '<div class="collapsible__title"><span style="color:var(--score-green)">&#9650;</span> Top ' + topBlocks.length + ' Most Citable Content Blocks</div>' +
+      '<span class="collapsible__chevron">&#9660;</span></div><div class="collapsible__body open"><div class="collapsible__inner"><div class="cite-list">';
+    topBlocks.forEach(function(block, i) {
+      var blockColor = block.score >= 60 ? 'good' : block.score >= 40 ? 'neutral' : 'bad';
+      html += '<div class="cite-item cite-item--' + blockColor + '">' +
+        '<div class="cite-item__num">' + (i + 1) + '</div>' +
+        '<div><div class="cite-item__title">' + esc(block.heading || 'Untitled Block') + ' <span style="color:var(--text-3);font-weight:400">(' + block.score + '/100)</span></div>' +
+        '<div class="cite-item__desc">' + esc(block.preview || '') + '</div></div></div>';
+    });
+    html += '</div></div></div></div>';
+  }
+
+  container.innerHTML = html;
+}
+
+function updateTechnicalHealth(ad) {
+  var container = document.getElementById('technical-health-content');
+  if (!container) return;
+  var techData = (ad.technical || {}).breakdown;
+  if (!techData) return;
+
+  var items = [
+    { key: 'ssr', title: 'Server-Side Rendering', getStatus: function(d) {
+      return d.status === 'LOW_RISK' ? { badge: 'green', text: (d.framework !== 'Unknown' ? d.framework + ' — ' : '') + 'Full SSR' } :
+        d.status === 'MEDIUM' ? { badge: 'yellow', text: 'Partial SSR' } : { badge: 'red', text: 'Critical — No SSR' };
+    }, getDesc: function(d) { return d.status === 'LOW_RISK' ? 'AI crawlers see all content.' : 'Content may not be visible to AI crawlers.'; }},
+    { key: 'meta_tags', title: 'Meta Tags', getStatus: function(d) {
+      var missing = (d.missing || []).length;
+      return missing === 0 ? { badge: 'green', text: 'Complete' } : { badge: 'orange', text: missing + ' missing' };
+    }, getDesc: function(d) { return (d.missing || []).length ? 'Missing: ' + d.missing.join(', ') : 'All essential meta tags present.'; }},
+    { key: 'security', title: 'Security Headers', getStatus: function(d) {
+      var missing = (d.missing || []).length;
+      return missing === 0 ? { badge: 'green', text: 'Complete' } :
+        missing <= 2 ? { badge: 'yellow', text: missing + ' missing' } : { badge: 'orange', text: missing + ' missing' };
+    }, getDesc: function(d) { return (d.missing || []).length ? 'Missing: ' + d.missing.join(', ') : 'All security headers present.'; }},
+    { key: 'crawlability', title: 'Crawlability', getStatus: function(d) {
+      return d.has_robots && d.has_sitemap && !(d.blocked_crawlers || []).length ? { badge: 'green', text: 'Excellent' } : { badge: 'orange', text: 'Needs Work' };
+    }, getDesc: function(d) {
+      var parts = [];
+      if (d.has_robots) parts.push('robots.txt found'); else parts.push('No robots.txt');
+      if (d.has_sitemap) parts.push('Sitemap found'); else parts.push('No sitemap');
+      return parts.join('. ') + '.';
+    }},
+    { key: 'cwv_risk', title: 'Core Web Vitals', getStatus: function(d) {
+      return d.risk_level === 'LOW' ? { badge: 'green', text: 'Good (estimated)' } :
+        d.risk_level === 'MEDIUM' ? { badge: 'yellow', text: 'Medium Risk' } : { badge: 'red', text: 'High Risk' };
+    }, getDesc: function(d) { return d.risk_level === 'LOW' ? 'Strong user experience.' : 'Potential layout shift or LCP issues.'; }},
+    { key: 'mobile', title: 'Mobile Optimization', getStatus: function(d) {
+      return d.score >= 80 ? { badge: 'green', text: 'Good' } : { badge: 'orange', text: 'Needs Work' };
+    }, getDesc: function(d) { return d.score >= 80 ? 'Mobile-first indexing works correctly.' : 'May have mobile rendering issues.'; }},
+  ];
+
+  var html = '<div class="cards-grid--3 cards-grid fade-in">';
+  items.forEach(function(item) {
+    var d = techData[item.key] || {};
+    var status = item.getStatus(d);
+    var borderStyle = status.badge === 'green' ? '' : ' style="border-color:var(--score-' + status.badge + ')"';
+    html += '<div class="card"' + borderStyle + '>' +
+      '<div class="card__title">' + item.title + '</div>' +
+      '<span class="badge badge--' + status.badge + '" style="margin:8px 0">' + status.text + '</span>' +
+      '<div class="card__desc">' + item.getDesc(d) + '</div></div>';
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function updateSchema(ad) {
+  var container = document.getElementById('schema-content');
+  if (!container) return;
+  var schemaData = ad.schema;
+  if (!schemaData || !schemaData.breakdown) return;
+  var b = schemaData.breakdown;
+
+  var schemaItems = [
+    { key: 'organization', name: 'Organization', impact: 'Critical', getStatus: function(d) {
+      if (!d.found) return 'Missing';
+      return d.sameAs_count ? 'Found — ' + d.sameAs_count + ' sameAs links' : 'Found — incomplete';
+    }},
+    { key: 'article', name: 'Article + Author', impact: 'High', getStatus: function(d) {
+      if (!d.found) return 'Missing';
+      return d.has_author_person ? 'Author as Person' : 'Author info incomplete';
+    }},
+    { key: 'sameAs', name: 'sameAs (entity links)', impact: 'Critical', getStatus: function(d) {
+      return d.platforms_linked + ' links (' + (d.platforms || []).join(', ') + ')';
+    }},
+    { key: 'speakable', name: 'speakable', impact: 'Medium', getStatus: function(d) { return d.found ? 'Found' : 'Missing'; }},
+    { key: 'breadcrumb', name: 'BreadcrumbList', impact: 'Low-Medium', getStatus: function(d) { return d.found ? 'Found' : 'Missing'; }},
+    { key: 'website_search', name: 'WebSite + SearchAction', impact: 'Medium', getStatus: function(d) {
+      if (!d.found) return 'Missing';
+      return d.has_search_action ? 'Complete with SearchAction' : 'Found without SearchAction';
+    }},
+  ];
+
+  var rows = '';
+  schemaItems.forEach(function(item) {
+    var d = b[item.key] || {};
+    var found = d.found || d.score > 0;
+    var impactColors = { Critical: 'red', High: 'orange', Medium: 'yellow', 'Low-Medium': 'gray' };
+    rows += '<tr><td>' + item.name + '</td>' +
+      '<td><span class="badge badge--' + (found ? 'green">Yes' : 'red">No') + '</span></td>' +
+      '<td>' + item.getStatus(d) + '</td>' +
+      '<td><span class="badge badge--' + (impactColors[item.impact] || 'gray') + '">' + item.impact + '</span></td></tr>';
+  });
+
+  container.innerHTML = '<div class="table-wrap fade-in"><table><thead><tr><th>Schema Type</th><th>Present</th><th>Status</th><th>AI Impact</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table></div>';
+}
+
+function updateLlmsTxt(ad) {
+  var container = document.getElementById('llms-txt-content');
+  if (!container) return;
+  var llmsData = ((ad.ai_visibility || {}).breakdown || {}).llms_txt;
+  if (!llmsData) return;
+
+  var llmsExists = llmsData.exists;
+  var fullExists = llmsData.full_exists;
+  var llmsScore = llmsData.score != null ? llmsData.score : 0;
+
+  var llmsStatus, llmsRec, fullStatus, fullRec;
+  if (!llmsExists) {
+    llmsStatus = '<span class="badge badge--red">Missing (404)</span>';
+    llmsRec = 'Create llms.txt with site overview and key pages';
+  } else if (llmsScore >= 70) {
+    llmsStatus = '<span class="badge badge--green">Good (score: ' + llmsScore + ')</span>';
+    llmsRec = 'Well configured';
+  } else if (llmsScore >= 30) {
+    llmsStatus = '<span class="badge badge--yellow">Needs Improvement (score: ' + llmsScore + ')</span>';
+    llmsRec = 'Expand content and add more pages';
+  } else {
+    llmsStatus = '<span class="badge badge--red">Poor (score: ' + llmsScore + ')</span>';
+    llmsRec = 'Rewrite with proper Markdown format';
+  }
+
+  fullStatus = fullExists ? '<span class="badge badge--green">Present</span>' : '<span class="badge badge--orange">Missing (404)</span>';
+  fullRec = fullExists ? 'Good — comprehensive version available' : 'Create after fixing llms.txt';
+
+  var calloutClass = llmsScore >= 70 ? 'callout--success' : llmsScore >= 30 ? 'callout--warning' : 'callout--warning';
+  var calloutText = !llmsExists
+    ? 'No llms.txt file found. Creating one gives AI systems a roadmap to your most important content.'
+    : llmsScore >= 70
+    ? 'Your llms.txt is well configured and helping AI systems understand your site.'
+    : 'Your llms.txt needs improvement to effectively guide AI systems.';
+
+  container.innerHTML = '<div class="table-wrap fade-in" style="margin-bottom:20px"><table>' +
+    '<thead><tr><th>File</th><th>Status</th><th>Recommendation</th></tr></thead><tbody>' +
+    '<tr><td style="font-family:var(--font-mono);font-size:12px">/llms.txt</td><td>' + llmsStatus + '</td><td>' + llmsRec + '</td></tr>' +
+    '<tr><td style="font-family:var(--font-mono);font-size:12px">/llms-full.txt</td><td>' + fullStatus + '</td><td>' + fullRec + '</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="callout ' + calloutClass + ' fade-in">' + calloutText + '</div>';
+}
+
+function updatePlatformOptimization(ad) {
+  var container = document.getElementById('platform-optimization-content');
+  if (!container) return;
+  var platforms = ((ad.brand || {}).breakdown || {}).platforms;
+  if (!platforms) return;
+
+  var platformNames = {
+    google_aio: 'Google AIO', chatgpt: 'ChatGPT',
+    perplexity: 'Perplexity', gemini: 'Gemini', bing_copilot: 'Bing Copilot'
+  };
+  var platformAvg = ((ad.brand || {}).breakdown || {}).platform_average;
+  var avgLabel = platformAvg >= 80 ? 'Excellent' : platformAvg >= 60 ? 'Moderate' : platformAvg >= 40 ? 'Weak' : 'Critical';
+
+  var html = '<div class="cards-grid--5 cards-grid fade-in">';
+  Object.keys(platformNames).forEach(function(key) {
+    var p = platforms[key] || {};
+    var score = p.score != null ? Math.round(p.score) : 0;
+    var rationale = p.rationale || 'No details available';
+    html += makePlatformCard(platformNames[key], score, rationale, 'See platform-specific recommendations');
+  });
+  html += '</div>';
+  if (platformAvg != null) {
+    var avgColor = getScoreColor(platformAvg);
+    html += '<div class="callout callout--info fade-in" style="margin:24px 0 0">' +
+      '<strong>Combined Platform Readiness: ' + Math.round(platformAvg) + '/100 (' + avgLabel + ').</strong></div>';
+  }
+  container.innerHTML = html;
 }
 
 var _analysisStartTime = null;
@@ -4242,7 +4671,8 @@ async function startReAnalysis() {
     updateReportDisplay({
       overall_score: result.overall_score,
       scores: result.scores,
-      created_at: result.created_at
+      created_at: result.created_at,
+      analysis_data: result.analysis_data
     });
 
     // Reload history
@@ -4331,6 +4761,7 @@ function renderComparison() {
     { key: 'technical', label: 'Technical Foundation' },
     { key: 'schema', label: 'Schema & Structured Data' },
     { key: 'brand', label: 'Brand Authority' },
+    { key: 'platform', label: 'Platform Optimization' },
   ];
 
   var html = '';

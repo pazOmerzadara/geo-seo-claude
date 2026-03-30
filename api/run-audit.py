@@ -265,6 +265,7 @@ class handler(BaseHTTPRequestHandler):
                     'technical': scores.get('technical', 0),
                     'schema': scores.get('schema', 0),
                     'brand': scores.get('brand', 0),
+                    'platform': round(float(platform_avg), 1),
                 },
                 'analysis_data': {
                     'ai_visibility': results.get('ai_visibility', {}),
