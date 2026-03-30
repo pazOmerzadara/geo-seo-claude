@@ -6,6 +6,7 @@ from http.server import BaseHTTPRequestHandler
 import json
 import os
 import re
+import time
 import urllib.request
 import urllib.error
 from urllib.parse import quote_plus
@@ -176,15 +177,25 @@ class handler(BaseHTTPRequestHandler):
             brand_name = body.get("brand_name", domain.replace("www.", "").split(".")[0])
 
             # Always do deterministic Wikipedia/Wikidata check
+            print(f"[BRAND-AI] Checking Wikipedia/Wikidata for brand: {brand_name}")
             wiki_data = check_wikipedia(brand_name)
+            print(f"[BRAND-AI] Wikipedia: {wiki_data['wikipedia']}, Wikidata: {wiki_data['wikidata']}")
 
             api_key = os.environ.get("GOOGLE_API_KEY", "")
+            print(f"[BRAND-AI] GOOGLE_API_KEY present: {bool(api_key)} (length={len(api_key)})")
 
             if not api_key:
+                print(f"[BRAND-AI] NO API KEY — using deterministic fallback")
                 result = deterministic_brand_score(page_data, robots_data, domain, brand_name, wiki_data)
             else:
                 try:
+                    print(f"[BRAND-AI] Calling Gemini API for platform readiness...")
+                    gemini_start = time.time()
                     ai_result = call_gemini_api(api_key, page_data, robots_data, domain, brand_name, wiki_data)
+
+                    gemini_elapsed = round(time.time() - gemini_start, 2)
+                    print(f"[BRAND-AI] Gemini API responded in {gemini_elapsed}s")
+                    print(f"[BRAND-AI] Gemini result keys: {list(ai_result.keys())}")
 
                     platforms = {}
                     for p in ["google_aio", "chatgpt", "perplexity", "gemini", "bing_copilot"]:
@@ -199,6 +210,8 @@ class handler(BaseHTTPRequestHandler):
 
                     # Combined: 60% platform readiness, 40% brand authority
                     combined = round(platform_avg * 0.6 + brand_auth * 0.4)
+
+                    print(f"[BRAND-AI] AI scoring: platform_avg={platform_avg}, brand_auth={brand_auth}, combined={combined}")
 
                     result = {
                         "score": combined,
@@ -215,7 +228,8 @@ class handler(BaseHTTPRequestHandler):
                         "ai_powered": True,
                     }
                 except Exception as ai_err:
-                    print(f"AI scoring failed: {ai_err}")
+                    print(f"[BRAND-AI] Gemini API FAILED: {ai_err}")
+                    print(f"[BRAND-AI] Falling back to deterministic scoring")
                     result = deterministic_brand_score(page_data, robots_data, domain, brand_name, wiki_data)
                     result["breakdown"]["key_findings"].append(f"AI scoring failed: {str(ai_err)}")
 

@@ -6,6 +6,7 @@ from http.server import BaseHTTPRequestHandler
 import json
 import os
 import re
+import time
 import urllib.request
 import urllib.error
 
@@ -160,11 +161,22 @@ class handler(BaseHTTPRequestHandler):
 
             api_key = os.environ.get("GOOGLE_API_KEY", "")
 
+            print(f"[CONTENT-AI] GOOGLE_API_KEY present: {bool(api_key)} (length={len(api_key)})")
+            print(f"[CONTENT-AI] page_data word_count={page_data.get('word_count', 0)}, "
+                  f"content_blocks={len(content_blocks)}")
+
             if not api_key:
+                print(f"[CONTENT-AI] NO API KEY — using deterministic fallback")
                 result = deterministic_content_score(page_data, content_blocks)
             else:
                 try:
+                    print(f"[CONTENT-AI] Calling Gemini API...")
+                    gemini_start = time.time()
                     ai_result = call_gemini_api(api_key, page_data, content_blocks)
+
+                    gemini_elapsed = round(time.time() - gemini_start, 2)
+                    print(f"[CONTENT-AI] Gemini API responded in {gemini_elapsed}s")
+                    print(f"[CONTENT-AI] Gemini result keys: {list(ai_result.keys())}")
 
                     # Calculate deterministic content metrics
                     word_count = page_data.get("word_count", 0)
@@ -214,8 +226,11 @@ class handler(BaseHTTPRequestHandler):
                         "key_findings": ai_result.get("key_findings", []),
                         "ai_powered": True,
                     }
+                    print(f"[CONTENT-AI] AI scoring complete: score={score}, ai_powered=True")
+
                 except Exception as ai_err:
-                    print(f"AI scoring failed, falling back to deterministic: {ai_err}")
+                    print(f"[CONTENT-AI] Gemini API FAILED: {ai_err}")
+                    print(f"[CONTENT-AI] Falling back to deterministic scoring")
                     result = deterministic_content_score(page_data, content_blocks)
                     result["key_findings"].append(f"AI scoring failed: {str(ai_err)}")
 

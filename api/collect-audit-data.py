@@ -253,11 +253,21 @@ class handler(BaseHTTPRequestHandler):
                 url = f'https://{url}'
 
             domain = urlparse(url).netloc
+            print(f"[COLLECT] Fetching data for {domain} ({url})")
 
             # Fetch all data
             page_data = fetch_page(url)
+            print(f"[COLLECT] Page fetched: status={page_data.get('status_code')}, "
+                  f"word_count={page_data.get('word_count', 0)}, "
+                  f"errors={page_data.get('errors', [])}")
+
             robots_data = fetch_robots_txt(url)
+            print(f"[COLLECT] robots.txt: exists={robots_data.get('exists', False)}, "
+                  f"sitemaps={len(robots_data.get('sitemaps', []))}")
+
             llms_data = fetch_llms_txt(url)
+            print(f"[COLLECT] llms.txt: exists={llms_data.get('llms_txt', {}).get('exists', False)}, "
+                  f"llms-full.txt: exists={llms_data.get('llms_full_txt', {}).get('exists', False)}")
 
             # Extract content blocks from raw HTML
             try:
@@ -265,6 +275,7 @@ class handler(BaseHTTPRequestHandler):
                 content_blocks = extract_content_blocks(resp.text) if resp.status_code == 200 else []
             except Exception:
                 content_blocks = []
+            print(f"[COLLECT] Content blocks extracted: {len(content_blocks)}")
 
             result = {
                 "url": url,
