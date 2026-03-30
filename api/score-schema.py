@@ -176,6 +176,7 @@ class handler(BaseHTTPRequestHandler):
             breakdown["validation"] = {"score": 5 if not errors else 0, "errors": errors}
 
             total = sum(v["score"] for v in breakdown.values())
+            print(f"[SCHEMA] score={total} | types_found={types_found} | total_blocks={len(schemas)}")
 
             result = {
                 "score": total,

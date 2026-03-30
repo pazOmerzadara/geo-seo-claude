@@ -56,12 +56,21 @@ def call_scoring_function(base_url, endpoint, payload):
     body = json.dumps(payload).encode()
     req = urllib.request.Request(url, data=body, method='POST')
     req.add_header('Content-Type', 'application/json')
+    start = time.time()
     try:
         resp = urllib.request.urlopen(req, timeout=120)
-        return json.loads(resp.read().decode())
+        result = json.loads(resp.read().decode())
+        elapsed = round(time.time() - start, 2)
+        ai_flag = result.get('ai_powered', 'n/a')
+        print(f"[AUDIT] {endpoint} completed in {elapsed}s | score={result.get('score', '?')} | ai_powered={ai_flag}")
+        if result.get('error'):
+            print(f"[AUDIT] {endpoint} returned error: {result['error']}")
+        result['_elapsed_s'] = elapsed
+        return result
     except Exception as e:
-        print(f"Error calling {endpoint}: {e}")
-        return {"score": 0, "error": str(e)}
+        elapsed = round(time.time() - start, 2)
+        print(f"[AUDIT] {endpoint} FAILED after {elapsed}s: {e}")
+        return {"score": 0, "error": str(e), "_elapsed_s": elapsed}
 
 
 def extract_domain(url):
@@ -116,6 +125,7 @@ class handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         try:
+            audit_start = time.time()
             content_length = int(self.headers.get('Content-Length', 0))
             body = json.loads(self.rfile.read(content_length)) if content_length else {}
 
@@ -133,6 +143,10 @@ class handler(BaseHTTPRequestHandler):
             domain = extract_domain(url)
             base_url = f"https://{self.headers.get('Host', 'localhost')}"
 
+            print(f"[AUDIT] ====== STARTING AUDIT for {domain} ======")
+            print(f"[AUDIT] URL: {url} | triggered_by: {triggered_by}")
+            print(f"[AUDIT] Base URL for internal calls: {base_url}")
+
             # Step 1: Create audit_reports row with status='running'
             report_id = None
             if SUPABASE_URL and SUPABASE_SERVICE_KEY:
@@ -148,6 +162,7 @@ class handler(BaseHTTPRequestHandler):
                     report_id = rows[0]['id']
 
             # Step 2: Collect raw data
+            print(f"[AUDIT] Step 2: Collecting raw data...")
             collect_result = call_scoring_function(base_url, 'collect-audit-data', {'url': url})
             if collect_result.get('error') and not collect_result.get('page_data'):
                 error_msg = collect_result.get('error', 'Data collection failed')
@@ -165,7 +180,13 @@ class handler(BaseHTTPRequestHandler):
             content_blocks = collect_result.get('content_blocks', [])
             brand_name = extract_brand_name(domain, page_data)
 
+            print(f"[AUDIT] Data collected: word_count={page_data.get('word_count', 0)}, "
+                  f"content_blocks={len(content_blocks)}, "
+                  f"robots_exists={robots_data.get('exists', False)}, "
+                  f"brand_name={brand_name}")
+
             # Step 3: Run all scoring functions in parallel
+            print(f"[AUDIT] Step 3: Launching 5 scoring functions in parallel...")
             scoring_payload = {
                 'page_data': page_data,
                 'robots_data': robots_data,
@@ -191,6 +212,14 @@ class handler(BaseHTTPRequestHandler):
                     except Exception as e:
                         results[key] = {"score": 0, "error": str(e)}
 
+            # Log scoring results summary
+            print(f"[AUDIT] ---- Scoring Results Summary ----")
+            for key, res in results.items():
+                print(f"[AUDIT]   {key}: score={res.get('score', '?')} | "
+                      f"ai_powered={res.get('ai_powered', 'n/a')} | "
+                      f"elapsed={res.get('_elapsed_s', '?')}s | "
+                      f"error={res.get('error', 'none')}")
+
             # Step 4: Calculate composite GEO score
             scores = {}
             for key, weight in SCORE_WEIGHTS.items():
@@ -212,6 +241,15 @@ class handler(BaseHTTPRequestHandler):
                 float(platform_avg) * SCORE_WEIGHTS['platform'],
                 1
             )
+
+            print(f"[AUDIT] ---- Score Breakdown ----")
+            print(f"[AUDIT]   ai_visibility: {scores.get('ai_visibility', 0)} * 0.25 = {scores.get('ai_visibility', 0) * 0.25}")
+            print(f"[AUDIT]   content_eeat:  {scores.get('content_eeat', 0)} * 0.20 = {scores.get('content_eeat', 0) * 0.20}")
+            print(f"[AUDIT]   technical:     {scores.get('technical', 0)} * 0.15 = {scores.get('technical', 0) * 0.15}")
+            print(f"[AUDIT]   schema:        {scores.get('schema', 0)} * 0.10 = {scores.get('schema', 0) * 0.10}")
+            print(f"[AUDIT]   brand:         {scores.get('brand', 0)} * 0.20 = {scores.get('brand', 0) * 0.20}")
+            print(f"[AUDIT]   platform_avg:  {platform_avg} * 0.10 = {float(platform_avg) * 0.10}")
+            print(f"[AUDIT]   OVERALL: {overall_score}")
 
             # Build the complete result
             audit_result = {
@@ -238,7 +276,28 @@ class handler(BaseHTTPRequestHandler):
                 'pages_analyzed': 1,  # Homepage analysis
                 'brand_name': brand_name,
                 'created_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+                'diagnostics': {
+                    'total_elapsed_s': round(time.time() - audit_start, 2),
+                    'scorers': {
+                        key: {
+                            'score': res.get('score', 0),
+                            'ai_powered': res.get('ai_powered', 'n/a'),
+                            'elapsed_s': res.get('_elapsed_s', 0),
+                            'error': res.get('error'),
+                        }
+                        for key, res in results.items()
+                    },
+                    'data_collection': {
+                        'word_count': page_data.get('word_count', 0),
+                        'content_blocks': len(content_blocks),
+                        'robots_exists': robots_data.get('exists', False),
+                        'collect_elapsed_s': collect_result.get('_elapsed_s', 0),
+                    },
+                },
             }
+
+            total_elapsed = round(time.time() - audit_start, 2)
+            print(f"[AUDIT] ====== AUDIT COMPLETE for {domain} in {total_elapsed}s | overall={overall_score} ======")
 
             # Step 5: Update audit_reports row
             if report_id:

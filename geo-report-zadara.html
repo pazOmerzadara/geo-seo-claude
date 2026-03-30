@@ -1063,7 +1063,7 @@ tbody tr:hover { background: var(--accent-dim); }
   border-radius: 16px;
   padding: 40px;
   text-align: center;
-  max-width: 420px;
+  max-width: 600px;
   width: 90%;
   box-shadow: var(--card-shadow-hover);
 }
@@ -1099,6 +1099,93 @@ tbody tr:hover { background: var(--accent-dim); }
   border-radius: 2px;
   transition: width 0.5s ease;
   width: 0%;
+}
+.analysis-log {
+  margin-top: 16px;
+  text-align: left;
+  background: var(--bg-3);
+  border: 1px solid var(--border-1);
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.analysis-log-entry {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.analysis-log-entry .log-time {
+  color: var(--text-3);
+  min-width: 42px;
+  flex-shrink: 0;
+}
+.analysis-log-entry .log-icon {
+  flex-shrink: 0;
+  width: 14px;
+  text-align: center;
+}
+.analysis-log-entry .log-msg {
+  color: var(--text-2);
+}
+.analysis-log-entry.success .log-msg { color: #22c55e; }
+.analysis-log-entry.error .log-msg { color: #ef4444; }
+.analysis-log-entry.info .log-msg { color: var(--text-2); }
+.analysis-log-entry.ai .log-msg { color: #a78bfa; }
+
+/* Diagnostics panel shown after analysis */
+.diagnostics-panel {
+  margin-top: 20px;
+  background: var(--bg-3);
+  border: 1px solid var(--border-1);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: left;
+}
+.diagnostics-panel h4 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--text-1);
+  font-weight: 600;
+}
+.diag-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-1);
+  font-size: 12px;
+}
+.diag-row:last-child { border-bottom: none; }
+.diag-label {
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.diag-value {
+  font-weight: 500;
+  color: var(--text-1);
+}
+.diag-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.diag-badge.ai { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.diag-badge.fallback { background: rgba(251,191,36,0.15); color: #f59e0b; }
+.diag-badge.ok { background: rgba(34,197,94,0.15); color: #22c55e; }
+.diag-badge.fail { background: rgba(239,68,68,0.15); color: #ef4444; }
+.diag-time {
+  color: var(--text-3);
+  font-size: 11px;
+  margin-left: 8px;
 }
 
 /* ──── COMPARE SECTION ──── */
@@ -2954,6 +3041,8 @@ tbody tr:hover { background: var(--accent-dim); }
     <div class="analysis-progress">
       <div class="analysis-progress__fill" id="analysis-progress"></div>
     </div>
+    <div class="analysis-log" id="analysis-log"></div>
+    <div class="diagnostics-panel hidden" id="diagnostics-panel"></div>
   </div>
 </div>
 
@@ -3891,6 +3980,81 @@ function updateReportDisplay(report) {
   }
 }
 
+var _analysisStartTime = null;
+
+function analysisLog(msg, type) {
+  type = type || 'info';
+  var logEl = document.getElementById('analysis-log');
+  var elapsed = _analysisStartTime ? ((Date.now() - _analysisStartTime) / 1000).toFixed(1) : '0.0';
+  var icons = { info: '\u2022', success: '\u2713', error: '\u2717', ai: '\u2728' };
+  var entry = document.createElement('div');
+  entry.className = 'analysis-log-entry ' + type;
+  entry.innerHTML = '<span class="log-time">' + elapsed + 's</span>' +
+    '<span class="log-icon">' + (icons[type] || '\u2022') + '</span>' +
+    '<span class="log-msg">' + msg + '</span>';
+  logEl.appendChild(entry);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function renderDiagnostics(result) {
+  var diag = result.diagnostics;
+  if (!diag) return;
+
+  var panel = document.getElementById('diagnostics-panel');
+  panel.classList.remove('hidden');
+
+  var scorerNames = {
+    ai_visibility: 'AI Visibility',
+    content_eeat: 'Content E-E-A-T',
+    technical: 'Technical SEO',
+    schema: 'Schema & Structured Data',
+    brand: 'Brand Authority'
+  };
+
+  var html = '<h4>Analysis Diagnostics</h4>';
+
+  // Total time
+  html += '<div class="diag-row">' +
+    '<span class="diag-label">Total analysis time</span>' +
+    '<span class="diag-value">' + diag.total_elapsed_s + 's</span></div>';
+
+  // Data collection
+  var dc = diag.data_collection || {};
+  html += '<div class="diag-row">' +
+    '<span class="diag-label">Data collection<span class="diag-time">' + (dc.collect_elapsed_s || '?') + 's</span></span>' +
+    '<span class="diag-value">' + (dc.word_count || 0) + ' words, ' +
+    (dc.content_blocks || 0) + ' blocks, robots: ' + (dc.robots_exists ? 'yes' : 'no') + '</span></div>';
+
+  // Per-scorer rows
+  var scorers = diag.scorers || {};
+  Object.keys(scorerNames).forEach(function(key) {
+    var s = scorers[key] || {};
+    var name = scorerNames[key];
+    var aiFlag = s.ai_powered === true ? '<span class="diag-badge ai">Gemini AI</span>' :
+                 s.ai_powered === false ? '<span class="diag-badge fallback">Fallback</span>' :
+                 '<span class="diag-badge ok">Deterministic</span>';
+    var statusBadge = s.error ? '<span class="diag-badge fail">Error</span>' :
+                      '<span class="diag-badge ok">OK</span>';
+
+    html += '<div class="diag-row">' +
+      '<span class="diag-label">' + name + ' ' + aiFlag + ' ' + statusBadge +
+      '<span class="diag-time">' + (s.elapsed_s || '?') + 's</span></span>' +
+      '<span class="diag-value" style="font-size:16px;font-weight:700">' + Math.round(s.score || 0) + '</span></div>';
+
+    if (s.error) {
+      html += '<div class="diag-row" style="padding-left:20px">' +
+        '<span class="diag-label" style="color:#ef4444;font-size:11px">' + s.error + '</span></div>';
+    }
+  });
+
+  // Overall
+  html += '<div class="diag-row" style="border-top:2px solid var(--border-1);margin-top:4px;padding-top:8px">' +
+    '<span class="diag-label" style="font-weight:700">Overall Score</span>' +
+    '<span class="diag-value" style="font-size:20px;color:var(--accent)">' + Math.round(result.overall_score) + '</span></div>';
+
+  panel.innerHTML = html;
+}
+
 async function startReAnalysis() {
   if (!currentUser) {
     showToast('Please sign in to run an analysis', 'error');
@@ -3901,16 +4065,25 @@ async function startReAnalysis() {
   btn.disabled = true;
 
   var overlay = document.getElementById('analysis-overlay');
+  var logEl = document.getElementById('analysis-log');
+  var diagPanel = document.getElementById('diagnostics-panel');
+  logEl.innerHTML = '';
+  diagPanel.innerHTML = '';
+  diagPanel.classList.add('hidden');
   overlay.classList.remove('hidden');
 
+  _analysisStartTime = Date.now();
+
   var phases = [
-    { msg: 'Fetching website data...', detail: 'Crawling homepage, robots.txt, llms.txt', pct: 15 },
-    { msg: 'Analyzing AI visibility...', detail: 'Citability scoring, crawler access', pct: 35 },
-    { msg: 'Technical SEO analysis...', detail: 'SSR, meta tags, security headers', pct: 50 },
-    { msg: 'Schema validation...', detail: 'Structured data, sameAs, JSON-LD', pct: 65 },
-    { msg: 'AI content review...', detail: 'E-E-A-T assessment via Gemini AI', pct: 80 },
-    { msg: 'Brand authority check...', detail: 'Wikipedia, platform readiness', pct: 92 },
+    { msg: 'Fetching website data...', detail: 'Crawling homepage, robots.txt, llms.txt', pct: 15, log: 'Collecting page data, robots.txt, llms.txt...' },
+    { msg: 'Analyzing AI visibility...', detail: 'Citability scoring, crawler access', pct: 35, log: 'Running AI Visibility scorer...' },
+    { msg: 'Technical SEO analysis...', detail: 'SSR, meta tags, security headers', pct: 50, log: 'Running Technical SEO scorer...' },
+    { msg: 'Schema validation...', detail: 'Structured data, sameAs, JSON-LD', pct: 65, log: 'Running Schema scorer...' },
+    { msg: 'AI content review...', detail: 'E-E-A-T assessment via Gemini AI', pct: 80, log: 'Running Content E-E-A-T scorer (Gemini API)...' },
+    { msg: 'Brand authority check...', detail: 'Wikipedia, platform readiness', pct: 92, log: 'Running Brand Authority scorer (Gemini API)...' },
   ];
+
+  analysisLog('Starting analysis for ' + REPORT_URL);
 
   // Animate progress phases
   var phaseIdx = 0;
@@ -3919,6 +4092,7 @@ async function startReAnalysis() {
       document.getElementById('analysis-phase').textContent = phases[phaseIdx].msg;
       document.getElementById('analysis-detail').textContent = phases[phaseIdx].detail;
       document.getElementById('analysis-progress').style.width = phases[phaseIdx].pct + '%';
+      analysisLog(phases[phaseIdx].log);
       phaseIdx++;
     }
   }, 5000);
@@ -3942,13 +4116,40 @@ async function startReAnalysis() {
 
     var result = await response.json();
 
+    // Log diagnostics to console
+    console.log('[Re-Analyze] Full result:', result);
+
+    // Log per-scorer results to the live log
+    if (result.diagnostics && result.diagnostics.scorers) {
+      var scorerNames = {
+        ai_visibility: 'AI Visibility',
+        content_eeat: 'Content E-E-A-T',
+        technical: 'Technical SEO',
+        schema: 'Schema',
+        brand: 'Brand Authority'
+      };
+      Object.keys(scorerNames).forEach(function(key) {
+        var s = result.diagnostics.scorers[key];
+        if (!s) return;
+        var method = s.ai_powered === true ? 'Gemini AI' : s.ai_powered === false ? 'Fallback' : 'Deterministic';
+        var status = s.error ? 'FAILED' : 'OK';
+        var logType = s.error ? 'error' : (s.ai_powered === true ? 'ai' : 'success');
+        analysisLog(scorerNames[key] + ': ' + Math.round(s.score) + '/100 (' + method + ', ' + (s.elapsed_s || '?') + 's) ' + status, logType);
+      });
+
+      var dc = result.diagnostics.data_collection || {};
+      analysisLog('Data: ' + (dc.word_count || 0) + ' words, ' + (dc.content_blocks || 0) + ' blocks (' + (dc.collect_elapsed_s || '?') + 's)', 'info');
+      analysisLog('Total time: ' + result.diagnostics.total_elapsed_s + 's', 'info');
+    }
+
     // Update progress to 100%
     document.getElementById('analysis-phase').textContent = 'Analysis complete!';
     document.getElementById('analysis-detail').textContent = 'Score: ' + Math.round(result.overall_score) + '/100';
     document.getElementById('analysis-progress').style.width = '100%';
+    analysisLog('Overall Score: ' + Math.round(result.overall_score) + '/100', 'success');
 
-    // Short delay to show completion
-    await new Promise(function(r) { setTimeout(r, 1000); });
+    // Render diagnostics panel
+    renderDiagnostics(result);
 
     // Update the report display
     updateReportDisplay({
@@ -3964,16 +4165,27 @@ async function startReAnalysis() {
 
   } catch (err) {
     clearInterval(phaseInterval);
+    analysisLog('FAILED: ' + (err.message || 'Unknown error'), 'error');
     console.error('Re-analysis failed:', err);
     showToast(err.message || 'Analysis failed. Please try again.', 'error');
   } finally {
-    overlay.classList.add('hidden');
     btn.classList.remove('loading');
     btn.disabled = false;
-    // Reset progress
-    document.getElementById('analysis-progress').style.width = '0%';
-    document.getElementById('analysis-phase').textContent = 'Preparing analysis...';
-    document.getElementById('analysis-detail').textContent = 'This may take 30-60 seconds';
+    // Don't auto-hide overlay — let user read diagnostics. Add a close button.
+    var closeBtn = document.createElement('button');
+    closeBtn.textContent = 'Close';
+    closeBtn.style.cssText = 'margin-top:16px;padding:8px 24px;border-radius:8px;border:1px solid var(--border-1);background:var(--bg-2);color:var(--text-1);cursor:pointer;font-size:13px;';
+    closeBtn.onclick = function() {
+      overlay.classList.add('hidden');
+      logEl.innerHTML = '';
+      diagPanel.innerHTML = '';
+      diagPanel.classList.add('hidden');
+      document.getElementById('analysis-progress').style.width = '0%';
+      document.getElementById('analysis-phase').textContent = 'Preparing analysis...';
+      document.getElementById('analysis-detail').textContent = 'This may take 30-60 seconds';
+      closeBtn.remove();
+    };
+    document.querySelector('.analysis-box').appendChild(closeBtn);
   }
 }
 

@@ -255,6 +255,8 @@ class handler(BaseHTTPRequestHandler):
             }
 
             total = sum(v["weighted"] for v in breakdown.values())
+            print(f"[TECHNICAL] score={round(total, 1)} | ssr={ssr['score']}, meta={meta['score']}, "
+                  f"security={security['score']}, crawl={crawl['score']}")
 
             result = {"score": round(total, 1), "breakdown": breakdown}
 

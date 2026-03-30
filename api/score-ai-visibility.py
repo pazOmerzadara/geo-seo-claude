@@ -202,6 +202,9 @@ class handler(BaseHTTPRequestHandler):
             llms = score_llms_txt(llms_data)
             brand = score_brand_mentions(domain)
 
+            print(f"[AI-VIS] citability={citability['score']}, crawler={crawler['score']}, "
+                  f"llms={llms['score']}, brand={brand['score']}")
+
             # Combined: (Citability * 0.35) + (Brand * 0.30) + (Crawlers * 0.25) + (LLMS_TXT * 0.10)
             combined = round(
                 citability["score"] * 0.35 +
@@ -209,6 +212,7 @@ class handler(BaseHTTPRequestHandler):
                 crawler["score"] * 0.25 +
                 llms["score"] * 0.10, 1
             )
+            print(f"[AI-VIS] combined score={combined}")
 
             result = {
                 "score": combined,
