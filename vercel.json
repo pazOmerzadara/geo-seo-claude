@@ -8,6 +8,27 @@
   "functions": {
     "api/serve-report.js": {
       "includeFiles": "geo-report-zadara.html"
+    },
+    "api/run-audit.py": {
+      "maxDuration": 300
+    },
+    "api/collect-audit-data.py": {
+      "maxDuration": 60
+    },
+    "api/score-ai-visibility.py": {
+      "maxDuration": 60
+    },
+    "api/score-technical.py": {
+      "maxDuration": 30
+    },
+    "api/score-schema.py": {
+      "maxDuration": 30
+    },
+    "api/score-content-ai.py": {
+      "maxDuration": 60
+    },
+    "api/score-brand-ai.py": {
+      "maxDuration": 60
     }
   }
 }

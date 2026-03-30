@@ -945,6 +945,250 @@ tbody tr:hover { background: var(--accent-dim); }
 }
 .user-menu__signout:hover { color: var(--score-red); }
 
+/* ──── RE-ANALYZE & COMPARE ──── */
+.reanalyze-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.btn-reanalyze {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-reanalyze:hover { background: #6366f1; transform: translateY(-1px); }
+.btn-reanalyze:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-reanalyze .spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+.btn-reanalyze.loading .spinner { display: block; }
+.btn-reanalyze.loading .btn-label { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.history-dropdown {
+  position: relative;
+}
+.history-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--border-1);
+  border-radius: 8px;
+  background: var(--bg-2);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.history-btn:hover { background: var(--bg-3); border-color: var(--accent); }
+.history-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  min-width: 280px;
+  max-height: 300px;
+  overflow-y: auto;
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow-hover);
+  z-index: 200;
+  display: none;
+}
+.history-menu.open { display: block; }
+.history-menu__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid var(--border-0);
+  font-size: 13px;
+}
+.history-menu__item:last-child { border-bottom: none; }
+.history-menu__item:hover { background: var(--accent-dim); }
+.history-menu__item.active { background: var(--accent-dim); color: var(--accent); }
+.history-menu__score {
+  font-weight: 700;
+  font-size: 14px;
+}
+.history-menu__date {
+  color: var(--text-2);
+  font-size: 12px;
+}
+.history-empty {
+  padding: 20px 14px;
+  text-align: center;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+/* Analysis overlay */
+.analysis-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.analysis-overlay.hidden { display: none; }
+.analysis-box {
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: var(--card-shadow-hover);
+}
+.analysis-spinner {
+  width: 48px; height: 48px;
+  border: 3px solid var(--border-1);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+.analysis-phase {
+  font-size: 14px;
+  color: var(--text-1);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.analysis-detail {
+  font-size: 12px;
+  color: var(--text-3);
+}
+.analysis-progress {
+  width: 100%;
+  height: 4px;
+  background: var(--bg-4);
+  border-radius: 2px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+.analysis-progress__fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+/* ──── COMPARE SECTION ──── */
+.compare-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.compare-col-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-2);
+  margin-bottom: 6px;
+}
+.compare-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border-1);
+  border-radius: 8px;
+  background: var(--bg-2);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: 13px;
+  min-width: 200px;
+}
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px 24px;
+  align-items: center;
+}
+.compare-category {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  text-align: center;
+  padding: 8px;
+  grid-column: 1 / -1;
+  border-bottom: 1px solid var(--border-0);
+}
+.compare-score {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--bg-2);
+  border-radius: 10px;
+  border: 1px solid var(--border-0);
+}
+.compare-score__value {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: var(--font-display);
+}
+.compare-score__label {
+  font-size: 12px;
+  color: var(--text-2);
+}
+.compare-delta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 60px;
+}
+.compare-delta__value {
+  font-size: 16px;
+  font-weight: 700;
+}
+.compare-delta__value.positive { color: var(--score-green); }
+.compare-delta__value.negative { color: var(--score-red); }
+.compare-delta__value.neutral { color: var(--text-3); }
+.compare-delta__arrow {
+  font-size: 18px;
+}
+.compare-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-3);
+  font-size: 14px;
+}
+@media (max-width: 768px) {
+  .compare-grid { grid-template-columns: 1fr; gap: 8px; }
+  .compare-delta { flex-direction: row; }
+}
+
 /* ──── ACTION ITEM BUTTON ──── */
 .btn-action-item {
   background: var(--accent-dim);
@@ -1381,6 +1625,7 @@ tbody tr:hover { background: var(--accent-dim); }
     <a href="#technical-seo" class="sidebar__link"><span class="sidebar__link-icon">&#9874;</span> Technical SEO</a>
     <a href="#action-plan" class="sidebar__link"><span class="sidebar__link-icon">&#9654;</span> Action Plan</a>
     <a href="#impact" class="sidebar__link"><span class="sidebar__link-icon">&#10138;</span> Impact</a>
+    <a href="#compare" class="sidebar__link"><span class="sidebar__link-icon">&#8644;</span> Compare</a>
     <a href="#appendix" class="sidebar__link"><span class="sidebar__link-icon">&#9776;</span> Appendix</a>
   </div>
   <div class="sidebar__footer">
@@ -1407,6 +1652,21 @@ tbody tr:hover { background: var(--accent-dim); }
     </div>
     <h1 class="hero__title">GEO Readiness Report</h1>
     <p class="hero__subtitle">How visible is Zadara to AI-powered search platforms?</p>
+
+    <div class="reanalyze-bar">
+      <button class="btn-reanalyze" id="btn-reanalyze" onclick="startReAnalysis()">
+        <div class="spinner"></div>
+        <span class="btn-label">&#8635; Re-Analyze</span>
+      </button>
+      <div class="history-dropdown">
+        <button class="history-btn" onclick="toggleHistoryMenu()">
+          <span>&#128197;</span> History <span id="history-count" style="opacity:0.6"></span>
+        </button>
+        <div class="history-menu" id="history-menu">
+          <div class="history-empty" id="history-empty">No previous analyses found</div>
+        </div>
+      </div>
+    </div>
 
     <div class="hero__gauge-row">
       <div class="hero__gauge-main">
@@ -2454,6 +2714,33 @@ tbody tr:hover { background: var(--accent-dim); }
     </div>
   </section>
 
+  <!-- ═══════════ COMPARE ═══════════ -->
+  <section class="section" id="compare">
+    <div class="section__header fade-in">
+      <div class="section__label">History</div>
+      <h2 class="section__title">Compare Analyses</h2>
+      <p class="section__desc">Select two reports to compare scores side-by-side and see what changed.</p>
+    </div>
+    <div class="compare-controls fade-in">
+      <div>
+        <div class="compare-col-label">Report A (Baseline)</div>
+        <select class="compare-select" id="compare-select-a" onchange="renderComparison()">
+          <option value="">Select a report...</option>
+        </select>
+      </div>
+      <div style="font-size:24px;color:var(--text-3);padding-top:18px">&#8596;</div>
+      <div>
+        <div class="compare-col-label">Report B (Latest)</div>
+        <select class="compare-select" id="compare-select-b" onchange="renderComparison()">
+          <option value="">Select a report...</option>
+        </select>
+      </div>
+    </div>
+    <div class="compare-grid" id="compare-grid">
+      <div class="compare-empty">Select two reports above to see a side-by-side comparison.</div>
+    </div>
+  </section>
+
   <!-- ═══════════ APPENDIX ═══════════ -->
   <section class="section" id="appendix">
     <div class="section__header fade-in">
@@ -2655,6 +2942,18 @@ tbody tr:hover { background: var(--accent-dim); }
         <button type="submit" class="modal-btn-save" id="modal-save-btn">Save</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Analysis Overlay -->
+<div class="analysis-overlay hidden" id="analysis-overlay">
+  <div class="analysis-box">
+    <div class="analysis-spinner"></div>
+    <div class="analysis-phase" id="analysis-phase">Preparing analysis...</div>
+    <div class="analysis-detail" id="analysis-detail">This may take 30-60 seconds</div>
+    <div class="analysis-progress">
+      <div class="analysis-progress__fill" id="analysis-progress"></div>
+    </div>
   </div>
 </div>
 
@@ -3461,6 +3760,304 @@ async function updateActionText(itemId, newText) {
     showToast(err.message || 'Update failed', 'error');
   }
 }
+
+// ──── Re-Analyze & Compare ────
+let auditHistory = [];
+const REPORT_DOMAIN = 'www.zadara.com';
+const REPORT_URL = 'https://www.zadara.com';
+
+async function loadAuditHistory() {
+  try {
+    var { data, error } = await sb.from('audit_reports')
+      .select('*')
+      .eq('domain', REPORT_DOMAIN)
+      .eq('status', 'completed')
+      .order('created_at', { ascending: false })
+      .limit(20);
+    if (error) throw error;
+    auditHistory = data || [];
+    renderHistoryMenu();
+    renderCompareDropdowns();
+    var countEl = document.getElementById('history-count');
+    if (countEl) countEl.textContent = auditHistory.length > 0 ? '(' + auditHistory.length + ')' : '';
+  } catch (err) {
+    console.error('Failed to load audit history:', err);
+  }
+}
+
+function renderHistoryMenu() {
+  var menu = document.getElementById('history-menu');
+  var empty = document.getElementById('history-empty');
+  if (!auditHistory.length) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  var html = auditHistory.map(function(report, i) {
+    var date = new Date(report.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    var score = report.overall_score != null ? Math.round(report.overall_score) : '--';
+    var color = getScoreColor(score);
+    return '<div class="history-menu__item" onclick="viewHistoryReport(\'' + report.id + '\')">' +
+      '<div><div style="font-weight:600">' + (i === 0 ? 'Latest' : '#' + (i + 1)) + '</div><div class="history-menu__date">' + date + '</div></div>' +
+      '<div class="history-menu__score" style="color:var(--score-' + color + ')">' + score + '/100</div>' +
+    '</div>';
+  }).join('');
+  // Keep the empty div, just add items before it
+  menu.innerHTML = html + '<div class="history-empty" id="history-empty" style="display:none">No previous analyses found</div>';
+}
+
+function toggleHistoryMenu() {
+  var menu = document.getElementById('history-menu');
+  menu.classList.toggle('open');
+  // Close on outside click
+  if (menu.classList.contains('open')) {
+    setTimeout(function() {
+      document.addEventListener('click', closeHistoryOnOutside);
+    }, 0);
+  }
+}
+
+function closeHistoryOnOutside(e) {
+  var dropdown = document.querySelector('.history-dropdown');
+  if (!dropdown.contains(e.target)) {
+    document.getElementById('history-menu').classList.remove('open');
+    document.removeEventListener('click', closeHistoryOnOutside);
+  }
+}
+
+function getScoreColor(score) {
+  if (score >= 80) return 'green';
+  if (score >= 60) return 'yellow';
+  if (score >= 40) return 'orange';
+  return 'red';
+}
+
+function viewHistoryReport(reportId) {
+  var report = auditHistory.find(function(r) { return r.id === reportId; });
+  if (report) {
+    updateReportDisplay(report);
+    document.getElementById('history-menu').classList.remove('open');
+    showToast('Viewing report from ' + new Date(report.created_at).toLocaleDateString(), 'success');
+  }
+}
+
+function updateReportDisplay(report) {
+  var scores = report.scores || {};
+  var overall = report.overall_score != null ? Math.round(report.overall_score) : 44;
+
+  // Update main gauge
+  var mainGaugeNum = document.querySelector('.gauge-number');
+  if (mainGaugeNum) mainGaugeNum.textContent = overall;
+  var mainGaugeLabel = document.querySelector('.gauge-label');
+  if (mainGaugeLabel) {
+    if (overall >= 80) mainGaugeLabel.textContent = 'Excellent';
+    else if (overall >= 60) mainGaugeLabel.textContent = 'Good';
+    else if (overall >= 40) mainGaugeLabel.textContent = 'Below Average';
+    else mainGaugeLabel.textContent = 'Critical';
+  }
+
+  // Update main gauge fill
+  var mainGaugeFill = document.querySelector('.hero__gauge-main .gauge-fill');
+  if (mainGaugeFill) {
+    var circumference = parseFloat(mainGaugeFill.getAttribute('stroke-dasharray'));
+    var offset = circumference - (overall / 100) * circumference;
+    mainGaugeFill.style.strokeDashoffset = offset;
+    mainGaugeFill.setAttribute('data-target', overall);
+    var color = getScoreColor(overall);
+    mainGaugeFill.setAttribute('stroke', 'var(--score-' + color + ')');
+    if (mainGaugeLabel) mainGaugeLabel.style.color = 'var(--score-' + color + ')';
+  }
+
+  // Update pill scores
+  var pills = document.querySelectorAll('.hero__pill');
+  var scoreKeys = ['ai_visibility', 'content_eeat', 'technical', 'schema', 'brand'];
+  var pillLabels = ['AI Platform', 'Content E-E-A-T', 'Technical', 'Schema', 'Brand'];
+  pills.forEach(function(pill, i) {
+    var key = scoreKeys[i];
+    if (key && scores[key] != null) {
+      var val = Math.round(scores[key]);
+      var scoreEl = pill.querySelector('.hero__pill-score');
+      if (scoreEl) {
+        scoreEl.textContent = val;
+        scoreEl.style.color = 'var(--score-' + getScoreColor(val) + ')';
+      }
+    }
+  });
+
+  // Update date
+  var dateEl = document.querySelector('.hero__meta-item span');
+  if (dateEl && report.created_at) {
+    dateEl.textContent = new Date(report.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+}
+
+async function startReAnalysis() {
+  if (!currentUser) {
+    showToast('Please sign in to run an analysis', 'error');
+    return;
+  }
+  var btn = document.getElementById('btn-reanalyze');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  var overlay = document.getElementById('analysis-overlay');
+  overlay.classList.remove('hidden');
+
+  var phases = [
+    { msg: 'Fetching website data...', detail: 'Crawling homepage, robots.txt, llms.txt', pct: 15 },
+    { msg: 'Analyzing AI visibility...', detail: 'Citability scoring, crawler access', pct: 35 },
+    { msg: 'Technical SEO analysis...', detail: 'SSR, meta tags, security headers', pct: 50 },
+    { msg: 'Schema validation...', detail: 'Structured data, sameAs, JSON-LD', pct: 65 },
+    { msg: 'AI content review...', detail: 'E-E-A-T assessment via Claude AI', pct: 80 },
+    { msg: 'Brand authority check...', detail: 'Wikipedia, platform readiness', pct: 92 },
+  ];
+
+  // Animate progress phases
+  var phaseIdx = 0;
+  var phaseInterval = setInterval(function() {
+    if (phaseIdx < phases.length) {
+      document.getElementById('analysis-phase').textContent = phases[phaseIdx].msg;
+      document.getElementById('analysis-detail').textContent = phases[phaseIdx].detail;
+      document.getElementById('analysis-progress').style.width = phases[phaseIdx].pct + '%';
+      phaseIdx++;
+    }
+  }, 5000);
+
+  try {
+    var response = await fetch('/api/run-audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        url: REPORT_URL,
+        triggered_by: currentUser.id
+      })
+    });
+
+    clearInterval(phaseInterval);
+
+    if (!response.ok) {
+      var errData = await response.json().catch(function() { return {}; });
+      throw new Error(errData.error || 'Analysis failed (HTTP ' + response.status + ')');
+    }
+
+    var result = await response.json();
+
+    // Update progress to 100%
+    document.getElementById('analysis-phase').textContent = 'Analysis complete!';
+    document.getElementById('analysis-detail').textContent = 'Score: ' + Math.round(result.overall_score) + '/100';
+    document.getElementById('analysis-progress').style.width = '100%';
+
+    // Short delay to show completion
+    await new Promise(function(r) { setTimeout(r, 1000); });
+
+    // Update the report display
+    updateReportDisplay({
+      overall_score: result.overall_score,
+      scores: result.scores,
+      created_at: result.created_at
+    });
+
+    // Reload history
+    await loadAuditHistory();
+
+    showToast('Analysis complete! Score: ' + Math.round(result.overall_score) + '/100', 'success');
+
+  } catch (err) {
+    clearInterval(phaseInterval);
+    console.error('Re-analysis failed:', err);
+    showToast(err.message || 'Analysis failed. Please try again.', 'error');
+  } finally {
+    overlay.classList.add('hidden');
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    // Reset progress
+    document.getElementById('analysis-progress').style.width = '0%';
+    document.getElementById('analysis-phase').textContent = 'Preparing analysis...';
+    document.getElementById('analysis-detail').textContent = 'This may take 30-60 seconds';
+  }
+}
+
+// ──── Compare ────
+function renderCompareDropdowns() {
+  var selA = document.getElementById('compare-select-a');
+  var selB = document.getElementById('compare-select-b');
+  if (!selA || !selB) return;
+
+  var optionsHtml = '<option value="">Select a report...</option>';
+  auditHistory.forEach(function(report, i) {
+    var date = new Date(report.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    var score = report.overall_score != null ? Math.round(report.overall_score) : '--';
+    var label = (i === 0 ? 'Latest' : '#' + (i + 1)) + ' — ' + date + ' (Score: ' + score + ')';
+    optionsHtml += '<option value="' + report.id + '">' + label + '</option>';
+  });
+
+  selA.innerHTML = optionsHtml;
+  selB.innerHTML = optionsHtml;
+
+  // Auto-select if 2+ reports exist
+  if (auditHistory.length >= 2) {
+    selA.value = auditHistory[1].id;  // older
+    selB.value = auditHistory[0].id;  // latest
+    renderComparison();
+  }
+}
+
+function renderComparison() {
+  var grid = document.getElementById('compare-grid');
+  var selA = document.getElementById('compare-select-a');
+  var selB = document.getElementById('compare-select-b');
+
+  var reportA = auditHistory.find(function(r) { return r.id === selA.value; });
+  var reportB = auditHistory.find(function(r) { return r.id === selB.value; });
+
+  if (!reportA || !reportB) {
+    grid.innerHTML = '<div class="compare-empty">Select two reports above to see a side-by-side comparison.</div>';
+    return;
+  }
+
+  var categories = [
+    { key: 'overall', label: 'Overall GEO Score', getA: function() { return reportA.overall_score; }, getB: function() { return reportB.overall_score; } },
+    { key: 'ai_visibility', label: 'AI Visibility & Citability' },
+    { key: 'content_eeat', label: 'Content Quality & E-E-A-T' },
+    { key: 'technical', label: 'Technical Foundation' },
+    { key: 'schema', label: 'Schema & Structured Data' },
+    { key: 'brand', label: 'Brand Authority' },
+  ];
+
+  var html = '';
+  categories.forEach(function(cat) {
+    var scoreA, scoreB;
+    if (cat.getA) {
+      scoreA = Math.round(cat.getA() || 0);
+      scoreB = Math.round(cat.getB() || 0);
+    } else {
+      scoreA = Math.round((reportA.scores || {})[cat.key] || 0);
+      scoreB = Math.round((reportB.scores || {})[cat.key] || 0);
+    }
+    var delta = scoreB - scoreA;
+    var deltaClass = delta > 0 ? 'positive' : delta < 0 ? 'negative' : 'neutral';
+    var deltaSign = delta > 0 ? '+' : '';
+    var arrow = delta > 0 ? '&#9650;' : delta < 0 ? '&#9660;' : '&#8212;';
+    var colorA = getScoreColor(scoreA);
+    var colorB = getScoreColor(scoreB);
+    var isOverall = cat.key === 'overall';
+    var fontSize = isOverall ? '36px' : '28px';
+
+    html += '<div class="compare-category">' + cat.label + '</div>';
+    html += '<div class="compare-score"><div><div class="compare-score__value" style="font-size:' + fontSize + ';color:var(--score-' + colorA + ')">' + scoreA + '</div><div class="compare-score__label">Report A</div></div></div>';
+    html += '<div class="compare-delta"><div class="compare-delta__arrow ' + deltaClass + '">' + arrow + '</div><div class="compare-delta__value ' + deltaClass + '">' + deltaSign + delta + '</div></div>';
+    html += '<div class="compare-score"><div><div class="compare-score__value" style="font-size:' + fontSize + ';color:var(--score-' + colorB + ')">' + scoreB + '</div><div class="compare-score__label">Report B</div></div></div>';
+  });
+
+  grid.innerHTML = html;
+}
+
+// Load history on app data load
+var _origLoadAppData = loadAppData;
+loadAppData = async function() {
+  await _origLoadAppData();
+  await loadAuditHistory();
+};
 
 // ──── Toast ────
 function showToast(message, type) {
