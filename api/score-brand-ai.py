@@ -187,6 +187,9 @@ class handler(BaseHTTPRequestHandler):
             if not api_key:
                 print(f"[BRAND-AI] NO API KEY — using deterministic fallback")
                 result = deterministic_brand_score(page_data, robots_data, domain, brand_name, wiki_data)
+                result["api_key_detected"] = False
+                result["method"] = "deterministic"
+                result["key_findings"] = ["GOOGLE_API_KEY not configured in Vercel — using rule-based scoring"]
             else:
                 try:
                     print(f"[BRAND-AI] Calling Gemini API for platform readiness...")
@@ -213,6 +216,12 @@ class handler(BaseHTTPRequestHandler):
 
                     print(f"[BRAND-AI] AI scoring: platform_avg={platform_avg}, brand_auth={brand_auth}, combined={combined}")
 
+                    # Build evidence from platform rationales
+                    evidence_findings = ai_result.get("key_findings", [])
+                    for p_name, p_data in platforms.items():
+                        if p_data.get("rationale"):
+                            evidence_findings.append(f"{p_name}: {p_data['rationale']}")
+
                     result = {
                         "score": combined,
                         "breakdown": {
@@ -223,15 +232,23 @@ class handler(BaseHTTPRequestHandler):
                                 "wikipedia": wiki_data["wikipedia"],
                                 "wikidata": wiki_data["wikidata"]
                             },
-                            "key_findings": ai_result.get("key_findings", []),
+                            "key_findings": evidence_findings,
                         },
+                        "key_findings": evidence_findings,
                         "ai_powered": True,
+                        "api_key_detected": True,
+                        "method": "gemini-2.0-flash",
+                        "gemini_elapsed_s": gemini_elapsed,
                     }
+                    print(f"[BRAND-AI] AI scoring complete: score={combined}, method=gemini-2.0-flash, elapsed={gemini_elapsed}s")
+
                 except Exception as ai_err:
                     print(f"[BRAND-AI] Gemini API FAILED: {ai_err}")
                     print(f"[BRAND-AI] Falling back to deterministic scoring")
                     result = deterministic_brand_score(page_data, robots_data, domain, brand_name, wiki_data)
-                    result["breakdown"]["key_findings"].append(f"AI scoring failed: {str(ai_err)}")
+                    result["api_key_detected"] = True
+                    result["method"] = "deterministic"
+                    result["key_findings"] = [f"Gemini API call FAILED: {str(ai_err)} — fell back to rule-based scoring"]
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
