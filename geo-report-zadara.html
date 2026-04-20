@@ -3182,18 +3182,21 @@ function toggleCollapsible(header) {
 })();
 
 // ──── Fade In Animation ────
-(function() {
-  var fadeEls = document.querySelectorAll('.fade-in');
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  fadeEls.forEach(function(el) { observer.observe(el); });
-})();
+var fadeObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(function(el) { fadeObserver.observe(el); });
+
+function reobserveFadeIns() {
+  document.querySelectorAll('.fade-in:not(.visible)').forEach(function(el) {
+    fadeObserver.observe(el);
+  });
+}
 
 // ──── Gauge Animation ────
 (function() {
@@ -4043,7 +4046,7 @@ function updateReportDisplay(report) {
 
   // Update detailed sections from analysis_data
   var ad = report.analysis_data;
-  if (!ad) return;
+  if (!ad) ad = {};
 
   // --- Score Breakdown Cards ---
   updateScoreCards(scores, ad);
@@ -4071,9 +4074,28 @@ function updateReportDisplay(report) {
 
   // --- Platform Optimization ---
   updatePlatformOptimization(ad);
+
+  reobserveFadeIns();
 }
 
 function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+function emptyState(message) {
+  return '<div class="callout callout--info fade-in" style="text-align:center;padding:32px 24px">' +
+    '<div style="font-size:24px;margin-bottom:8px;opacity:0.5">&#9432;</div>' +
+    '<strong>' + (message || 'No analysis data available.') + '</strong>' +
+    '<div style="margin-top:8px;font-size:13px;opacity:0.8">Click <em>Re-Analyze</em> above to run a fresh analysis and populate this section.</div>' +
+    '</div>';
+}
+
+function errorState(errorMsg) {
+  return '<div class="callout callout--warning fade-in" style="text-align:center;padding:32px 24px">' +
+    '<div style="font-size:24px;margin-bottom:8px">&#9888;</div>' +
+    '<strong>Analysis failed for this section.</strong>' +
+    '<div style="margin-top:8px;font-size:13px">' + esc(errorMsg) + '</div>' +
+    '<div style="margin-top:8px;font-size:13px;opacity:0.8">Click <em>Re-Analyze</em> to retry.</div>' +
+    '</div>';
+}
 
 function makeScoreCard(title, score, weight, desc) {
   var color = getScoreColor(score);
@@ -4175,7 +4197,10 @@ function updateAIVisibilityDashboard(ad) {
   var container = document.getElementById('ai-visibility-cards');
   if (!container) return;
   var platforms = ((ad.brand || {}).breakdown || {}).platforms;
-  if (!platforms) return;
+  if (!platforms) {
+    container.innerHTML = (ad.brand || {}).error ? errorState((ad.brand || {}).error) : emptyState('AI visibility platform data not yet available.');
+    return;
+  }
 
   var platformNames = {
     google_aio: 'Google AI Overviews', chatgpt: 'ChatGPT Web Search',
@@ -4195,7 +4220,10 @@ function updateCrawlerAccess(ad) {
   var container = document.getElementById('crawler-access-content');
   if (!container) return;
   var crawlerData = ((ad.ai_visibility || {}).breakdown || {}).crawler_access;
-  if (!crawlerData) return;
+  if (!crawlerData) {
+    container.innerHTML = (ad.ai_visibility || {}).error ? errorState((ad.ai_visibility || {}).error) : emptyState('AI crawler access data not yet available.');
+    return;
+  }
 
   var allowed = crawlerData.allowed || [];
   var blocked = crawlerData.blocked || [];
@@ -4240,7 +4268,10 @@ function updateBrandAuthority(ad) {
   if (!container) return;
   var brandMentions = ((ad.ai_visibility || {}).breakdown || {}).brand_mentions;
   var brandData = ad.brand || {};
-  if (!brandMentions && !brandData.breakdown) return;
+  if (!brandMentions && !brandData.breakdown) {
+    container.innerHTML = (ad.brand || {}).error ? errorState((ad.brand || {}).error) : emptyState('Brand authority data not yet available.');
+    return;
+  }
 
   var wiki = brandMentions || {};
   var findings = brandData.key_findings || ((brandData.breakdown || {}).key_findings) || [];
@@ -4263,7 +4294,10 @@ function updateCitability(ad) {
   var container = document.getElementById('citability-content');
   if (!container) return;
   var citData = ((ad.ai_visibility || {}).breakdown || {}).citability;
-  if (!citData) return;
+  if (!citData) {
+    container.innerHTML = (ad.ai_visibility || {}).error ? errorState((ad.ai_visibility || {}).error) : emptyState('Citability analysis not yet available.');
+    return;
+  }
 
   var topBlocks = citData.top_blocks || [];
   var blocksAnalyzed = citData.blocks_analyzed || 0;
@@ -4294,7 +4328,10 @@ function updateTechnicalHealth(ad) {
   var container = document.getElementById('technical-health-content');
   if (!container) return;
   var techData = (ad.technical || {}).breakdown;
-  if (!techData) return;
+  if (!techData) {
+    container.innerHTML = (ad.technical || {}).error ? errorState((ad.technical || {}).error) : emptyState('Technical health data not yet available.');
+    return;
+  }
 
   var items = [
     { key: 'ssr', title: 'Server-Side Rendering', getStatus: function(d) {
@@ -4345,7 +4382,10 @@ function updateSchema(ad) {
   var container = document.getElementById('schema-content');
   if (!container) return;
   var schemaData = ad.schema;
-  if (!schemaData || !schemaData.breakdown) return;
+  if (!schemaData || !schemaData.breakdown) {
+    container.innerHTML = (schemaData && schemaData.error) ? errorState(schemaData.error) : emptyState('Schema analysis not yet available.');
+    return;
+  }
   var b = schemaData.breakdown;
 
   var schemaItems = [
@@ -4387,7 +4427,10 @@ function updateLlmsTxt(ad) {
   var container = document.getElementById('llms-txt-content');
   if (!container) return;
   var llmsData = ((ad.ai_visibility || {}).breakdown || {}).llms_txt;
-  if (!llmsData) return;
+  if (!llmsData) {
+    container.innerHTML = (ad.ai_visibility || {}).error ? errorState((ad.ai_visibility || {}).error) : emptyState('llms.txt analysis not yet available.');
+    return;
+  }
 
   var llmsExists = llmsData.exists;
   var fullExists = llmsData.full_exists;
@@ -4430,7 +4473,10 @@ function updatePlatformOptimization(ad) {
   var container = document.getElementById('platform-optimization-content');
   if (!container) return;
   var platforms = ((ad.brand || {}).breakdown || {}).platforms;
-  if (!platforms) return;
+  if (!platforms) {
+    container.innerHTML = (ad.brand || {}).error ? errorState((ad.brand || {}).error) : emptyState('Platform optimization data not yet available.');
+    return;
+  }
 
   var platformNames = {
     google_aio: 'Google AIO', chatgpt: 'ChatGPT',
